@@ -5,5 +5,5 @@ import 'jquery';
 import 'bootstrap';
 
 $(document).ready(() => {
-  // console.log('Hello world');
+	// console.log('Hello world');
 });

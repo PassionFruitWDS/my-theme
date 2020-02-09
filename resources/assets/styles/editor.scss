@@ -9,8 +9,8 @@
 @import '~bootstrap/scss/mixins';
 
 .editor-styles-wrapper > * {
-  @import 'common/global';
-  @import 'components';
+	@import 'common/global';
+	@import 'components';
 
-  font-family: $font-family-base;
+	font-family: $font-family-base;
 }

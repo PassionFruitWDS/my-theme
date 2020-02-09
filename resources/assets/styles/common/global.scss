@@ -3,7 +3,7 @@
  */
 
 a {
-  color: map-get($theme-colors, 'primary');
+	color: map-get($theme-colors, 'primary');
 }
 
 /**
@@ -12,11 +12,11 @@ a {
  */
 
 @each $color-name, $color-value in $theme-colors {
-  .has-#{$color-name}-color {
-    color: $color-value;
-  }
+	.has-#{$color-name}-color {
+		color: $color-value;
+	}
 
-  .has-#{$color-name}-background-color {
-    background-color: $color-value;
-  }
+	.has-#{$color-name}-background-color {
+		background-color: $color-value;
+	}
 }

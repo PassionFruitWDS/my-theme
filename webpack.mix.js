@@ -1,7 +1,7 @@
 const mix = require('laravel-mix');
-            require('@tinypixelco/laravel-mix-wp-blocks');
-            require('laravel-mix-purgecss');
-            require('laravel-mix-copy-watched');
+				require('@tinypixelco/laravel-mix-wp-blocks');
+				require('laravel-mix-purgecss');
+				require('laravel-mix-copy-watched');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,24 +15,24 @@ const mix = require('laravel-mix');
  */
 
 mix.setPublicPath('./dist')
-   .browserSync({
-      proxy: {
-         target: `http://${process.env.DOMAIN_NAME}.${process.env.TLD}:${process.env.PORT}`,
-      },
-      open: false,
-   });
+	.browserSync({
+		proxy: {
+			target: `http://${process.env.DOMAIN_NAME}.${process.env.TLD}:${process.env.PORT}`,
+		},
+		open: false,
+	});
 
 mix.sass('resources/assets/styles/app.scss', 'styles')
-   .sass('resources/assets/styles/editor.scss', 'styles')
-   .purgeCss();
+	.sass('resources/assets/styles/editor.scss', 'styles')
+	.purgeCss();
 
 mix.js('resources/assets/scripts/app.js', 'scripts')
-   .js('resources/assets/scripts/customizer.js', 'scripts')
-   .blocks('resources/assets/scripts/editor.js', 'scripts')
-   .extract();
+	.js('resources/assets/scripts/customizer.js', 'scripts')
+	.blocks('resources/assets/scripts/editor.js', 'scripts')
+	.extract();
 
 mix.copyWatched('resources/assets/images/**', 'dist/images')
-   .copyWatched('resources/assets/fonts/**', 'dist/fonts');
+	.copyWatched('resources/assets/fonts/**', 'dist/fonts');
 
 mix.autoload({
   jquery: ['$', 'window.jQuery'],
@@ -43,4 +43,4 @@ mix.options({
 });
 
 mix.sourceMaps(false, 'source-map')
-   .version();
+	.version();
