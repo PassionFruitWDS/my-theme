@@ -114,58 +114,7 @@ add_action('after_setup_theme', function () {
 	 */
 	add_theme_support(
 		'editor-color-palette',
-		array(
-			array(
-				'name'  => __('Primary', 'sage'),
-				'slug'  => 'primary',
-				'color' => '#EC7A00',
-			),
-			array(
-				'name' => __('Secondary', 'sage'),
-				'slug' => 'secondary',
-				'color' => '#0072EC'
-			),
-			array(
-				'name' => __('Dark Primary', 'sage'),
-				'slug' => 'dark-primary',
-				'color' => '#DC5100'
-			),
-			array(
-				'name' => __('Light Primary', 'sage'),
-				'slug' => 'light-primary',
-				'color' => '#F8B44D'
-			),
-			array(
-				'name' => __('Dark Secondary', 'sage'),
-				'slug' => 'dark-secondary',
-				'color' => '#173FBA'
-			),
-			array(
-				'name' => __('Light Secondary', 'sage'),
-				'slug' => 'light-secondary',
-				'color' => '#56B4FF'
-			),
-			array(
-				'name' => __('Primary Accent', 'sage'),
-				'slug' => 'primary-accent',
-				'color' => '#EC0400'
-			),
-			array(
-				'name' => __('Primary Accent Alternate', 'sage'),
-				'slug' => 'primary-accent-alternate',
-				'color' => '#E8EC00'
-			),
-			array(
-				'name' => __('Secondary Accent', 'sage'),
-				'slug' => 'secondary-accent',
-				'color' => '#72EC00'
-			),
-			array(
-				'name' => __('Secondary Accent Alternate', 'sage'),
-				'slug' => 'secondary-accent-alternate',
-				'color' => '#00EC7A'
-			)
-		)
+		get_color_palette()
 	);
 }, 20);
 
@@ -191,4 +140,19 @@ add_action('widgets_init', function () {
 		'name' => __('Footer', 'sage'),
 		'id' => 'sidebar-footer'
 	] + $config);
+});
+
+/**
+ * Inject the color palette into the head
+ *
+ * @return void
+ */
+add_action('wp_head', function () {
+	echo '<style type="text/css">';
+	echo ':root {';
+	foreach (get_color_palette() as $color_swatch) {
+		echo('--' . $color_swatch['slug'] . '-color: ' . $color_swatch['color'] . ';');
+	}
+	echo '}';
+	echo '</style>';
 });
