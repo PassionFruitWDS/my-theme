@@ -2,6 +2,19 @@
  * Variables
  */
 
+/**
+ * Color palette
+ */
+
 $theme-colors: (
-	primary: #525ddc,
+	primary: var(--primary-color),
+	secondary: var(--secondary-color),
+	dark-primary: var(--dark-primary-color),
+	light-primary: var(--light-primary-color),
+	dark-secondary: var(--dark-secondary-color),
+	light-secondary: var(--light-secondary-color),
+	primary-accent: var(--primary-accent-color),
+	primary-accent-alternate: var(--primary-accent-alternate-color),
+	secondary-accent: var(--secondary-accent-color),
+	secondary-accent-alternate: var(--secondary-accent-color)
 );
