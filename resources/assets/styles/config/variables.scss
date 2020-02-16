@@ -18,3 +18,21 @@ $theme-colors: (
 	secondary-accent: var(--secondary-accent-color),
 	secondary-accent-alternate: var(--secondary-accent-color)
 );
+
+/**
+ * Native font stack (borrowed from bootstrap)
+ */
+
+$font-family-sans-serif:
+	// Safari for macOS and iOS (San Francisco)
+	-apple-system,
+	// Chrome < 56 for macOS (San Francisco)
+	BlinkMacSystemFont,
+	// Windows
+	"Segoe UI",
+	// Android
+	"Roboto",
+	// Basic web fallback
+	"Helvetica Neue", Arial, sans-serif,
+	// Emoji fonts
+	"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
