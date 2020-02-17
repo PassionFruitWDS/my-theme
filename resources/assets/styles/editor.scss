@@ -4,6 +4,8 @@
 
 @import 'config/variables';
 
+@import '~include-media/dist/_include-media';
+
 .editor-styles-wrapper > * {
 	@import 'common/global';
 	@import 'components';
