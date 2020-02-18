@@ -20,6 +20,17 @@ $theme-colors: (
 );
 
 /**
+ * Breakpoints
+ */
+
+$breakpoints: (
+	small: 576px,
+	medium: 768px,
+	large: 992px,
+	x-large: 1200px
+);
+
+/**
  * Native font stack (borrowed from bootstrap)
  */
 
