@@ -152,6 +152,7 @@ add_action('wp_head', function () {
 	echo ':root {';
 	foreach (get_color_palette() as $color_swatch) {
 		echo('--' . $color_swatch['slug'] . '-color: ' . $color_swatch['color'] . ';');
+		echo('--' . $color_swatch['slug'] . '-rgb: ' . hex2rgb($color_swatch['color']) . ';');
 	}
 	echo '}';
 	echo '</style>';
