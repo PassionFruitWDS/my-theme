@@ -17,4 +17,5 @@
 			</p>
 		</div>
 	</div>
+	@include('forms.contact')
 </section>
