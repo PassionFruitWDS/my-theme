@@ -25,6 +25,13 @@ $theme-colors: (
 );
 
 /**
+ * Style colors
+ */
+
+ $label_rgb: (210 210 210);
+ $label_color: rgb($label_rgb);
+
+/**
  * Breakpoints
  */
 
