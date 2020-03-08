@@ -9,7 +9,7 @@
 			@include('partials.header')
 
 			<div class="container">
-				<main class="main">
+				<main class="main @yield('content-classes')">
 					@yield('content')
 				</main>
 
