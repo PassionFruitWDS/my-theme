@@ -1,0 +1,189 @@
+/**
+ * Contact Form
+ */
+
+/**
+ * Animations
+ */
+@keyframes fade--down {
+	from {
+		// visibility
+		visibility: visible;
+
+		// surface
+		background-position: 0 100%;
+		box-shadow: none;
+	} to {
+		// visibility
+		visibility: visible;
+
+		// surface
+		background-position: 0 0;
+	}
+}
+
+@keyframes fade--in {
+	from {
+		// visibility
+		opacity: 0;
+	} to {
+		// visibility
+		opacity: 1;
+	}
+}
+
+/**
+ * @mixin: fade
+ *
+ * @params:
+ *   $direction: [ down | in ]
+ *     Direction of fade
+ *   $rgb: [ <color-triplet>: 255 255 255 ]
+ *     Background color (no effect when $direction = in)
+ *   $alpha: [ <double>: 1 (0 <= val <= 1) ]
+ *     Final background opacity (no effect when $direction = in)
+ *   $duration: [ <time>: 1s ]
+ *     Animation-duration
+ *   $delay: [ <time>: 0s ]
+ *     Animation-delay
+ *
+ * @description:
+ *   Smoothly fades an element's background color in the specified direction.
+ *   In the case of `$direction = in` the element's contents and background fade
+ *   in place.
+ */
+@mixin fade($direction, $rgb: 255 255 255, $alpha: 1, $duration: 1s, $delay: 0s) {
+	// direction handling
+	@if down == $direction {
+		// visibility
+		visibility: hidden;
+
+		// surface
+		$rgba: rgba($rgb, $alpha);
+		background: linear-gradient($rgba 0%,
+			$rgba 25%,
+			rgba($rgb, 0) 75%);
+		background-size: 100% 400%;
+
+		// animation
+		animation-name: fade--down;
+
+	} @else if in == $direction {
+		// visibility
+		opacity: 0;
+
+		// animation
+		animation-name: fade--in;
+
+	} @else { // default
+		@error "Unknown direction #{$direction}";
+	}
+
+	// animation
+	animation-fill-mode: forwards;
+	animation-delay: $delay;
+	animation-duration: $duration;
+	animation-timing-function: ease-in;
+}
+
+/**
+ * Style
+ */
+.contact-form {
+	// display
+	display: grid;
+	grid: "main main" min-content
+		/ 1fr 1fr;
+	grid-auto-flow: row;
+	grid-gap: 20px 40px;
+
+	// animation
+	transition: max-height 1.5s ease-in;
+
+	&.contact-form--is-active {
+		// position
+		max-height: 1000px;
+
+		.contact-form__main-wrapper{
+			.contact-form__field {
+				// position
+				margin-right: 40px;
+			}
+		}
+	}
+
+	.contact-form__main-wrapper {
+		// position
+		position: relative;
+		grid-area: main;
+
+		// display
+		display: inline-flex;
+
+		.contact-form__field {
+			// position
+			justify-self: stretch;
+		}
+	}
+
+	.contact-form__field {
+		// position
+		width: 100%;
+		justify-self: center;
+
+		// font
+		font-size: 16px;
+
+		&.contact-form__field--wide {
+			// position
+			grid-column: 1 / span 2;
+			grid-row: auto;
+		}
+
+		&.contact-form__field--animated {
+			// animation
+			@include fade(down, var(--dark-primary-rgb), 0.75, 1s, 0.25s);
+
+			*:not(label) {
+				// animation
+				@include fade(in, 0, 0, 1s, 0.5s);
+			}
+		}
+	}
+
+	.contact-form__button {
+		// position
+		width: min-content;
+		padding: 1.1em 1em;
+		justify-self: right;
+
+		// surface
+		@extend %surface;
+
+		// content
+		font-weight: 900;
+		color: white;
+
+		&:enabled {
+			// surface
+			border-color: rgba(var(--light-primary-rgb), 0.7);
+			border-radius: 20px;
+
+			&:hover {
+				// surface
+				box-shadow: 0 0 20px 0 white;
+			}
+		}
+
+		&:disabled {
+			// position
+			position: absolute;
+			right: 0;
+
+			// surface
+			background-color: rgba(var(--dark-primary-rgb), 0);
+			box-shadow: none;
+			border-width: 0;
+		}
+	}
+}
