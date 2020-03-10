@@ -26,7 +26,7 @@ mix.sass('resources/assets/styles/app.scss', 'styles')
 	.sass('resources/assets/styles/editor.scss', 'styles')
 	.purgeCss();
 
-mix.js('resources/assets/scripts/app.js', 'scripts')
+mix.ts('resources/assets/scripts/app.ts', 'scripts')
 	.js('resources/assets/scripts/customizer.js', 'scripts')
 	.blocks('resources/assets/scripts/editor.js', 'scripts')
 	.extract();
