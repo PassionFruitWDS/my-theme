@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"allowJs": true
+	},
+	"files": [
+		"./resources/assets/scripts/app.ts"
+	],
+	"include": [
+		"./resources/assets/scripts/**/*"
+	],
+	"exclude": [
+		"./resources/assets/scripts/customizer.js",
+		"./resources/assets/scripts/editor.js"
+	]
+}
