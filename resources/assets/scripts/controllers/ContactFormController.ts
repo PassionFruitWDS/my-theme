@@ -76,15 +76,59 @@ export class ContactFormController {
 		// execute pre-activation hooks
 		this.doPreActivate();
 
-		this.contactForm.css('margin', `${this.contactForm.css('margin-top')} 0`);
-		const template = $(`#${this.contactForm.attr('id')}__remainder`);
-		this.contactForm.append(template.html());
+		this.lockVerticalMargins();
+		this.expandForm();
 		this.createFieldControllers();
-		this.contactForm.find('.button--submit').removeAttr('disabled');
-		this.contactForm.addClass(ContactFormController.activeStateClass);
+		this.enableSubmitButton();
+		this.markActive();
 
 		// execute post-activation hooks
 		this.doPostActivate();
+	}
+
+	/** indicates the form is active by applying the appropriate css class */
+	private markActive(): void {
+		this.contactForm.addClass(ContactFormController.activeStateClass);
+	}
+
+	/** enables the forms submission button */
+	private enableSubmitButton(): void {
+		this.submitButton.removeAttr('disabled');
+	}
+
+	/** the submission button of the form */
+	private get submitButton(): JQuery<HTMLElement> {
+		return this.contactForm.find('.button--submit');
+	}
+
+	/** expand the form to it's 'active' state using template content */
+	private expandForm(): void {
+		this.contactForm.append(this.template.html());
+	}
+
+	/** the template containing the expanded/'active' form's fields */
+	private get template(): JQuery<HTMLElement> {
+		return $(`#${this.templateId}`);
+	}
+
+	/** the html id of the form's template */
+	private get templateId(): string {
+		return `${this.id}__remainder`;
+	}
+
+	/** the html id of the form */
+	private get id(): string {
+		return this.contactForm.attr('id');
+	}
+
+	/** lock the top/bottom margins to their current value */
+	private lockVerticalMargins(): void {
+		this.contactForm.css('margin', `${this.marginTop} 0`);
+	}
+
+	/** current top margin size */
+	private get marginTop(): string {
+		return this.contactForm.css('margin-top');
 	}
 
 	/** create controllers for newly appended form fields */
