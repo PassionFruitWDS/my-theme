@@ -76,12 +76,6 @@ export class ContactFormController {
 		// execute pre-activation hooks
 		this.doPreActivate();
 
-		const hero = this.contactForm.parent('.hero');
-		const gridHeights = hero.css('grid-template-rows').split(' ');
-		const shimHeight = gridHeights[2];
-		hero.append(
-			`<style type="text/css">.hero::before {grid-area: shim; content: ""; min-height: ${shimHeight};</style>`,
-		);
 		this.contactForm.css('margin', `${this.contactForm.css('margin-top')} 0`);
 		const template = $(`#${this.contactForm.attr('id')}__remainder`);
 		this.contactForm.append(template.html());
@@ -145,10 +139,6 @@ export class ContactFormController {
 		this.contactForm.removeClass(ContactFormController.activeStateClass);
 		this.contactForm.css('margin', `auto 0`);
 		this.contactForm.find('.button--submit').attr('disabled', '');
-		this.contactForm
-			.parent('.hero')
-			.children('style')
-			.remove();
 
 		// execute post-deactivation hooks
 		this.doPostDeactivate();

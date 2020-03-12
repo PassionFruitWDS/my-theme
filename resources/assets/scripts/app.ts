@@ -5,6 +5,7 @@ import 'jquery';
 import { NavController } from './controllers/NavController';
 import { FormFieldController } from './controllers/FormFieldController';
 import { ContactFormController } from './controllers/ContactFormController';
+import { HeroController } from './controllers/HeroController';
 
 $(document).ready(() => {
 	new NavController($('.nav'), $('.hamburger')).initialize();
@@ -15,5 +16,8 @@ $(document).ready(() => {
 			new FormFieldController($(element)).initialize();
 		});
 
-	new ContactFormController($('.contact-form')).initialize();
+	const contactFormCtr = new ContactFormController($('.contact-form'));
+	const heroCtr = new HeroController($('.hero'));
+	heroCtr.initialize(contactFormCtr);
+	contactFormCtr.initialize();
 });
