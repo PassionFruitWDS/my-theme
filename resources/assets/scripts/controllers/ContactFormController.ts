@@ -180,9 +180,9 @@ export class ContactFormController {
 		this.doPreDeactivate();
 
 		this.contactForm.children('.contact-form__field').remove();
-		this.contactForm.removeClass(ContactFormController.activeStateClass);
 		this.contactForm.css('margin', `auto 0`);
 		this.contactForm.find('.button--submit').attr('disabled', '');
+		this.contactForm.removeClass(ContactFormController.activeStateClass);
 
 		// execute post-deactivation hooks
 		this.doPostDeactivate();
