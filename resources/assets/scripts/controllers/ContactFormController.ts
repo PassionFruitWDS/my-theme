@@ -179,13 +179,42 @@ export class ContactFormController {
 		// execute pre-deactivation hooks
 		this.doPreDeactivate();
 
-		this.contactForm.children('.contact-form__field').remove();
-		this.contactForm.css('margin', `auto 0`);
-		this.contactForm.find('.button--submit').attr('disabled', '');
-		this.contactForm.removeClass(ContactFormController.activeStateClass);
+		this.shrinkForm();
+		this.unlockVerticalMargins();
+		this.disableSubmitButton();
+		this.markInactive();
 
 		// execute post-deactivation hooks
 		this.doPostDeactivate();
+	}
+
+	/** indicates the form is inactive by removing the appropriate css class */
+	private markInactive(): void {
+		this.contactForm.removeClass(ContactFormController.activeStateClass);
+	}
+
+	/** disable the form's submit button */
+	private disableSubmitButton(): void {
+		this.submitButton.attr('disabled', '');
+	}
+
+	/** enable responsive top/bottom margin resizing */
+	private unlockVerticalMargins(): void {
+		this.contactForm.css('margin', `auto 0`);
+	}
+
+	/** shrink the form by removing it's 'expanded'/'active' state fields */
+	private shrinkForm(): void {
+		this.fieldsUniqueToActive.remove();
+	}
+
+	/** fields that are only present when the form is active */
+	private get fieldsUniqueToActive(): JQuery<HTMLElement> | undefined {
+		if (this.isActive) {
+			return this.contactForm.children('.contact-form__field');
+		}
+
+		return undefined;
 	}
 
 	/** execute post-deactivation callbacks */
