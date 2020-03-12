@@ -1,5 +1,6 @@
 import 'jquery';
 import { FormFieldController } from './FormFieldController';
+import { Callbacks } from '../util/Callbacks';
 
 /** implements contact form behavior */
 export class ContactFormController {
@@ -7,6 +8,14 @@ export class ContactFormController {
 	private static activeStateClass: string = 'contact-form--is-active';
 	/** cache for the form's main input field */
 	private _mainInput: JQuery<HTMLElement> | undefined;
+	/** callbacks registered to the post-activation hook */
+	private postActivateCallbacks: Callbacks = new Callbacks();
+	/** callbacks registered to the pre-activation hook */
+	private preActivateCallbacks: Callbacks = new Callbacks();
+	/** callbacks registered to the post-deactivation hook */
+	private postDeactivateCallbacks: Callbacks = new Callbacks();
+	/** callbacks registered to the pre-deactivation hook */
+	private preDeactivateCallbacks: Callbacks = new Callbacks();
 
 	constructor(private readonly contactForm: JQuery<HTMLElement>) {}
 
@@ -97,12 +106,22 @@ export class ContactFormController {
 
 	/** execute post-activation callbacks */
 	private doPostActivate(): void {
-		// @TODO: implement method
+		this.postActivateCallbacks.execute();
 	}
 
 	/** execute pre-activation callbacks */
 	private doPreActivate(): void {
-		// @TODO: implement method
+		this.preActivateCallbacks.execute();
+	}
+
+	/** hook a new callback to be run after activation */
+	public registerPostActivate(callback: () => void): void {
+		this.postActivateCallbacks.push(callback);
+	}
+
+	/** hook a new callback to be run before activation */
+	public registerPreActivate(callback: () => void): void {
+		this.preActivateCallbacks.push(callback);
 	}
 
 	/** soft-failing deactivator for the form */
@@ -137,12 +156,22 @@ export class ContactFormController {
 
 	/** execute post-deactivation callbacks */
 	private doPostDeactivate(): void {
-		// @TODO: implement method
+		this.postDeactivateCallbacks.execute();
 	}
 
 	/** execute pre-deactivation callbacks */
 	private doPreDeactivate(): void {
-		// @TODO: implement method
+		this.preDeactivateCallbacks.execute();
+	}
+
+	/** hook a new callback to be run after deactivation */
+	public registerPostDeactivate(callback: () => void): void {
+		this.postDeactivateCallbacks.push(callback);
+	}
+
+	/** hook a new callback to be run before deactivation */
+	public registerPreDeactivate(callback: () => void): void {
+		this.preDeactivateCallbacks.push(callback);
 	}
 
 	/** apply intended behavior to the element */
