@@ -133,13 +133,11 @@ export class ContactFormController {
 
 	/** create controllers for newly appended form fields */
 	private createFieldControllers(): void {
-		this.contactForm
-			.children('.contact-form__field')
-			.toArray()
-			.forEach(field => {
-				let controller = new FormFieldController($(field));
-				controller.initialize();
-			});
+		function initialize(field: HTMLElement): void {
+			new FormFieldController($(field)).initialize();
+		}
+
+		this.fieldsUniqueToActive.toArray().forEach(initialize);
 	}
 
 	/** execute post-activation callbacks */
