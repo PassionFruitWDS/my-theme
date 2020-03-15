@@ -1,9 +1,10 @@
 import 'jquery';
 
 /** implements nav-bar behavior */
-export class NavController {
+export default class NavController {
+
 	/** css class for 'active' objects */
-	private static activeStateClass: string = 'is-active';
+	private static activeStateClass = 'is-active';
 
 	constructor(
 		/** nav menu element */
@@ -22,4 +23,5 @@ export class NavController {
 		this.hamburger.toggleClass(NavController.activeStateClass);
 		this.nav.toggleClass(NavController.activeStateClass);
 	}
+
 }

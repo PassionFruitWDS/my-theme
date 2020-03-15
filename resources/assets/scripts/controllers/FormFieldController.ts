@@ -1,9 +1,11 @@
 import 'jquery';
 
 /** implements form field behavior */
-export class FormFieldController {
+export default class FormFieldController {
+
 	/** css class indicating the form field is in the 'active' state */
-	private static activeStateClass: string = 'form-field--active-state';
+	private static activeStateClass = 'form-field--active-state';
+
 	/** cache for the form field's input element */
 	private _input: JQuery<HTMLElement> | undefined;
 
@@ -73,4 +75,5 @@ export class FormFieldController {
 	public initialize(): void {
 		this.input.on('input', this.resolveState.bind(this));
 	}
+
 }

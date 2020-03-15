@@ -1,180 +1,128 @@
 import 'jquery';
-import { FormFieldController } from './FormFieldController';
-import { Callbacks } from '../util/Callbacks';
+import FormFieldController from './FormFieldController';
+import Callbacks from '../util/Callbacks';
+import { ContactForm, ContactFormState } from './ContactForm';
+import ControllerBase from './ControllerBase';
 
-/** implements contact form behavior */
-export class ContactFormController {
-	/** css class indicating the form is in the 'active' state */
-	private static activeStateClass: string = 'contact-form--is-active';
-	/** cache for the form's main input field */
-	private _mainInput: JQuery<HTMLElement> | undefined;
-	/** callbacks registered to the post-activation hook */
-	private postActivateCallbacks: Callbacks = new Callbacks();
-	/** callbacks registered to the pre-activation hook */
-	private preActivateCallbacks: Callbacks = new Callbacks();
-	/** callbacks registered to the post-deactivation hook */
-	private postDeactivateCallbacks: Callbacks = new Callbacks();
-	/** callbacks registered to the pre-deactivation hook */
-	private preDeactivateCallbacks: Callbacks = new Callbacks();
+type T = () => void;
 
-	constructor(private readonly contactForm: JQuery<HTMLElement>) {}
+/** Implements contact form behavior. */
+export default class ContactFormController extends ControllerBase<ContactForm> {
 
-	/** the form's main input field */
-	private get mainInput(): JQuery<HTMLElement> {
-		if (!this._mainInput) {
-			this._mainInput = this.contactForm.find(
-				'.contact-form__main-wrapper input',
-			);
+	/** Callbacks registered to the post-activation hook. */
+	protected postActivateCallbacks: Callbacks<T> = new Callbacks<T>();
+
+	/** Callbacks registered to the pre-activation hook. */
+	protected preActivateCallbacks: Callbacks<T> = new Callbacks<T>();
+
+	/** Callbacks registered to the post-deactivation hook. */
+	protected postDeactivateCallbacks: Callbacks<T> = new Callbacks<T>();
+
+	/** Callbacks registered to the pre-deactivation hook. */
+	protected preDeactivateCallbacks: Callbacks<T> = new Callbacks<T>();
+
+	/** Cache of the cross-linked form field controller. */
+	private _formFieldCtr: FormFieldController | undefined;
+
+	/** Cross-linked form field controller. */
+	protected get formFieldCtr(): FormFieldController {
+		if (!this._formFieldCtr) {
+			throw Error('Cannot access formFieldCtr before initialization.');
 		}
 
-		return this._mainInput;
+		return this._formFieldCtr;
 	}
 
-	/** the form's input elements */
-	private get inputs(): HTMLElement[] {
-		const inputs = this.contactForm.find('input:not(.button)').toArray();
-
-		return inputs;
-	}
-
-	/** resolves the form's 'active'/'inactive' state */
-	private isActive(): boolean {
-		const status = this.contactForm.hasClass(
-			ContactFormController.activeStateClass,
-		);
-
-		return status;
-	}
-
-	/** resolves the presence of user input in the form's fields */
-	private hasAnyInput(): boolean {
-		function hasInput(input: HTMLElement): boolean {
-			const status = !!$(input).val();
-
-			return status;
-		}
-
-		const status = this.inputs.some(hasInput);
-
-		return status;
-	}
-
-	/** soft-failing activator for the form */
-	private tryAndActivate(): boolean {
-		let status = false;
-
-		if (!this.isActive()) {
+	/** Soft-failing activator for the form. */
+	protected tryAndActivate(): void {
+		if (!this.current.isActive) {
 			this.doActivate();
-			status = true;
 		}
-
-		return status;
 	}
 
-	/** execute 'active' state entrance behavior */
-	private doActivate(): void {
-		// execute pre-activation hooks
+	/** Execute 'active' state entrance behavior. */
+	protected doActivate(): void {
+		// Execute pre-activation hooks.
 		this.doPreActivate();
 
+		this.markActive();
 		this.lockVerticalMargins();
 		this.expandForm();
 		this.createFieldControllers();
 		this.enableSubmitButton();
-		this.markActive();
 
-		// execute post-activation hooks
+		// Execute post-activation hooks.
 		this.doPostActivate();
 	}
 
-	/** indicates the form is active by applying the appropriate css class */
-	private markActive(): void {
-		this.contactForm.addClass(ContactFormController.activeStateClass);
+	/** Indicate the form is active by applying the appropriate css class. */
+	protected markActive(): void {
+		this.current.contactForm.addClass(ContactForm.activeStateClass);
+		this.current.state = ContactFormState.ACTIVE;
 	}
 
-	/** enables the forms submission button */
-	private enableSubmitButton(): void {
-		this.submitButton.removeAttr('disabled');
+	/** Enable the form's submission button. */
+	protected enableSubmitButton(): void {
+		this.current.submitButton.removeAttr('disabled');
 	}
 
-	/** the submission button of the form */
-	private get submitButton(): JQuery<HTMLElement> {
-		return this.contactForm.find('.button--submit');
+	/** Expand the form to it's 'active' state using template content. */
+	protected expandForm(): void {
+		this.current.contactForm.append(this.current.template.html());
 	}
 
-	/** expand the form to it's 'active' state using template content */
-	private expandForm(): void {
-		this.contactForm.append(this.template.html());
+	/** Lock the top/bottom margins to their current value. */
+	protected lockVerticalMargins(): void {
+		this.current.contactForm.css('margin', `${this.current.marginTop} 0`);
 	}
 
-	/** the template containing the expanded/'active' form's fields */
-	private get template(): JQuery<HTMLElement> {
-		return $(`#${this.templateId}`);
-	}
-
-	/** the html id of the form's template */
-	private get templateId(): string {
-		return `${this.id}__remainder`;
-	}
-
-	/** the html id of the form */
-	private get id(): string {
-		return this.contactForm.attr('id');
-	}
-
-	/** lock the top/bottom margins to their current value */
-	private lockVerticalMargins(): void {
-		this.contactForm.css('margin', `${this.marginTop} 0`);
-	}
-
-	/** current top margin size */
-	private get marginTop(): string {
-		return this.contactForm.css('margin-top');
-	}
-
-	/** create controllers for newly appended form fields */
-	private createFieldControllers(): void {
+	/** Create controllers for newly appended form fields. */
+	protected createFieldControllers(): void {
 		function initialize(field: HTMLElement): void {
 			new FormFieldController($(field)).initialize();
 		}
 
-		this.fieldsUniqueToActive.toArray().forEach(initialize);
+		this.current.fieldsUniqueToActive.toArray().forEach(initialize);
 	}
 
-	/** execute post-activation callbacks */
-	private doPostActivate(): void {
+	/** Execute post-activation callbacks. */
+	protected doPostActivate(): void {
 		this.postActivateCallbacks.execute();
 	}
 
-	/** execute pre-activation callbacks */
-	private doPreActivate(): void {
+	/** Execute pre-activation callbacks. */
+	protected doPreActivate(): void {
 		this.preActivateCallbacks.execute();
 	}
 
-	/** hook a new callback to be run after activation */
-	public registerPostActivate(callback: () => void): void {
+	/**
+	 * Hook a new callback to be run after activation.
+	 *
+	 * @param callback Callback function to be hooked.
+	 */
+	public registerPostActivate(callback: T): void {
 		this.postActivateCallbacks.push(callback);
 	}
 
-	/** hook a new callback to be run before activation */
-	public registerPreActivate(callback: () => void): void {
+	/**
+	 * Hook a new callback to be run before activation.
+	 *
+	 * @param callback Callback function to be hooked.
+	 */
+	public registerPreActivate(callback: T): void {
 		this.preActivateCallbacks.push(callback);
 	}
 
-	/** soft-failing deactivator for the form */
-	private tryAndDeactivate(): boolean {
-		let status = false;
-		if (this.isActive() && !this.hasAnyInput()) {
+	/** Soft-failing deactivator for the form. */
+	protected tryAndDeactivate(): void {
+		if (this.current.isActive && !this.current.hasAnyInput) {
 			this.doDeactivate();
-
-			status = true;
 		}
-
-		return status;
 	}
 
-	/** execute 'inactive' state entrance behavior */
-	private doDeactivate(): void {
-		// execute pre-deactivation hooks
+	/** Execute 'inactive' state entrance behavior. */
+	protected doDeactivate(): void {
+		// Execute pre-deactivation hooks.
 		this.doPreDeactivate();
 
 		this.shrinkForm();
@@ -182,68 +130,87 @@ export class ContactFormController {
 		this.disableSubmitButton();
 		this.markInactive();
 
-		// execute post-deactivation hooks
+		// Execute post-deactivation hooks.
 		this.doPostDeactivate();
 	}
 
-	/** indicates the form is inactive by removing the appropriate css class */
-	private markInactive(): void {
-		this.contactForm.removeClass(ContactFormController.activeStateClass);
+	/** Indicate the form is inactive by removing the appropriate css class. */
+	protected markInactive(): void {
+		this.current.contactForm.removeClass(ContactForm.activeStateClass);
+		this.current.state = ContactFormState.INACTIVE;
 	}
 
-	/** disable the form's submit button */
-	private disableSubmitButton(): void {
-		this.submitButton.attr('disabled', '');
+	/** Disable the form's submit button. */
+	protected disableSubmitButton(): void {
+		this.current.submitButton.attr('disabled', '');
 	}
 
-	/** enable responsive top/bottom margin resizing */
-	private unlockVerticalMargins(): void {
-		this.contactForm.css('margin', `auto 0`);
+	/** Enable responsive top/bottom margin resizing. */
+	protected unlockVerticalMargins(): void {
+		this.current.contactForm.css('margin', 'auto 0');
 	}
 
-	/** shrink the form by removing it's 'expanded'/'active' state fields */
-	private shrinkForm(): void {
-		this.fieldsUniqueToActive.remove();
+	/** Shrink the form by removing it's 'expanded'/'active' state fields. */
+	protected shrinkForm(): void {
+		this.current.fieldsUniqueToActive.remove();
 	}
 
-	/** fields that are only present when the form is active */
-	private get fieldsUniqueToActive(): JQuery<HTMLElement> | undefined {
-		if (this.isActive) {
-			return this.contactForm.children('.contact-form__field');
-		}
-
-		return undefined;
-	}
-
-	/** execute post-deactivation callbacks */
-	private doPostDeactivate(): void {
+	/** Execute post-deactivation callbacks. */
+	protected doPostDeactivate(): void {
 		this.postDeactivateCallbacks.execute();
 	}
 
-	/** execute pre-deactivation callbacks */
-	private doPreDeactivate(): void {
+	/** Execute pre-deactivation callbacks. */
+	protected doPreDeactivate(): void {
 		this.preDeactivateCallbacks.execute();
 	}
 
-	/** hook a new callback to be run after deactivation */
-	public registerPostDeactivate(callback: () => void): void {
+	/**
+	 * Hook a new callback to be run after deactivation.
+	 *
+	 * @param callback Callback function to attach to the hook.
+	 */
+	public registerPostDeactivate(callback: T): void {
 		this.postDeactivateCallbacks.push(callback);
 	}
 
-	/** hook a new callback to be run before deactivation */
-	public registerPreDeactivate(callback: () => void): void {
+	/**
+	 * Hook a new callback to be run before deactivation.
+	 *
+	 * @param callback Callback function to attach to the hook.
+	 */
+	public registerPreDeactivate(callback: T): void {
 		this.preDeactivateCallbacks.push(callback);
 	}
 
-	/** apply intended behavior to the element */
-	public initialize(): void {
-		this.mainInput.on('input', this.resolveState.bind(this));
+	/**
+	 * Initialize the controller by cross-linking dependencies.
+	 *
+	 * @param formFieldController Controller of the app's FormField elements.
+	 */
+	protected onInitialize(formFieldController: FormFieldController): void {
+		this._formFieldCtr = formFieldController;
 	}
 
-	/** determines and, if appropriate, changes the form's current state */
-	private resolveState(): void {
-		if (!this.tryAndActivate()) {
+	/** Implement contact form behavior. */
+	protected onRegister(): void {
+		const handleInput = this.current.notify(this.resolveState.bind(this));
+		this.current.mainInput.on('input', handleInput);
+	}
+
+	/**
+	 * Determines and, if appropriate, changes the key referenced form's current state.
+	 *
+	 * @param key Unique symbol identifying the form whose state is to be resolved.
+	 */
+	protected resolveState(key: symbol): void {
+		this.loadByKey(key);
+
+		if (this.current.isActive) {
 			this.tryAndDeactivate();
+		} else {
+			this.tryAndActivate();
 		}
 	}
+
 }

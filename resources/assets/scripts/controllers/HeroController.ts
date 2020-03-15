@@ -1,8 +1,9 @@
 import 'jquery';
-import { ContactFormController } from './ContactFormController';
+import ContactFormController from './ContactFormController';
 
 /** implements hero section behavior */
-export class HeroController {
+export default class HeroController {
+
 	constructor(
 		/** a hero section */
 		private hero: JQuery<HTMLElement>,
@@ -43,9 +44,9 @@ export class HeroController {
 	/** height of the hero grid's shim row */
 	private get shimRowHeight(): string {
 		const rowHeights = this.hero.css('grid-template-rows').split(' ');
-		console.log(rowHeights);
 		const shimRowIndex = 2;
 		const shimHeight = rowHeights[shimRowIndex];
 		return shimHeight;
 	}
+
 }
