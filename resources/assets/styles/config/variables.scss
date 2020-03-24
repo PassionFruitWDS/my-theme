@@ -49,6 +49,11 @@ $breakpoints: (
 $hamburger-padding-x: 0;
 $hamburger-padding-y: 0;
 
+@font-face {
+	font-family: "Bronova";
+	src: url("../fonts/Bronova Regular.woff");
+}
+
 /**
  * Native font stack (borrowed from bootstrap)
  */

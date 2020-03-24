@@ -55,7 +55,7 @@ export default class HeroController {
 	/** height of the hero grid's shim row */
 	private get shimRowHeight(): string {
 		const rowHeights = this.hero.css('grid-template-rows').split(' ');
-		const shimRowIndex = 2;
+		const shimRowIndex = 1;
 		const shimHeight = rowHeights[shimRowIndex];
 		return shimHeight;
 	}
