@@ -23,6 +23,15 @@
 	}
 }
 
+@keyframes slide-in-down {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
 @keyframes fade-in-right {
 	from {
 		transform: translateX(-150%);
@@ -45,6 +54,17 @@
 	}
 }
 
+@keyframes fade-in-down {
+	from {
+		transform: translateY(-150%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
 /**
  * @mixin slide-in
  *
@@ -61,6 +81,8 @@
 		animation-name: slide-in-right;
 	} @else if left == $direction {
 		animation-name: slide-in-left;
+	} @else if down == $direction {
+		animation-name: slide-in-down;
 	} @else { // default
 		@error "Unknown direction #{$direction}";
 	}
@@ -88,6 +110,8 @@
 		animation-name: fade-in-right;
 	} @else if left == $direction {
 		animation-name: fade-in-left;
+	} @else if down == $direction {
+		animation-name: fade-in-down;
 	} @else { // default
 		@error "Unknown direction #{$direction}";
 	}
@@ -106,15 +130,15 @@
 	// display
 	display: grid;
 	grid-template: "brand" min-content
-				   "shim" minmax(100px, auto)
+				   "shim" minmax(80px, auto)
 				   "feature" min-content
-				   "form" minmax(20vh, 40vh)
+				   "form" minmax(45vh, min-content)
 				   / 100%;
 
 	//-- override global decorator in this context
 	%surface {
 		// surface
-		background-color: rgba(var(--dark-primary-rgb), 0.75);
+		background-color: rgba(var(--dark-primary-rgb), 0.95);
 		box-shadow: 0 0 20px 0px black;
 	}
 
@@ -125,31 +149,25 @@
 
 		// display
 		display: grid;
-		grid: ". brand . ." min-content
-			  / 50px minmax(300px, 30%) 50px minmax(5%, auto);
+		grid: ". brand ." min-content
+			  / 1fr minmax(300px, 30%) 1fr;
 
 		.hero__brand-surface {
-			// position
-			grid-row: 1;
-			grid-column: 1 / span 3;
-			border-top-right-radius: 0;
+			grid-area: brand;
+			@extend %surface--top;
+			@include slide-in(down);
 
-			// surface
-			@extend %surface--left;
-
-			// animation
-			@include slide-in(right);
 		}
 
 		.hero__brand-image {
 			// position
 			grid-area: brand;
 			align-content: center;
-			width: 100%;
-			padding: 5% 0;
+			width: 80%;
+			padding: 5% 10%;
 
 			// animation
-			@include fade-in(right);
+			@include fade-in(down);
 		}
 	}
 
@@ -161,7 +179,7 @@
 		// display
 		display: grid;
 		grid: ". feature . ." min-content
-			  / minmax(5%, 1fr) minmax(auto, 700px) minmax(5%, 40px) minmax(5%, 2fr);
+			  / minmax(8%, 1fr) minmax(auto, 700px) minmax(4%, 0.5fr) minmax(4%, 0.5fr);
 
 		// content
 		color: white;

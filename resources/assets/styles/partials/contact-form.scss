@@ -134,6 +134,13 @@
 		// font
 		font-size: 16px;
 
+		border-color: var(--light-primary-color);
+		border-width: 2px;
+		border-style: outset;
+		&:hover, &:focus {
+			box-shadow: 0 0 20px 0 white;
+		}
+
 		&.contact-form__field--wide {
 			// position
 			grid-column: 1 / span 2;
@@ -142,7 +149,7 @@
 
 		&.contact-form__field--animated {
 			// animation
-			@include fade(down, var(--dark-primary-rgb), 0.75, 1s, 0.25s);
+			@include fade(down, var(--dark-primary-rgb), 0.95, 1s, 0.25s);
 
 			*:not(label) {
 				// animation
@@ -168,6 +175,8 @@
 			// surface
 			border-color: rgba(var(--light-primary-rgb), 0.7);
 			border-radius: 20px;
+			border-width: 2px;
+			border-style: outset;
 
 			&:hover {
 				// surface

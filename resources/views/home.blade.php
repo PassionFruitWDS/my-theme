@@ -4,4 +4,6 @@
 
 @section('content')
 	@include('partials.hero')
+	<div class="temporary-surface">
+	</div>
 @endsection
