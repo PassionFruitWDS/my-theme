@@ -1,16 +1,14 @@
-type GenFunction = (...args: any[]) => any;
-type SymbolFunction<T extends GenFunction>
-	= (sym: symbol, ...args: Parameters<T>) => ReturnType<T>;
+import { FunctionBase, SymbolFunction } from '../misc/TypeDefs';
 
 /** Base class for controllable objects within the current framework. */
 export default abstract class Controllable {
 
 	/** Store of the object's unique identifying symbol. */
-	private _symbol: symbol;
+	private _id: symbol;
 
 	/** Object's unique identifying symbol. */
-	public get symbol(): symbol {
-		return this._symbol;
+	public get id(): symbol {
+		return this._id;
 	}
 
 	/**
@@ -20,11 +18,11 @@ export default abstract class Controllable {
 	 * @param args Additional arguments for the callback.
 	 * @returns Output of the callback.
 	 */
-	private passThroughSymbol<T extends GenFunction>(
+	private passThroughSymbol<T extends FunctionBase>(
 		func: SymbolFunction<T>,
 		...args: Parameters<T>
 	): ReturnType<T> {
-		return func(this.symbol, ...args);
+		return func(this.id, ...args);
 	}
 
 	/**
@@ -33,17 +31,17 @@ export default abstract class Controllable {
 	 * @param func Callback that accepts this object's symbol as its first argument.
 	 * @return Wrapped callback reference.
 	 */
-	public notify<T extends GenFunction>(func: SymbolFunction<T>): T {
+	public notify<T extends FunctionBase>(func: SymbolFunction<T>): T {
 		const boundPassThrough = this.passThroughSymbol.bind(this);
-		function execute(...args: Parameters<T>): ReturnType<T> {
-			return boundPassThrough(func, ...args);
-		}
+		const wrapper = (
+			...args: Parameters<T>
+		): ReturnType<T> => boundPassThrough(func, ...args);
 
-		return (execute as T);
+		return (wrapper as T);
 	}
 
-	constructor() {
-		this._symbol = Symbol();
+	protected constructor(idStr = '') {
+		this._id = Symbol(idStr);
 	}
 
 }

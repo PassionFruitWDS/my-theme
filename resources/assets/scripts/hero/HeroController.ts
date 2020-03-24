@@ -1,5 +1,6 @@
 import 'jquery';
-import ContactFormController from './ContactFormController';
+import ContactFormController from '../contact-form/ContactFormController';
+import ContactForm from '../contact-form/ContactForm';
 
 /** implements hero section behavior */
 export default class HeroController {
@@ -15,9 +16,19 @@ export default class HeroController {
 	 * @param contactFormCtr controller of the contact form contained within
 	 * the hero section
 	 */
-	public initialize(contactFormCtr: ContactFormController): void {
-		contactFormCtr.registerPreActivate(this.lockGrid.bind(this));
-		contactFormCtr.registerPostDeactivate(this.unlockGrid.bind(this));
+	public initialize(): void {
+		ContactFormController.instance.register(new ContactForm(this.hero.find('.contact-form')));
+		const statefulContactForm = ContactFormController.instance.current;
+		statefulContactForm
+			.statesData
+			.idle
+			.exitHook
+			.set(this.lockGrid.bind(this));
+		statefulContactForm
+			.statesData
+			.idle
+			.enterHook
+			.set(this.unlockGrid.bind(this));
 	}
 
 	/** allows the hero to responsively resize by removing the pseudo-element shim */

@@ -35,8 +35,9 @@ module.exports = {
 		'import/ignore': ['node_modules', '\\.(coffee|scss|css|less|hbs|svg|json)$']
 	},
 	rules: {
-		'@typescript-eslint/indent': ['error', 'tab'],
+		'@typescript-eslint/indent': ['error', 'tab', { 'ignoredNodes': ['TSTypeParameterInstantiation', 'TSTypeAliasDeclaration *'] }],
 		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-unused-vars': ['error', {argsIgnorePattern: '^_.*'}],
 		'comma-dangle': [
 			'error',
 			{
@@ -47,6 +48,7 @@ module.exports = {
 				functions: 'ignore'
 			}
 		],
+		'max-classes-per-file': 'off',
 		'max-len': [
 			'error',
 			{
@@ -59,6 +61,7 @@ module.exports = {
 			}
 		],
 		'no-tabs': ['error', {'allowIndentationTabs': true}],
+		'no-spaced-func': 'off',
 		'no-underscore-dangle': ['error', {'allowAfterThis': true}],
 		'padded-blocks': ['error', {'classes': 'always'}],
 		'symbol-description': 'off'

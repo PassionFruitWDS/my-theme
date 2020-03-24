@@ -2,24 +2,16 @@
  * External Dependencies
  */
 import 'jquery';
-import NavController from './controllers/NavController';
-import FormFieldController from './controllers/FormFieldController';
-import ContactFormController from './controllers/ContactFormController';
-import HeroController from './controllers/HeroController';
-import { ContactForm } from './controllers/ContactForm';
+import NavController from './nav/NavController';
+import FormFieldController from './form-field/FormFieldController';
+import ContactFormController from './contact-form/ContactFormController';
+import HeroController from './hero/HeroController';
 
 $(document).ready(() => {
 	new NavController($('.nav'), $('.hamburger')).initialize();
 
-	$('.form-field')
-		.toArray()
-		.forEach((element) => {
-			new FormFieldController($(element)).initialize();
-		});
-
-	const contactFormCtr = new ContactFormController();
+	FormFieldController.instance.initialize();
+	ContactFormController.instance.initialize();
 	const heroCtr = new HeroController($('.hero'));
-	contactFormCtr.initialize(heroCtr);
-	contactFormCtr.register(new ContactForm($('.contact-form')));
-	heroCtr.initialize(contactFormCtr);
+	heroCtr.initialize();
 });
