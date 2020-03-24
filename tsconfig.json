@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"forceConsistentCasingInFileNames": true,
+		"lib": ["ES2019", "DOM"],
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"pretty": true,
+		"sourceMap": true,
+		"target": "ES2019"
+	},
+	"files": [
+		"./resources/assets/scripts/app.ts"
+	],
+	"include": [
+		"./resources/assets/scripts/**/*"
+	],
+	"exclude": [
+		"./resources/assets/scripts/customizer.js",
+		"./resources/assets/scripts/editor.js"
+	]
+}
