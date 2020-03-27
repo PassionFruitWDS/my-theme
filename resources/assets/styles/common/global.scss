@@ -3,12 +3,28 @@
  */
 
 * {
-	font-family: $font-family-sans-serif;
+	font-family: "Bronova", $font-family-sans-serif;
 	transition: all 0.2s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: "Bronova";
+	font-family: "Bronova Bold", $font-family-sans-serif;
+}
+
+h1 {
+	font-size: 56px;
+
+	@include media("<medium") {
+		font-size: 38px;
+	}
+}
+
+body {
+	font-size: 22px;
+
+	@include media("<medium") {
+		font-size: 16px;
+	}
 }
 
 ul {

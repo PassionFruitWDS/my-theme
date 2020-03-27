@@ -21,7 +21,7 @@ $theme-colors: (
 	primary-accent: var(--primary-accent-color),
 	primary-accent-alternate: var(--primary-accent-alternate-color),
 	secondary-accent: var(--secondary-accent-color),
-	secondary-accent-alternate: var(--secondary-accent-color)
+	secondary-accent-alternate: var(--secondary-accent-alternate-color)
 );
 
 /**
@@ -36,6 +36,7 @@ $theme-colors: (
  */
 
 $breakpoints: (
+	x-small: 400px,
 	small: 576px,
 	medium: 768px,
 	large: 992px,
@@ -52,6 +53,11 @@ $hamburger-padding-y: 0;
 @font-face {
 	font-family: "Bronova";
 	src: url("../fonts/Bronova Regular.woff");
+}
+
+@font-face {
+	font-family: "Bronova Bold";
+	src: url("../fonts/Bronova Bold.woff");
 }
 
 /**
