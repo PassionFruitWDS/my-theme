@@ -65,11 +65,20 @@
 	}
 }
 
+@keyframes fade-in-place {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 /**
  * @mixin slide-in
  *
  * @params:
- *   $direction: [ right | left]
+ *   $direction: [ right | left | down ]
  *     The direction of the animation's line of action
  *
  * @description:
@@ -97,14 +106,16 @@
  * @mixin fade-in
  *
  * @params:
- *   $direction: [ right | left]
+ *   $direction: [ right | left | down | place ]
  *     The direction of the animation's line of action
  *
  * @description:
  *   Translates the element by its size in the direction specified, while
  *   also transitioning the element from 0 to 1 opacity.
  */
-@mixin fade-in($direction) {
+@mixin fade-in($direction, $delay: 0.7s, $duration: 2s) {
+
+	opacity: 0;
 	// handle direction
 	@if right == $direction {
 		animation-name: fade-in-right;
@@ -112,13 +123,15 @@
 		animation-name: fade-in-left;
 	} @else if down == $direction {
 		animation-name: fade-in-down;
+	} @else if place == $direction {
+		animation-name: fade-in-place;
 	} @else { // default
 		@error "Unknown direction #{$direction}";
 	}
 
 	// animation
-	animation-delay: 0.25s;
-	animation-duration: 2s;
+	animation-delay: $delay;
+	animation-duration: $duration;
 	animation-fill-mode: forwards;
 	animation-timing-function: ease-out;
 }
@@ -129,10 +142,11 @@
 .hero {
 	// display
 	display: grid;
-	grid-template: "brand" min-content
-				   "shim" minmax(80px, auto)
+	grid-template: "." minmax(20px, 0.7fr)
+				   "brand" min-content
+				   "shim" minmax(20px, 1fr)
 				   "feature" min-content
-				   "form" minmax(45vh, min-content)
+				   "form" minmax(10vh, min-content)
 				   / 100%;
 
 	//-- override global decorator in this context
@@ -150,24 +164,26 @@
 		// display
 		display: grid;
 		grid: ". brand ." min-content
-			  / 1fr minmax(300px, 30%) 1fr;
+			  / minmax(20px, 1fr) minmax(auto, 700px) minmax(20px, 1fr);
 
 		.hero__brand-surface {
 			grid-area: brand;
-			@extend %surface--top;
-			@include slide-in(down);
-
+			background-color: rgba(white, 0.55);
+			box-shadow: 0 0 10px white;
+			border-radius: 20px;
+			@include fade-in(place);
 		}
 
 		.hero__brand-image {
 			// position
 			grid-area: brand;
 			align-content: center;
-			width: 80%;
-			padding: 5% 10%;
+			justify-self: center;
+			width: 92%;
+			padding: 3% 4%;
 
 			// animation
-			@include fade-in(down);
+			@include fade-in(place);
 		}
 	}
 
@@ -178,38 +194,48 @@
 
 		// display
 		display: grid;
-		grid: ". feature . ." min-content
-			  / minmax(8%, 1fr) minmax(auto, 700px) minmax(4%, 0.5fr) minmax(4%, 0.5fr);
+		grid: ". feature ." min-content
+			  / minmax(0, 1fr) minmax(min-content, 90%) minmax(0, 1fr);
 
 		// content
 		color: white;
 
 		.hero__feature-surface {
 			// position
-			grid-column: 1 / span 3;
-			grid-row: 1;
+			grid-area: feature;
+			justify-self: center;
+			max-width: 800px;
+			width: 100%;
+			box-sizing: border-box;
+
+			border-color: var(--light-primary-color);
+			border-width: 2px;
+			border-style: outset;
 
 			// surface
-			@extend %surface--left;
+			@extend %surface;
 
-			// animation
-			@include slide-in(right);
+			@include fade-in(place);
 		}
 
 		.hero__feature {
 			// position
-			z-index: 1;
 			grid-area: feature;
+			padding: 0 20px;
+			max-width: 800px;
+			width: 100%;
+			justify-self: center;
+			box-sizing: border-box;
 
 			// animation
-			@include fade-in(right);
+			@include fade-in(place);
 
-			h2 {
+			h1 {
 				// position
 				margin: 0.5em 0;
+				text-align: center;
 
 				// content
-				font-size: 56px;
 				text-shadow: 1px 1px 4px black;
 			}
 
@@ -218,23 +244,12 @@
 				margin: 1em 0;
 
 				// content
-				font-size: 22px;
+				text-align: justify;
 
 				em {
-					// font-style: normal;
-					// text-decoration: underline rgba(255, 255, 255, 0.4);
-				}
-			}
-
-			// media query
-			@include media("<medium") {
-				h2 {
-					// text
-					font-size: 38px;
-				}
-				p {
-					// text
-					font-size: 16px;
+					font-style: normal;
+					font-weight: bold;
+					color: var(--light-secondary-color);
 				}
 			}
 		}
@@ -251,16 +266,45 @@
 		// surface
 		background-size: cover;
 		background-position: center;
+
+		@include fade-in(place, 0s, 1.5s);
 	}
 
 	.contact-form {
 		// position
+		z-index: 1;
 		grid-area: form;
 		justify-self: center;
 		align-content: start;
-		width: 60%;
-		max-width: 600px;
-		max-height: 100px;
-		margin: auto 0;
+
+		@include fade-in(place);
+	}
+
+	@include media(">small") {
+		.contact-form {
+			width: 60%;
+			max-width: 600px;
+			max-height: 100px;
+			margin: 12vh 0;
+		}
+	}
+
+	@include media("<=small") {
+		.hero__feature-grid {
+			grid: ". feature ." min-content
+				  / minmax(0, 1fr) minmax(min-content, 100%) minmax(0, 1fr);
+
+			.hero__feature-surface {
+				border-radius: 0;
+				border-left-style: none;
+				border-right-style: none;
+			}
+		}
+
+		&::after {
+			grid-area: form;
+			content: "";
+			height: 26vh;
+		}
 	}
 }

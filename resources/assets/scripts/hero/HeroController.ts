@@ -5,6 +5,8 @@ import ContactForm from '../contact-form/ContactForm';
 /** implements hero section behavior */
 export default class HeroController {
 
+	private form: ContactForm;
+
 	constructor(
 		/** a hero section */
 		private hero: JQuery<HTMLElement>,
@@ -17,18 +19,35 @@ export default class HeroController {
 	 * the hero section
 	 */
 	public initialize(): void {
-		ContactFormController.instance.register(new ContactForm(this.hero.find('.contact-form')));
-		const statefulContactForm = ContactFormController.instance.current;
-		statefulContactForm
+		this.form = new ContactForm(this.hero.find('.contact-form'));
+		ContactFormController.instance.register(this.form);
+		const idleContactFormData = ContactFormController
+			.instance
+			.current
 			.statesData
-			.idle
-			.exitHook
-			.set(this.lockGrid.bind(this));
-		statefulContactForm
-			.statesData
-			.idle
-			.enterHook
-			.set(this.unlockGrid.bind(this));
+			.idle;
+		idleContactFormData.exitHook.set(this.lockGrid.bind(this));
+		idleContactFormData.enterHook.set(this.unlockGrid.bind(this));
+	}
+
+	private reactToIdleFormExit(): void {
+		this.lockFormMargins();
+		this.lockGrid();
+	}
+
+	private reactToIdleFormEnter(): void {
+		this.unlockGrid();
+		this.unlockFormMargins();
+	}
+
+	private lockFormMargins(): void {
+		const { form } = this;
+
+		form.rawContactForm.css('margin', `${form.marginTop} 0`);
+	}
+
+	private unlockFormMargins(): void {
+		this.form.rawContactForm.css('margin', '12vh 0');
 	}
 
 	/** allows the hero to responsively resize by removing the pseudo-element shim */
@@ -55,7 +74,7 @@ export default class HeroController {
 	/** height of the hero grid's shim row */
 	private get shimRowHeight(): string {
 		const rowHeights = this.hero.css('grid-template-rows').split(' ');
-		const shimRowIndex = 1;
+		const shimRowIndex = 2;
 		const shimHeight = rowHeights[shimRowIndex];
 		return shimHeight;
 	}
