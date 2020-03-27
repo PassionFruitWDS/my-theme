@@ -83,6 +83,12 @@ export default class ContactForm extends Controllable {
 		return this.rawContactForm.css('margin-top');
 	}
 
+	private readonly _defaultMarginTop: string;
+
+	public get defaultMarginTop(): string {
+		return this._defaultMarginTop;
+	}
+
 	/**
 	 * PUBLIC METHODS
 	 */
@@ -92,6 +98,8 @@ export default class ContactForm extends Controllable {
 	 */
 	constructor(public readonly rawContactForm: JQuery<HTMLElement>) {
 		super(rawContactForm.attr('id'));
+
+		this._defaultMarginTop = this.marginTop;
 	}
 
 }

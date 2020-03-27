@@ -72,7 +72,6 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	protected doOnExit(target: StatefulContactForm): void {
 		this.load(target);
 		this.shrinkForm();
-		this.unlockVerticalMargins();
 		this.disableSubmitButton();
 		this.removeStyle();
 	}
@@ -85,7 +84,6 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	protected doOnEnter(target: StatefulContactForm): void {
 		this.load(target);
 		this.applyStyle();
-		this.lockVerticalMargins();
 		this.expandForm();
 		this.registerNewFormFields();
 		this.enableSubmitButton();
@@ -154,18 +152,6 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 
 		current.rawNotMainFields.remove();
 		current.statesData.active.subfieldIsActive = [];
-	}
-
-	/** Lock the top/bottom margins to their current value. */
-	protected lockVerticalMargins(): void {
-		const { current } = this;
-
-		current.rawContactForm.css('margin', `${current.marginTop} 0`);
-	}
-
-	/** Enable responsive top/bottom margin resizing. */
-	protected unlockVerticalMargins(): void {
-		this.current.rawContactForm.css('margin', 'auto 0');
 	}
 
 	/** Enable the form's submission button. */

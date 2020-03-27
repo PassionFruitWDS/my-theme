@@ -11,9 +11,9 @@
 	<div class="hero__feature-grid">
 		<div class="hero__feature-surface"></div>
 		<div class="hero__feature">
-			<h2>Your business, your passion...</h2>
+			<h1>Bring your passion for your business online</h1>
 			<p>
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				You deserve to have your business's digital identity reflect the heart and soul you bring to it. Part web development outlet, part digital marketing firm, <em>PassionFruit Web Development Studio</em> offers solutions for businesses and owners looking to bring their brand to the next level. To learn more about how PassionFruit can help you, <em>reach out now</em> to recieve a free consultation or continue reading below.
 			</p>
 		</div>
 	</div>
