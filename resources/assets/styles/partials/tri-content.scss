@@ -4,6 +4,7 @@
 	animation-duration: $duration;
 	animation-iteration-count: infinite;
 	animation-timing-function: ease-in-out;
+	transform: translateZ(0); // reduces CPU usage (possibly by offloading onto gpu)
 
 	@keyframes float {
 		0% { transform: translateY($height); }
@@ -21,18 +22,23 @@
 	.tri-content__ctr {
 
 		// Position
-		width: 100%;
 		padding: 30px 0;
 
 		// Display
 		display: grid;
-		grid-auto-flow: column;
+		grid: ". back prev curr next frwd ." min-content
+			/ 3fr min-content 1fr 1fr 1fr min-content 3fr;
 		align-items: center;
 		justify-content: center;
+		justify-items: center;
 
 		// Content
 		font-size: 32px;
 		color: var(--dark-secondary-color);
+
+		&::before {
+			content: "";
+		}
 
 		h2 {
 			position: relative;
