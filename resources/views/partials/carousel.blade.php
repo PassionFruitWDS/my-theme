@@ -1,5 +1,13 @@
 <?
-	$carousel_id = "carousel-1";
+	if (!function_exists("get_carousel_id")) {
+		function get_carousel_id() {
+			static $count = 0;
+			$count++;
+			return "carousel-" . strval($count);
+		}
+	}
+
+	$carousel_id = get_carousel_id();
 ?>
 
 <section id="{{$carousel_id}}" class="carousel">
