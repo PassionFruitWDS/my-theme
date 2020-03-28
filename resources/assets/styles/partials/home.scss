@@ -6,15 +6,16 @@
  * Style
  */
 .homepage-content {
-	.hero{
+	.hero {
 		// position
 		width: 100%;
 		min-height: 100vh;
 		max-height: auto;
 	}
-	.temporary-surface {
-		height: 500vh;
-		width: 100%;
+	.content {
 		background-color: white;
+	}
+	.tri-content {
+		margin-bottom: 20px;
 	}
 }

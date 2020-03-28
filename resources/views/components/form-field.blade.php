@@ -1,4 +1,9 @@
-<? $input_id = "${form_id}__${slug}"; ?>
+<?
+	$input_id = "${form_id}__${slug}";
+	if (isset($required)) {
+		array_push($class, 'form-field--required');
+	}
+?>
 
 <div class="{{ implode(' ', $class) }} form-field">
 	<label class="form-field__label"

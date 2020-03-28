@@ -54,7 +54,7 @@
 		'label_text' => 'Job Title',
 		'autocomplete' => 'organization-title'
 	])
-	<div class="contact-form__field contact-form__field--wide contact-form__field--animated form-field">
+	<div class="contact-form__field contact-form__field--wide contact-form__field--animated form-field--required form-field">
 		<label class="form-field__label"
 			for="contact-form-1__message">
 			Message

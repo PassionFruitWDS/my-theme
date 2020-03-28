@@ -1,0 +1,225 @@
+@mixin float($delay: 0s, $duration: 4s, $height: 6px) {
+	animation-name: float;
+	animation-delay: $delay;
+	animation-duration: $duration;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+	transform: translateZ(0); // reduces CPU usage (possibly by offloading onto gpu)
+
+	@keyframes float {
+		0% { transform: translateY($height); }
+		50% { transform: translateY(-$height); }
+		100% { transform: translateY($height); }
+	}
+}
+
+.carousel {
+	z-index: 1;
+	margin-top: 40px;
+	background-color: white;
+	box-shadow: 0 0 20px black;
+
+	.carousel__ctr {
+
+		// Position
+		padding: 30px 0;
+
+		// Display
+		display: grid;
+		grid: ". back prev curr next frwd ." min-content
+			/ 3fr min-content 1fr 1fr 1fr min-content 3fr;
+		align-items: center;
+		justify-content: center;
+		justify-items: center;
+
+		// Content
+		font-size: 32px;
+		color: var(--dark-secondary-color);
+
+		&::before {
+			content: "";
+		}
+
+		h2 {
+			position: relative;
+			top: 2px;
+			display: inline-flex;
+			margin: 0;
+
+			&::after,&::before {
+				content: "";
+				width: 3px;
+				height: 50px;
+				border-radius: 3px;
+				background-color: black;
+				margin: 0 10px;
+			}
+		}
+
+		.carousel__button {
+			border-style: none;
+			background-color: #00000000;
+			margin: 0 10px;
+
+			&:hover {
+				font-weight: bold;
+			}
+
+			&:focus {
+				outline: none;
+			}
+		}
+
+		.carousel__heading--big {
+			text-shadow: 0 1px 5px #444444;
+			transform: translateY(-3px);
+		}
+
+		.carousel__heading:not(.carousel__heading--big), .carousel__button {
+			&:hover {
+				text-shadow: 0 1px 5px #444444;
+				cursor: pointer;
+				transform: translateY(-3px);
+			}
+		}
+	}
+
+	.carousel__content-area {
+		// Position
+		width: 100%;
+		box-sizing: border-box;
+		padding-bottom: 60px;
+
+		// Display
+		display: grid;
+		grid: ". left . . right ." minmax(500px, min-content)
+			/ 20px 1fr minmax(20px, 80px) minmax(10px, 20px) 1fr 20px;
+
+		&::after {
+			grid-column: 4 / span 3;
+			grid-row: 1;
+			content: "";
+			background-image: linear-gradient(to left, var(--secondary-accent-color), var(--primary-color));
+			width: 100%;
+			height: 100%;
+			box-shadow: 0 0 10px 0 black;
+			border-radius: 10px 0 0 10px;
+		}
+		.carousel__content {
+			align-self: center;
+			text-align: justify;
+			max-width: 550px;
+		}
+
+		.carousel__content--left {
+			justify-self: right;
+			grid-area: left;
+		}
+
+		.carousel__content--right {
+			position: relative;
+			grid-area: right;
+			justify-self: center;
+
+			img {
+				width: 100%;
+			}
+
+			.pfwds-towers__background {
+				margin-top: 9%;
+				padding: 20px 0;
+			}
+
+			.pfwds-towers__icon {
+				position: absolute;
+				left: 0;
+				bottom: 30px;
+
+				&--one {
+					@include float();
+				}
+
+				&--two {
+					@include float(4s / 3);
+				}
+
+				&--three {
+					@include float(8s / 3);
+				}
+			}
+		}
+	}
+
+	@include media("<medium") {
+		.carousel__ctr {
+			font-size: 20px;
+
+			h2 {
+				&::before, &::after {
+					height: 34px;
+				}
+			}
+		}
+	}
+	@include media("<small") {
+		.carousel__ctr {
+			font-size: 18px;
+
+			h2 {
+				font-size: 20px;
+				top: 0;
+
+				&::before, &::after {
+					height: 22px;
+					width: 2px;
+					border-radius: 2px;
+				}
+			}
+		}
+
+		.carousel__content-area {
+			grid: "up" min-content
+				  "." 30px
+				  "down" min-content
+				  / 100%;
+			padding-bottom: 0;
+
+			.carousel__content {
+				margin: 0 30px;
+			}
+
+			.carousel__content--left {
+				grid-area: up;
+			}
+
+			&::after {
+				grid-area: down;
+				border-radius: 0;
+				box-shadow: none;
+			}
+
+			.carousel__content--right {
+				grid-area: down;
+			}
+		}
+	}
+
+	@include media("<=x-small") {
+		.carousel__ctr {
+			font-size: 16px;
+
+			h2 {
+				font-size: 16px;
+
+				&::before, &::after {
+					height: 17px;
+					margin: 0 4px;
+				}
+			}
+
+			.carousel__button {
+				margin: 0 4px;
+			}
+		}
+	}
+}
