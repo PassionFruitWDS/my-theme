@@ -6,7 +6,7 @@
 	<span class="carousel__ctr">
 		<button id="{{$carousel_id}}__back" class="carousel__button"><</button>
 		<span id="{{$carousel_id}}__prev" class="carousel__heading">Design</span>
-		<h2 id="{{$carousel_id}}__current" class="carousel__heading">Development</h2>
+		<h2 id="{{$carousel_id}}__current" class="carousel__heading carousel__heading--big">Development</h2>
 		<span id="{{$carousel_id}}__next" class="carousel__heading">Marketing</span>
 		<button id="{{$carousel_id}}__frwd" class="carousel__button">></button>
 	</span>

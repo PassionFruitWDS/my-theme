@@ -70,10 +70,16 @@
 			}
 		}
 
-		h2, span, .carousel__button {
+		.carousel__heading--big {
+			text-shadow: 0 1px 5px #444444;
+			transform: translateY(-3px);
+		}
+
+		.carousel__heading:not(.carousel__heading--big), .carousel__button {
 			&:hover {
 				text-shadow: 0 1px 5px #444444;
 				cursor: pointer;
+				transform: translateY(-3px);
 			}
 		}
 	}
