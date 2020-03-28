@@ -1,8 +1,9 @@
 import Controllable from '../util/controllers/Controllable';
 
-export class TriContent extends Controllable {
+export class Carousel extends Controllable {
 
-	protected images: Map<string, JQuery<HTMLElement>> = new Map<string, JQuery<HTMLElement>>();
+	protected images: Map<string, JQuery<HTMLElement>> =
+	new Map<string, JQuery<HTMLElement>>();
 
 	private _title: JQuery<HTMLElement>;
 
@@ -52,7 +53,7 @@ export class TriContent extends Controllable {
 		return this._htmlId;
 	}
 
-	protected getDataByIndex(index: number): TriContentData {
+	protected getDataByIndex(index: number): CarouselData {
 		const modIndex = index % this.data.length;
 		if (modIndex < 0) {
 			return this.data[modIndex + this.data.length];
@@ -61,15 +62,15 @@ export class TriContent extends Controllable {
 		return this.data[index % this.data.length];
 	}
 
-	protected get prevData(): TriContentData {
+	protected get prevData(): CarouselData {
 		return this.getDataByIndex(this.index - 1);
 	}
 
-	protected get nextData(): TriContentData {
+	protected get nextData(): CarouselData {
 		return this.getDataByIndex(this.index + 1);
 	}
 
-	protected get currData(): TriContentData {
+	protected get currData(): CarouselData {
 		return this.getDataByIndex(this.index);
 	}
 
@@ -89,7 +90,7 @@ export class TriContent extends Controllable {
 		return this._content;
 	}
 
-	protected renderImages(imgSources: TriContentImageSources): void {
+	protected renderImages(imgSources: CarouselImageSources): void {
 		const keys = Object.keys(imgSources);
 
 		keys.forEach((key) => { this.renderImage(imgSources[key], key); });
@@ -142,7 +143,7 @@ export class TriContent extends Controllable {
 
 	constructor(
 		public readonly element: JQuery<HTMLElement>,
-		protected readonly data: TriContentData[]
+		protected readonly data: CarouselData[]
 	) {
 		super();
 
@@ -163,13 +164,13 @@ export class TriContent extends Controllable {
 
 }
 
-export interface TriContentData {
+export interface CarouselData {
 	title: string;
 	content: string;
-	imgSources: TriContentImageSources;
+	imgSources: CarouselImageSources;
 }
 
-interface TriContentImageSources {
+interface CarouselImageSources {
 	one: string;
 	two: string;
 	three: string;

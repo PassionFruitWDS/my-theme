@@ -13,13 +13,13 @@
 	}
 }
 
-.tri-content {
+.carousel {
 	z-index: 1;
 	margin-top: 40px;
 	background-color: white;
 	box-shadow: 0 0 20px black;
 
-	.tri-content__ctr {
+	.carousel__ctr {
 
 		// Position
 		padding: 30px 0;
@@ -56,7 +56,7 @@
 			}
 		}
 
-		.tri-content__button {
+		.carousel__button {
 			border-style: none;
 			background-color: #00000000;
 			margin: 0 10px;
@@ -70,7 +70,7 @@
 			}
 		}
 
-		h2, span, .tri-content__button {
+		h2, span, .carousel__button {
 			&:hover {
 				text-shadow: 0 1px 5px #444444;
 				cursor: pointer;
@@ -78,7 +78,7 @@
 		}
 	}
 
-	.tri-content__content-area {
+	.carousel__content-area {
 		// Position
 		width: 100%;
 		box-sizing: border-box;
@@ -99,18 +99,18 @@
 			box-shadow: 0 0 10px 0 black;
 			border-radius: 10px 0 0 10px;
 		}
-		.tri-content__content {
+		.carousel__content {
 			align-self: center;
 			text-align: justify;
 			max-width: 550px;
 		}
 
-		.tri-content__content--left {
+		.carousel__content--left {
 			justify-self: right;
 			grid-area: left;
 		}
 
-		.tri-content__content--right {
+		.carousel__content--right {
 			position: relative;
 			grid-area: right;
 			justify-self: center;
@@ -145,7 +145,7 @@
 	}
 
 	@include media("<medium") {
-		.tri-content__ctr {
+		.carousel__ctr {
 			font-size: 20px;
 
 			h2 {
@@ -156,7 +156,7 @@
 		}
 	}
 	@include media("<small") {
-		.tri-content__ctr {
+		.carousel__ctr {
 			font-size: 18px;
 
 			h2 {
@@ -171,18 +171,18 @@
 			}
 		}
 
-		.tri-content__content-area {
+		.carousel__content-area {
 			grid: "up" min-content
 				  "." 30px
 				  "down" min-content
 				  / 100%;
 			padding-bottom: 0;
 
-			.tri-content__content {
+			.carousel__content {
 				margin: 0 30px;
 			}
 
-			.tri-content__content--left {
+			.carousel__content--left {
 				grid-area: up;
 			}
 
@@ -192,14 +192,14 @@
 				box-shadow: none;
 			}
 
-			.tri-content__content--right {
+			.carousel__content--right {
 				grid-area: down;
 			}
 		}
 	}
 
 	@include media("<=x-small") {
-		.tri-content__ctr {
+		.carousel__ctr {
 			font-size: 16px;
 
 			h2 {
@@ -211,7 +211,7 @@
 				}
 			}
 
-			.tri-content__button {
+			.carousel__button {
 				margin: 0 4px;
 			}
 		}

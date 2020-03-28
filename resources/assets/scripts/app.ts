@@ -5,7 +5,7 @@ import 'jquery';
 import FormFieldController from './form-field/FormFieldController';
 import ContactFormController from './contact-form/ContactFormController';
 import HeroController from './hero/HeroController';
-import { TriContentData, TriContent } from './tri-content/TriContent';
+import { CarouselData, Carousel } from './carousel/Carousel';
 
 declare const injectedData: { themeUrl: string };
 const { themeUrl } = injectedData;
@@ -18,7 +18,7 @@ $(document).ready(() => {
 	heroCtr.initialize();
 
 	// Tri-content
-	const triContentData: TriContentData[] = [
+	const carouselData: CarouselData[] = [
 		{
 			title: 'Development',
 			content: 'Lorem',
@@ -49,5 +49,5 @@ $(document).ready(() => {
 		},
 	];
 	// eslint-disable-next-line no-new
-	new TriContent($('.tri-content'), triContentData);
+	new Carousel($('.carousel'), carouselData);
 });
