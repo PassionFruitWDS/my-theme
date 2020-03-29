@@ -1,5 +1,13 @@
 <?
-	$form_id = 'contact-form-1';
+	if (!function_exists("get_contact_id")) {
+		function get_contact_id() {
+			static $count = 0;
+			$count++;
+			return "contact-form-" . strval($count);
+		}
+	}
+
+	$form_id = get_contact_id();
 	$class = [
 		'contact-form__field'
 	]

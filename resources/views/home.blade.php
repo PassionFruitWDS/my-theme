@@ -4,7 +4,8 @@
 
 @section('content')
 	@include('partials.hero')
-	<main class="content">
+	<div class="content">
 		@include('partials.carousel')
-	</main>
+		@include('partials.card-table')
+	</div>
 @endsection
