@@ -1,0 +1,28 @@
+.card-table {
+
+	.card-table__heading {
+		font-size: 48px;
+		color: var(--dark-secondary-color);
+		width: min-content;
+		margin: 60px auto 0;
+		text-shadow: 0 0 3px #444444;
+	}
+
+	.card-table__grid {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 60px 60px;
+		justify-content: center;
+		flex-wrap: wrap;
+		display: flex;
+		flex-direction: row;
+
+		.card-table__card {
+			margin: 20px 40px;
+		}
+
+		@include media("<medium") {
+			padding: 60px 0;
+		}
+	}
+}
