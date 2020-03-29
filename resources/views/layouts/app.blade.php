@@ -6,7 +6,6 @@
 		<div id="app">
 			@php(wp_body_open())
 			@php(do_action('get_header'))
-			{{-- @include('partials.header') --}}
 
 			<div class="container">
 				<main class="main @yield('content-classes')">
