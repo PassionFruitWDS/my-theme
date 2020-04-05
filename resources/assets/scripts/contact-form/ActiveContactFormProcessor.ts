@@ -21,7 +21,7 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 		this._result = { resolvedTransition: this.resolvedTransition };
 	}
 
-	constructor() {
+	constructor(protected readonly cssClass: string) {
 		super('active');
 	}
 
@@ -169,7 +169,7 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	 */
 	protected applyStyle(): void {
 		this.current.rawContactForm.addClass(
-			ActiveContactFormProcessor.cssClass
+			this.cssClass
 		);
 	}
 
@@ -178,11 +178,8 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	 */
 	protected removeStyle(): void {
 		this.current.rawContactForm.removeClass(
-			ActiveContactFormProcessor.cssClass
+			this.cssClass
 		);
 	}
-
-	/** Css class that contains form fields' 'active' state style rules. */
-	protected static readonly cssClass = 'contact-form--is-active';
 
 }

@@ -5,29 +5,50 @@ import ContactFormStateMachine from './ContactFormStateMachine';
 import { StatefulContactForm } from './ContactFormTypeDecs';
 import FormFieldController from '../form-field/FormFieldController';
 
+/** Configuration needed to initialize a form field controller. */
+export type ContactFormControllerConfig = {
+	activeStateClass: string;
+};
+
 /** Implements contact form behavior. */
 export default class ContactFormController extends ControllerBase<
 	ContactForm,
 	StatefulContactForm
 > {
 
+	// --- STATIC ---
+
+	/** Cache of the instance of the singleton. */
 	private static cachedInstance: ContactFormController | undefined;
 
+	/** Instance of the singleton. */
 	public static get instance(): ContactFormController {
 		if (!ContactFormController.cachedInstance) {
-			ContactFormController.cachedInstance = new ContactFormController();
+			throw Error('Attempted to access controller instance before initialization');
 		}
 
 		return ContactFormController.cachedInstance;
 	}
 
-	protected processor = new ContactFormStateMachine();
-
 	/**
-	 * Initialize the controller.
+	 * Initialize the controller using the given configuration.
+	 *
+	 * @param config Configuration data for the controller.
 	 */
-	public initialize(): void {
-		super.initialize();
+	public static initialize(config: ContactFormControllerConfig): void {
+		if (!ContactFormController.cachedInstance) {
+			ContactFormController.cachedInstance = new ContactFormController(
+				config
+			);
+			ContactFormController.instance.initialize();
+		}
+	}
+
+	protected processor: ContactFormStateMachine;
+
+	private constructor({ activeStateClass }: ContactFormControllerConfig) {
+		super();
+		this.processor = new ContactFormStateMachine(activeStateClass);
 	}
 
 	/** Implement contact form behavior. */

@@ -3,19 +3,243 @@
  */
 
 /**
- * Style
+ * Mixins
  */
-.homepage-content {
+
+/**
+ * Animate an element to "float" vertically about its normal position
+ *
+ * @param $delay Animation delay
+ * @param $duration Animation duration
+ * @param $height Height above and below the element's position to float
+ */
+@mixin float($delay: 0s, $duration: 3s, $height: 8px) {
+	animation-name: float;
+	animation-delay: $delay;
+	animation-duration: $duration;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+	transform: translateZ(0); // reduces CPU usage (possibly by offloading onto gpu)
+
+	@keyframes float {
+		0% { transform: translateY($height); }
+		50% { transform: translateY(-$height); }
+		100% { transform: translateY($height); }
+	}
+}
+
+.home {
 	.hero {
 		// position
 		width: 100%;
 		min-height: 100vh;
 		max-height: auto;
 	}
+
 	.content {
 		background-color: #dfdfdf;
 	}
-	.tri-content {
-		margin-bottom: 20px;
+
+	.carousel__container {
+		// Display
+		display: grid;
+		grid: ". left . . right ." min-content
+			/ 20px 1fr minmax(20px, 80px) minmax(10px, 20px) 1fr 20px;
+		padding-bottom: 40px;
+
+		&::after {
+			content: "";
+
+			grid-row: 1;
+			grid-column: 4 / span 3;
+
+			border-radius: 10px 0 0 10px;
+
+			background-image: linear-gradient(to left, var(--secondary-accent-color), var(--primary-color));
+
+			box-shadow: 0 0 10px 0 black;
+		}
+
+		&> * {
+			max-width: 550px;
+			align-self: center;
+
+			text-align: justify;
+		}
+
+		.copy {
+			grid-area: left;
+			justify-self: right;
+		}
+
+		.towers {
+			max-width: 550px;
+			position: relative;
+			grid-area: right;
+			justify-self: center;
+
+			&__image {
+				max-width: 100%;
+
+				&--background {
+					padding-top: 14%;
+					padding-bottom: 10px;
+				}
+			}
+
+			#featured__towers--icon {
+				position: absolute;
+				top: 0;
+				left: 0;
+
+				&-one {
+					@extend #featured__towers--icon;
+
+					@include float();
+				}
+
+				&-two {
+					@extend #featured__towers--icon;
+
+					@include float(3s / 3);
+				}
+
+				&-three {
+					@extend #featured__towers--icon;
+
+					@include float(6s / 3);
+				}
+			}
+		}
+	}
+
+	.table {
+		&__heading {
+			color: var(--secondary-color);
+
+			em {
+				position: relative;
+				z-index: 0;
+				font-family: "Bronova Bold";
+				font-style: normal;
+				font-weight: bold;
+				background-clip: text;
+				-webkit-background-clip: text;
+				color: transparent;
+				text-shadow: none;
+				background-image: linear-gradient(to right, var(--dark-secondary-color), var(--light-secondary-color));
+
+				&::after{
+					position: absolute;
+					left: 0;
+					content: attr(data-value);
+					text-shadow: 0 0 3px #444444;
+					z-index: -1;
+				}
+			}
+		}
+
+		.card {
+			&:nth-of-type(2n-1) {
+				border-color: var(--secondary-accent-color);
+				background-image: linear-gradient(45deg, var(--secondary-accent-alternate-color), var(--secondary-accent-color));
+			}
+
+			&:nth-of-type(2n) {
+				border-color: var(--primary-color);
+				background-image: linear-gradient(45deg, var(--primary-accent-color), var(--primary-accent-alternate-color));
+			}
+
+			&__image-container {
+				z-index: 0;
+
+				&::before {
+					content: "";
+
+					position: absolute;
+
+					width: 100%;
+					height: 64%;
+					top: 0;
+
+					background-color: #dfdfdf;
+					border-radius: 20px 20px 0 0;
+					box-shadow: inset 0 0 6px black;
+				}
+
+				&::after {
+					content: "";
+
+					position: absolute;
+					width: 100%;
+					height: 100%;
+
+					top: 0;
+					left: 0;
+
+					background-image: url(//passionfruit.test:3000/wp-content/themes/my-theme/dist/images/tower_top.png);
+					background-size: auto 50%;
+					background-position: bottom;
+					background-repeat: no-repeat;
+				}
+			}
+
+			&__image {
+				z-index: 1;
+				width: 90px;
+				padding: 20px 0 110px;
+			}
+		}
+	}
+
+	@include media("<small") {
+		.carousel__container {
+			box-sizing: border-box;
+			grid: "up" min-content
+				  "." 30px
+				  "down" min-content
+				  / 100%;
+			padding-bottom: 0;
+
+			&::after {
+				grid-area: down;
+				border-radius: 0;
+			}
+
+			.copy {
+				grid-area: up;
+				padding: 0 15px;
+			}
+
+			.towers {
+				grid-area: down;
+				margin: 0 30px;
+			}
+		}
+	}
+
+	#wordpress__card--image {
+		fill: #0e11d8;
+	}
+
+	#seo__card--image {
+		fill: #107918;
+	}
+
+	#debugging__card--image {
+		fill: #bd1313;
+	}
+
+	#development__card--image {
+		fill: var(--secondary-color);
+		width: 85px;
+	}
+
+	#design__card--image {
+		fill: #c90aa9;
+	}
+
+	#consultation__card--image {
+		fill: #0e9499;
 	}
 }

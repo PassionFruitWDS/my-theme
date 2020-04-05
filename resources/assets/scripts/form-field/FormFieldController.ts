@@ -4,30 +4,64 @@ import FormFieldStateMachine from './FormFieldStateMachine';
 import FormField from './FormField';
 import { StatefulFormField } from './FormFieldTypeDecs';
 
-/** Implements form field behavior. */
+/** Configuration needed to initialize a form field controller. */
+export type FormFieldControllerConfig = {
+	activeStateClass: string;
+};
+
+/** Singleton controller for form field interfaces. */
 export default class FormFieldController extends ControllerBase<
 	FormField,
 	StatefulFormField
 > {
 
+	// --- STATIC ---
+
+	/** Cache of the instance of the singleton. */
 	private static cachedInstance: FormFieldController | undefined;
 
+	/** Instance of the singleton. */
 	public static get instance(): FormFieldController {
 		if (!FormFieldController.cachedInstance) {
-			FormFieldController.cachedInstance = new FormFieldController();
+			throw Error('Attempted to access controller instance before initialization');
 		}
 
 		return FormFieldController.cachedInstance;
 	}
 
-	protected processor = new FormFieldStateMachine();
-
-	/** Initialize the controller. */
-	public initialize(): void {
-		super.initialize();
+	/**
+	 * Initialize the controller using the given configuration.
+	 *
+	 * @param config Configuration data for the controller.
+	 */
+	public static initialize(config: FormFieldControllerConfig): void {
+		if (!FormFieldController.cachedInstance) {
+			FormFieldController.cachedInstance = new FormFieldController(
+				config
+			);
+		}
+		FormFieldController.instance.initialize();
 	}
 
-	/** Implement behavior of newly registered element through callbacks. */
+	// --- INSTANCE ---
+
+	/** Logical processor that handles FormField behavior. */
+	protected processor: FormFieldStateMachine;
+
+	/**
+	 * @param config Configuration data for the controller.
+	 */
+	private constructor({ activeStateClass }: FormFieldControllerConfig) {
+		super();
+		this.processor = new FormFieldStateMachine(activeStateClass);
+	}
+
+	/**
+	 * Implement state-machine behavior of newly registered FormField.
+	 *
+	 * @param element FormField to be programmed.
+	 * @returns The input FormField extended with the StatefulFormField interface.
+	 */
 	protected program(element: FormField): StatefulFormField {
 		const extendedElement = this.processor.extend(element);
 

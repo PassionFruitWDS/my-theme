@@ -17,7 +17,7 @@ export default function generateEnumMap<
 		...args: infer P
 	) => T ? P : never): Record<keyof ENUM, T> {
 
-	const map = new Object();
+	const map = {};
 
 	function appendKeyValue(key: keyof ENUM): void {
 		this[key] = func(key, ...args);

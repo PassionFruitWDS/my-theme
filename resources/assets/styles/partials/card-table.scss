@@ -1,23 +1,24 @@
-.card-table {
-
-	.card-table__heading {
-		font-size: 48px;
-		color: var(--dark-secondary-color);
-		width: min-content;
+.table {
+	.table__heading {
+		width: max-content;
 		margin: 60px auto 0;
+
+		font-size: 48px;
+		text-align: center;
 		text-shadow: 0 0 3px #444444;
 	}
 
-	.card-table__grid {
+	.table__container {
 		width: 100%;
-		box-sizing: border-box;
 		padding: 60px 60px;
-		justify-content: center;
-		flex-wrap: wrap;
+		box-sizing: border-box;
+
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
 
-		.card-table__card {
+		&> * {
 			margin: 20px 40px;
 		}
 

@@ -20,7 +20,7 @@ add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_script('sage/vendor.js', asset('scripts/vendor.js')->uri(), ['jquery'], null, true);
 	wp_enqueue_script('sage/app.js', asset('scripts/app.js')->uri(), ['sage/vendor.js', 'jquery'], null, true);
 	$translation_array = array( 'themeUrl' => get_template_directory_uri() );
-	wp_localize_script('sage/app.js', 'injectedData', $translation_array);
+	wp_localize_script('sage/app.js', 'pageData', $translation_array);
 
 	wp_add_inline_script('sage/vendor.js', asset('scripts/manifest.js')->contents(), 'before');
 

@@ -43,7 +43,7 @@ export default abstract class ControllerBase<
 	 * @param args Data and references the controller needs to implement element behavior.
 	 * @remark It is the responsibility of subclasses to define a controller's initialized state.
 	 */
-	public initialize(..._args: any[]): void {
+	protected initialize(..._args: any[]): void {
 		if (this.isInitialized) {
 			throw Error('Cannot initialize already initialized controller');
 		}

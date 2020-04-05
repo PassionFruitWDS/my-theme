@@ -52,7 +52,7 @@ export default class HeroController {
 
 	/** allows the hero to responsively resize by removing the pseudo-element shim */
 	private unlockGrid(): void {
-		this.hero.children('#hero__shim').remove();
+		this.hero.children(`#${this.shimId}`).remove();
 	}
 
 	/** prevents the hero from responsively resizing by introducing a pseudo-element shim */
@@ -60,9 +60,18 @@ export default class HeroController {
 		this.hero.append(this.shimHtml);
 	}
 
+	private _shimId: string;
+
+	private get shimId(): string {
+		if (!this._shimId) {
+			this._shimId = `${this.hero.attr('id')}--shim`;
+		}
+		return this._shimId;
+	}
+
 	/** html style node of an appropriately sized shim pseudo-element */
 	private get shimHtml(): string {
-		return `<style type="text/css" id="hero__shim">
+		return `<style type="text/css" id="${this.shimId}">
 			.hero::before {
 				grid-area: shim;
 				content: "";
