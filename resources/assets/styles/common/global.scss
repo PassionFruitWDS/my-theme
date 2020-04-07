@@ -12,11 +12,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
+	margin: 0.5em 0;
 	font-size: 56px;
 
 	@include media("<medium") {
 		font-size: 38px;
 	}
+}
+
+h2 {
+	font-size: 48px;
+
+	@include media("<medium") {
+		font-size: 30px;
+	}
+
+	@include media("<x-small") {
+		font-size: 20px;
+	}
+}
+
+p {
+	margin: 1em 0;
 }
 
 body {

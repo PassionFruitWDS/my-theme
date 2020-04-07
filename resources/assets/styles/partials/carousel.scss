@@ -19,7 +19,6 @@
 
 		// Content
 		font-size: 32px;
-		color: var(--dark-secondary-color);
 
 		&::after,&::before {
 			content: "";
@@ -87,7 +86,6 @@
 
 		&--big {
 			justify-content: center;
-			transform: translateY(-3px);
 			margin: 0;
 
 			display: inline-flex;

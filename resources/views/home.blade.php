@@ -77,7 +77,7 @@
 				],
 			],
 		])
-		@include('partials.card-table', [
+		@include('partials.table', [
 			"slug" => "services",
 			"title" => "How can <em data-value=\"PassionFruit\">PassionFruit</em> help?",
 			"class" => [],

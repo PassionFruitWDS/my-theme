@@ -38,5 +38,4 @@ export default class ContactFormStateMachine extends StateMachineBase<
 		return shared;
 	};
 
-
 }

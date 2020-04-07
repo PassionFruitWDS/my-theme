@@ -3,7 +3,7 @@
 		width: max-content;
 		margin: 60px auto 0;
 
-		font-size: 48px;
+		// font-size: 48px;
 		text-align: center;
 		text-shadow: 0 0 3px #444444;
 	}
@@ -23,7 +23,7 @@
 		}
 
 		@include media("<medium") {
-			padding: 60px 0;
+			padding: 30px 0;
 		}
 	}
 }
