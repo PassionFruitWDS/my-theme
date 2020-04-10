@@ -29,8 +29,9 @@ export default class ContactFormStateMachine extends StateMachineBase<
 
 	protected readonly makeSharedStateDataFor = (obj: ContactForm): StatefulContactForm['statesData']['shared'] => {
 		const { mainField } = obj;
-		FormFieldController.instance.register(mainField);
-		const statefulMainField = FormFieldController.instance.current;
+		const statefulMainField = FormFieldController.instance.register(
+			mainField
+		);
 		const shared = {
 			mainFieldIsActive: (): boolean => statefulMainField.state === 'active',
 		};

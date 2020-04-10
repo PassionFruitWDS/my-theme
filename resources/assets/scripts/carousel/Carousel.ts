@@ -3,11 +3,11 @@ import Transition from '../util/misc/Transition';
 
 export class Carousel extends Controllable {
 
-	private _backButton: JQuery<HTMLElement>;
+	private _backButton: HTMLElement;
 
-	protected get backButton(): JQuery<HTMLElement> {
+	protected get backButton(): HTMLElement {
 		if (!this._backButton) {
-			this._backButton = this.element.find(`#${this.htmlId}--back`);
+			this._backButton = this.element.querySelector(`#${this.element.id}--back`);
 		}
 
 		return this._backButton;
@@ -17,7 +17,7 @@ export class Carousel extends Controllable {
 
 	protected get content(): HTMLElement {
 		if (!this._content) {
-			this._content = this.element.find('.copy').toArray()[0];
+			this._content = this.element.querySelector('.copy');
 		}
 
 		return this._content;
@@ -27,28 +27,14 @@ export class Carousel extends Controllable {
 		return this.getDataAt(this.index);
 	}
 
-	private _frwdButton: JQuery<HTMLElement>;
+	private _frwdButton: HTMLElement;
 
-	protected get frwdButton(): JQuery<HTMLElement> {
+	protected get frwdButton(): HTMLElement {
 		if (!this._frwdButton) {
-			this._frwdButton = this.element.find(`#${this.htmlId}--frwd`);
+			this._frwdButton = this.element.querySelector(`#${this.element.id}--frwd`);
 		}
 
 		return this._frwdButton;
-	}
-
-	private _htmlId: string;
-
-	public get htmlId(): string {
-		if (!this._htmlId) {
-			this._htmlId = this.element.attr('id');
-
-			if (!this._htmlId) {
-				throw Error('Tri-content element lacks an html id.');
-			}
-		}
-
-		return this._htmlId;
 	}
 
 	private _images: Map<string, HTMLElement> = new Map<string, HTMLElement>();
@@ -58,7 +44,7 @@ export class Carousel extends Controllable {
 			if (!this._images.has(idSlug)) {
 				this._images.set(
 					idSlug,
-					this.towers.find(`#${this.towersHtmlId}--${idSlug}`).toArray()[0]
+					this.towers.querySelector(`#${this.towers.id}--${idSlug}`)
 				);
 			}
 			return this._images.get(idSlug);
@@ -71,11 +57,11 @@ export class Carousel extends Controllable {
 		return this.getDataAt(this.index + 1);
 	}
 
-	private _nextTitle: JQuery<HTMLElement>;
+	private _nextTitle: HTMLElement;
 
-	protected get nextTitle(): JQuery<HTMLElement> {
+	protected get nextTitle(): HTMLElement {
 		if (!this._nextTitle) {
-			this._nextTitle = this.element.find(`#${this.htmlId}--next`);
+			this._nextTitle = this.element.querySelector(`#${this.element.id}--next`);
 		}
 
 		return this._nextTitle;
@@ -85,21 +71,21 @@ export class Carousel extends Controllable {
 		return this.getDataAt(this.index - 1);
 	}
 
-	private _prevTitle: JQuery<HTMLElement>;
+	private _prevTitle: HTMLElement;
 
-	protected get prevTitle(): JQuery<HTMLElement> {
+	protected get prevTitle(): HTMLElement {
 		if (!this._prevTitle) {
-			this._prevTitle = this.element.find(`#${this.htmlId}--prev`);
+			this._prevTitle = this.element.querySelector(`#${this.element.id}--prev`);
 		}
 
 		return this._prevTitle;
 	}
 
-	private _title: JQuery<HTMLElement>;
+	private _title: HTMLElement;
 
-	protected get title(): JQuery<HTMLElement> {
+	protected get title(): HTMLElement {
 		if (!this._title) {
-			this._title = this.element.find(`#${this.htmlId}--current`);
+			this._title = this.element.querySelector(`#${this.element.id}--current`);
 		}
 
 		return this._title;
@@ -108,25 +94,25 @@ export class Carousel extends Controllable {
 	protected get titlesData(): { element: HTMLElement; text: string }[] {
 		return [
 			{
-				element: this.title.toArray()[0],
+				element: this.title,
 				text: this.currData.title,
 			},
 			{
-				element: this.prevTitle.toArray()[0],
+				element: this.prevTitle,
 				text: this.prevData.title,
 			},
 			{
-				element: this.nextTitle.toArray()[0],
+				element: this.nextTitle,
 				text: this.nextData.title,
 			},
 		];
 	}
 
-	private _towers: JQuery<HTMLElement>;
+	private _towers: HTMLElement;
 
-	protected get towers(): JQuery<HTMLElement> {
+	protected get towers(): HTMLElement {
 		if (!this._towers) {
-			this._towers = this.element.find('.towers');
+			this._towers = this.element.querySelector('.towers');
 		}
 
 		return this._towers;
@@ -136,7 +122,7 @@ export class Carousel extends Controllable {
 
 	protected get towersHtmlId(): string {
 		if (!this._towersHtmlId) {
-			this._towersHtmlId = this.towers.attr('id');
+			this._towersHtmlId = this.towers.id;
 		}
 
 		return this._towersHtmlId;
@@ -145,7 +131,7 @@ export class Carousel extends Controllable {
 	protected transition = '0.3s ease-in';
 
 	constructor(
-		public readonly element: JQuery<HTMLElement>,
+		public readonly element: HTMLElement,
 		protected readonly data: CarouselData[]
 	) {
 		super();
@@ -157,16 +143,16 @@ export class Carousel extends Controllable {
 
 	public initialize(): void {
 		// Set listeners
-		this.backButton.on('click', this.renderPrev);
-		this.frwdButton.on('click', this.renderNext);
-		this.prevTitle.on('click', this.renderPrev);
-		this.nextTitle.on('click', this.renderNext);
+		this.backButton.addEventListener('click', this.renderPrev);
+		this.frwdButton.addEventListener('click', this.renderNext);
+		this.prevTitle.addEventListener('click', this.renderPrev);
+		this.nextTitle.addEventListener('click', this.renderNext);
 
 		// Render initial data
 		this.content.innerText = this.currData.content;
-		this.title.html(this.currData.title);
-		this.prevTitle.html(this.prevData.title);
-		this.nextTitle.html(this.nextData.title);
+		this.title.innerText = this.currData.title;
+		this.prevTitle.innerText = this.prevData.title;
+		this.nextTitle.innerText = this.nextData.title;
 		const idSlugs = Object.keys(this.currData.imgSources);
 		idSlugs.forEach((idSlug): void => {
 			const image = this.images.get(idSlug);

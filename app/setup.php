@@ -17,9 +17,73 @@ use function Roots\asset;
  * @return void
  */
 add_action('wp_enqueue_scripts', function () {
-	wp_enqueue_script('sage/vendor.js', asset('scripts/vendor.js')->uri(), ['jquery'], null, true);
-	wp_enqueue_script('sage/app.js', asset('scripts/app.js')->uri(), ['sage/vendor.js', 'jquery'], null, true);
-	$translation_array = array( 'themeUrl' => get_template_directory_uri() );
+	wp_enqueue_script('sage/vendor.js', asset('scripts/vendor.js')->uri(), [], null, true);
+	wp_enqueue_script('sage/app.js', asset('scripts/app.js')->uri(), ['sage/vendor.js'], null, true);
+	$translation_array = array(
+		'themeUrl' => get_template_directory_uri(),
+		'formFieldCtrConfig' => array(
+			'activeStateClass' => 'form-field--active-state',
+		),
+		'contactFormCtrConfig' => array(
+			'activeStateClass' => 'contact-form--is-active',
+		),
+		'carouselData' => array(
+			array(
+				'title' => 'Development',
+				'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+				'imgSources' => array(
+					'icon-one' => array(
+						'src' => get_template_directory_uri() . '/dist/images/curly-brackets.svg',
+						'alt' => 'Curly brackets',
+					),
+					'icon-two' => array(
+						'src' => get_template_directory_uri() . '/dist/images/gear.svg',
+						'alt' => 'Gear cog',
+					),
+					'icon-three' => array(
+						'src' => get_template_directory_uri() . '/dist/images/bug-fix.svg',
+						'alt' => 'Bug with wrench partially obscuring it',
+					),
+				),
+			),
+			array(
+				'title' => 'Marketing',
+				'content' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+				'imgSources' => array(
+					'icon-one' => array(
+						'src' => get_template_directory_uri() . '/dist/images/at.svg',
+						'alt' => 'At symbol',
+					),
+					'icon-two' => array(
+						'src' => get_template_directory_uri() . '/dist/images/magnifying-glass.svg',
+						'alt' => 'Magnifying glass',
+					),
+					'icon-three' => array(
+						'src' => get_template_directory_uri() . '/dist/images/share.svg',
+						'alt' => 'Web sharing symbol',
+					),
+				),
+			),
+			array(
+				'title' => 'Design',
+				'content' => 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+				'imgSources' => array(
+					'icon-one' => array(
+						'src' => get_template_directory_uri() . '/dist/images/pencil.svg',
+						'alt' => 'Pencil',
+					),
+					'icon-two' => array(
+						'src' => get_template_directory_uri() . '/dist/images/responsive-smartphone.svg',
+						'alt' => 'Smartphone displaying a responsive web layout',
+					),
+					'icon-three' => array(
+						'src' => get_template_directory_uri() . '/dist/images/palette.svg',
+						'alt' => 'Artist\'s palette',
+					),
+				),
+			),
+		),
+	);
 	wp_localize_script('sage/app.js', 'pageData', $translation_array);
 
 	wp_add_inline_script('sage/vendor.js', asset('scripts/manifest.js')->contents(), 'before');
@@ -30,6 +94,15 @@ add_action('wp_enqueue_scripts', function () {
 
 	wp_enqueue_style('sage/app.css', asset('styles/app.css')->uri(), false, null);
 }, 100);
+
+/**
+ * Prevent Block Library CSS from being loaded on frontend.
+ *
+ * @return void
+ */
+add_action('wp_enqueue_scripts', function () {
+	wp_dequeue_style('wp-block-library');
+});
 
 /**
  * Register the theme assets with the block editor.

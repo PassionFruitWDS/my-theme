@@ -53,11 +53,13 @@ $hamburger-padding-y: 0;
 @font-face {
 	font-family: "Bronova";
 	src: url("../fonts/Bronova Regular.woff");
+	font-display: fallback;
 }
 
 @font-face {
 	font-family: "Bronova Bold";
 	src: url("../fonts/Bronova Bold.woff");
+	font-display: fallback;
 }
 
 /**

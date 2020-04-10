@@ -36,6 +36,14 @@
 		max-height: auto;
 	}
 
+	.contact-form {
+		&__main-wrapper {
+			.form-field__input {
+				scroll-margin-top: 35vh;
+			}
+		}
+	}
+
 	.content {
 		background-color: #dfdfdf;
 	}
@@ -183,7 +191,7 @@
 					top: 0;
 					left: 0;
 
-					background-image: url(//passionfruit.test:3000/wp-content/themes/my-theme/dist/images/tower_top.png);
+					background-image: url(//passionfruit.test:8080/wp-content/themes/my-theme/dist/images/tower_top.webp);
 					background-size: auto 50%;
 					background-position: bottom;
 					background-repeat: no-repeat;

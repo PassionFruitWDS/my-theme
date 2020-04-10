@@ -37,7 +37,7 @@
 									"id_modifier" => "background",
 									"class" => ["towers__image--background"],
 									"attr" => [
-										"src" => get_template_directory_uri() . "/dist/images/passionfruit-towers.png",
+										"src" => get_template_directory_uri() . "/dist/images/passionfruit-towers.webp",
 										"alt" => "Three isometric towers in a park like setting with icons floating above each tower",
 									]
 								],

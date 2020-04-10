@@ -1,16 +1,18 @@
-import 'jquery';
 import ControllerBase from '../util/controllers/ControllerBase';
 import ContactForm from './ContactForm';
 import ContactFormStateMachine from './ContactFormStateMachine';
 import { StatefulContactForm } from './ContactFormTypeDecs';
 import FormFieldController from '../form-field/FormFieldController';
 
-/** Configuration needed to initialize a form field controller. */
+/** Configuration needed to initialize a ContactFormController. */
 export type ContactFormControllerConfig = {
 	activeStateClass: string;
 };
 
-/** Implements contact form behavior. */
+/**
+ * Oversees registration and behavior implementation for ContactForm components.
+ * Follows singleton pattern and must be initialized prior to use.
+ */
 export default class ContactFormController extends ControllerBase<
 	ContactForm,
 	StatefulContactForm
@@ -31,7 +33,7 @@ export default class ContactFormController extends ControllerBase<
 	}
 
 	/**
-	 * Initialize the controller using the given configuration.
+	 * Initialize the controller by constructing its instance.
 	 *
 	 * @param config Configuration data for the controller.
 	 */
@@ -44,14 +46,26 @@ export default class ContactFormController extends ControllerBase<
 		}
 	}
 
+	// --- INSTANCE ---
+
+	/** Logical processor that handles ContactForm behavior. */
 	protected processor: ContactFormStateMachine;
 
+
+	/**
+	 * @param config Configuration data for the controller.
+	 */
 	private constructor({ activeStateClass }: ContactFormControllerConfig) {
 		super();
 		this.processor = new ContactFormStateMachine(activeStateClass);
 	}
 
-	/** Implement contact form behavior. */
+	/**
+	 * Implement state-machine behavior of newly registered ContactForm.
+	 *
+	 * @param element ContactForm to be programed.
+	 * @returns The input ContactForm extended with the StatefulContactForm interface.
+	 */
 	public program(element: ContactForm): StatefulContactForm {
 		const extendedElement = this.processor.extend(element);
 

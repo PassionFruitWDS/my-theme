@@ -60,6 +60,7 @@ module.exports = {
 				'ignoreRegExpLiterals': true
 			}
 		],
+		'no-plusplus': ['error', {'allowForLoopAfterthoughts': true}],
 		'no-tabs': ['error', {'allowIndentationTabs': true}],
 		'no-spaced-func': 'off',
 		'no-underscore-dangle': ['error', {'allowAfterThis': true}],

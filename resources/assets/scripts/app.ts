@@ -1,85 +1,50 @@
 /**
  * External Dependencies
  */
-import 'jquery';
-import FormFieldController from './form-field/FormFieldController';
-import ContactFormController from './contact-form/ContactFormController';
+import FormFieldController, { FormFieldControllerConfig } from './form-field/FormFieldController';
+import ContactFormController, { ContactFormControllerConfig } from './contact-form/ContactFormController';
 import HeroController from './hero/HeroController';
 import { CarouselData, Carousel } from './carousel/Carousel';
-import TermsController from './terms/TermsController';
+import TermsController from './footer/TermsController';
 
-declare const pageData: { themeUrl: string };
-const { themeUrl } = pageData;
+declare const pageData: {
+	formFieldCtrConfig: FormFieldControllerConfig;
+	contactFormCtrConfig: ContactFormControllerConfig;
+	carouselData: CarouselData[];
+};
 
-$(document).ready(() => {
-	// Hero
-	FormFieldController.initialize({ activeStateClass: 'form-field--active-state' });
-	ContactFormController.initialize({ activeStateClass: 'contact-form--is-active' });
-	const heroCtr = new HeroController($('.hero'));
-	heroCtr.initialize();
+class App {
 
-	// Tri-content
-	const carouselData: CarouselData[] = [
+	private static cachedInstance: App;
+
+	public static get instance(): App {
+		if (!this.cachedInstance) {
+			throw Error('Singleton must be initialized before accessing');
+		}
+		return App.cachedInstance;
+	}
+
+	private constructor() {}
+
+	public static initialize(
 		{
-			title: 'Development',
-			content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-			imgSources: {
-				'icon-one': {
-					src: `${themeUrl}/dist/images/curly-brackets.svg`,
-					alt: 'Curly brackets',
-				},
-				'icon-two': {
-					src: `${themeUrl}/dist/images/gear.svg`,
-					alt: 'Gear',
-				},
-				'icon-three': {
-					src: `${themeUrl}/dist/images/bug-fix.svg`,
-					alt: 'Bug with wrench partially obscuring it',
-				},
-			},
-		},
-		{
-			title: 'Marketing',
-			content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-			imgSources: {
-				'icon-one': {
-					src: `${themeUrl}/dist/images/at.svg`,
-					alt: 'At symbol',
-				},
-				'icon-two': {
-					src: `${themeUrl}/dist/images/magnifying-glass.svg`,
-					alt: 'Magnifying glass',
-				},
-				'icon-three': {
-					src: `${themeUrl}/dist/images/share.svg`,
-					alt: 'Web sharing symbol',
-				},
-			},
+			formFieldCtrConfig,
+			contactFormCtrConfig,
+			carouselData,
+		}: typeof pageData,
+	): void {
+		FormFieldController.initialize(formFieldCtrConfig);
+		ContactFormController.initialize(contactFormCtrConfig);
+		const heroCtr = new HeroController(document.querySelector('.hero'));
+		heroCtr.initialize();
 
-		},
-		{
-			title: 'Design',
-			content: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-			imgSources: {
-				'icon-one': {
-					src: `${themeUrl}/dist/images/pencil.svg`,
-					alt: 'Pencil',
-				},
-				'icon-two': {
-					src: `${themeUrl}/dist/images/responsive-smartphone.svg`,
-					alt: 'Smartphone displaying a responsive web layout',
-				},
-				'icon-three': {
-					src: `${themeUrl}/dist/images/palette.svg`,
-					alt: 'Artist\'s palette',
-				},
-			},
-		},
-	];
-	// eslint-disable-next-line no-new
-	const carousel = new Carousel($('#featured__carousel'), carouselData);
-	carousel.initialize();
+		const carousel = new Carousel(document.querySelector('#featured__carousel'), carouselData);
+		carousel.initialize();
 
-	const termsController = new TermsController();
-	termsController.initialize();
-});
+		const termsController = new TermsController();
+		termsController.initialize();
+	}
+
+}
+
+document.addEventListener('DOMContentLoaded', () => { App.initialize(pageData); });

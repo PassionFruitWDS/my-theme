@@ -74,7 +74,7 @@ export default class ActiveFormFieldProcessor extends StateProcessorBase<
 
 	/** Mark the current FormField as `active` by applying the appropriate class. */
 	private markActive(): void {
-		this.current.formField.addClass(this.cssClass);
+		this.current.element.classList.add(this.cssClass);
 	}
 
 	/** Resolve the state, if any, to which the loaded FormField should transition. */
@@ -84,7 +84,7 @@ export default class ActiveFormFieldProcessor extends StateProcessorBase<
 
 	/** Unmark the current FormField from being `active` by removing the appropriate class. */
 	private unmarkActive(): void {
-		this.current.formField.removeClass(this.cssClass);
+		this.current.element.classList.remove(this.cssClass);
 	}
 
 }

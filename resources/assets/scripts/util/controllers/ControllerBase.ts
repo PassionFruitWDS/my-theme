@@ -52,21 +52,21 @@ export default abstract class ControllerBase<
 	}
 
 	/**
-	 * Register a new element for control.
+	 * Register a new element for control by extending it with functionality needed by the controller.
 	 *
 	 * @param element Element to be registered.
+	 * @returns Registered element with extended functionality.
 	 */
-	public register(element: T): symbol {
+	public register(element: T): TT {
 		if (this.isInitialized) {
-			const { id: symbol } = element;
+			const { id } = element;
 
-			if (!this.elements.has(symbol)) {
+			if (!this.elements.has(id)) {
 				const programedElement = this.program(element);
-				this.elements.set(symbol, programedElement);
+				this.elements.set(id, programedElement);
 			}
 
-			this._current = this.elements.get(symbol);
-			return symbol;
+			return this.elements.get(id);
 		}
 		throw Error('Cannot register elements before controller is initialized');
 	}

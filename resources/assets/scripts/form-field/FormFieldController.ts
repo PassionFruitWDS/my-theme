@@ -1,4 +1,3 @@
-import 'jquery';
 import ControllerBase from '../util/controllers/ControllerBase';
 import FormFieldStateMachine from './FormFieldStateMachine';
 import FormField from './FormField';
@@ -9,7 +8,10 @@ export type FormFieldControllerConfig = {
 	activeStateClass: string;
 };
 
-/** Singleton controller for form field interfaces. */
+/**
+ * Oversees registration and behavior implementation for ContactForm components.
+ * Follows singleton pattern and must be initialized prior to use.
+ */
 export default class FormFieldController extends ControllerBase<
 	FormField,
 	StatefulFormField
@@ -70,7 +72,7 @@ export default class FormFieldController extends ControllerBase<
 			this.processor.process();
 		}
 
-		extendedElement.input.on('input', loadAndProcess.bind(this));
+		extendedElement.input.addEventListener('input', loadAndProcess.bind(this));
 
 		return extendedElement;
 	}

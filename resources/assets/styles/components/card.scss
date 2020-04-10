@@ -23,12 +23,14 @@
 	}
 
 	.card__title {
-		margin: 0.2em auto 1em;
+		margin: 0.2em 30px 1em;
+
+		text-align: center;
 	}
 
 	.card__content {
 		padding: 0 30px 30px;
 
-		text-align: justify;
+		text-align: left;
 	}
 }

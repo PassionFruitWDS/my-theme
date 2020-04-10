@@ -1,6 +1,12 @@
 <footer class="footer">
 	<img class="footer__brand"
-		src="{{ get_template_directory_uri() . '/dist/images/pfwds_logo.png' }}"
+		loading="lazy"
+		srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 279w,
+			{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 557w"
+		sizes="(max-width: 576px): 279px,
+			557px"
+		src="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }}"
+		width="557px"
 		alt="PassionFruit Web Development Studio"/>
 	<div class="footer__legal">
 		<div class="footer__cw">

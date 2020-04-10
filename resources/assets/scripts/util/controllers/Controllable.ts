@@ -40,8 +40,8 @@ export default abstract class Controllable {
 		return (wrapper as T);
 	}
 
-	protected constructor(idStr = '') {
-		this._id = Symbol(idStr);
+	protected constructor(symbolStr = '') {
+		this._id = Symbol(symbolStr);
 	}
 
 }
