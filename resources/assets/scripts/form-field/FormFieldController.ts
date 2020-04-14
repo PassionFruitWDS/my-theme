@@ -32,17 +32,18 @@ export default class FormFieldController extends ControllerBase<
 	}
 
 	/**
-	 * Initialize the controller using the given configuration.
+	 * Construct the instance of the controller.
 	 *
 	 * @param config Configuration data for the controller.
 	 */
-	public static initialize(config: FormFieldControllerConfig): void {
+	public static constructInstance(config: FormFieldControllerConfig): void {
 		if (!FormFieldController.cachedInstance) {
 			FormFieldController.cachedInstance = new FormFieldController(
 				config
 			);
+		} else {
+			throw Error('Attempted to construct more than one instance of the singleton.');
 		}
-		FormFieldController.instance.initialize();
 	}
 
 	// --- INSTANCE ---
@@ -58,6 +59,11 @@ export default class FormFieldController extends ControllerBase<
 		this.processor = new FormFieldStateMachine(activeStateClass);
 	}
 
+	/** Ready the controller for registration of FormFields. */
+	public initialize(): void {
+		super.initialize();
+	}
+
 	/**
 	 * Implement state-machine behavior of newly registered FormField.
 	 *
@@ -67,12 +73,13 @@ export default class FormFieldController extends ControllerBase<
 	protected program(element: FormField): StatefulFormField {
 		const extendedElement = this.processor.extend(element);
 
-		function loadAndProcess(): void {
-			this.processor.load(extendedElement);
-			this.processor.process();
-		}
-
-		extendedElement.input.addEventListener('input', loadAndProcess.bind(this));
+		extendedElement.input.addEventListener(
+			'input',
+			() => {
+				this.processor.load(extendedElement);
+				this.processor.process();
+			}
+		);
 
 		return extendedElement;
 	}

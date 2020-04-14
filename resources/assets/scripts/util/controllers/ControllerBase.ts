@@ -1,6 +1,7 @@
 import Controllable from './Controllable';
+import Hook from '../misc/Hook';
 
-/** base class for element controllers */
+/** Base class for object controllers. */
 export default abstract class ControllerBase<
 	T extends Controllable,
 	TT extends T,
@@ -10,19 +11,19 @@ export default abstract class ControllerBase<
 	 * PROPERTIES
 	 */
 
-	/** Map of elements registered with the controller. */
-	protected elements: Map<symbol, TT> = new Map<symbol, TT>();
+	/** Map of objects registered with the controller. */
+	protected objs: Map<symbol, TT> = new Map<symbol, TT>();
 
-	/** Cache of the element currently targeted for control. */
+	/** Cache of the object currently targeted for control. */
 	private _current: TT | undefined;
 
-	/** Element currently targeted for control. */
+	/** Object currently targeted for control. */
 	public get current(): TT {
 		if (this._current) {
 			return this._current;
 		}
 
-		throw Error('No element targeted for control');
+		throw Error('No object targeted for control.');
 	}
 
 	/** Cache for the form's initialization status. */
@@ -33,63 +34,89 @@ export default abstract class ControllerBase<
 		return this._isInitialized;
 	}
 
+	/** Registration event hook. */
+	private registrationHook: Hook<(programmedObj: TT) => void> = new Hook();
+
 	/**
 	 * METHODS
 	 */
 
 	/**
-	 * Prepare the controller to implement element behavior.
+	 * Add a callback to be fired on registration of a new controllable object.
 	 *
-	 * @param args Data and references the controller needs to implement element behavior.
+	 * @param callback Callback to add to the hook. Callback may accept the controllers programmed object type as an argument.
+	 */
+	public addRegistrationListener(
+		callback: (programmedObject: TT) => void,
+	): void {
+		this.registrationHook.set(callback);
+	}
+
+	/**
+	 * Remove a callback from the registration hook.
+	 *
+	 * @param callback Callback to be removed from the hook.
+	 */
+	public removeRegistrationListener(
+		callback: (programmedObject: TT) => void,
+	): void {
+		this.registrationHook.unset(callback);
+	}
+
+	/**
+	 * Prepare the controller to implement object behavior.
+	 *
+	 * @param _args Data and references the controller needs to implement object behavior.
 	 * @remark It is the responsibility of subclasses to define a controller's initialized state.
 	 */
 	protected initialize(..._args: any[]): void {
 		if (this.isInitialized) {
-			throw Error('Cannot initialize already initialized controller');
+			throw Error('Attempted to initialize controller more than once.');
 		}
 
 		this._isInitialized = true;
 	}
 
 	/**
-	 * Register a new element for control by extending it with functionality needed by the controller.
+	 * Register a new object for control by extending it with functionality needed by the controller.
 	 *
-	 * @param element Element to be registered.
-	 * @returns Registered element with extended functionality.
+	 * @param obj Object to be registered.
+	 * @returns Registered object with extended functionality.
 	 */
-	public register(element: T): TT {
+	public register(obj: T): TT {
 		if (this.isInitialized) {
-			const { id } = element;
+			const { id } = obj;
 
-			if (!this.elements.has(id)) {
-				const programedElement = this.program(element);
-				this.elements.set(id, programedElement);
+			if (!this.objs.has(id)) {
+				const programedObj = this.program(obj);
+				this.registrationHook.execute(programedObj);
+				this.objs.set(id, programedObj);
 			}
 
-			return this.elements.get(id);
+			return this.objs.get(id);
 		}
-		throw Error('Cannot register elements before controller is initialized');
+		throw Error('Attempted to register object before controller initialization.');
 	}
 
 	/**
-	 * Program an element to behave in the way intended by the controller.
+	 * Program an object to behave in the way intended by the controller.
 	 *
-	 * @param element Element to be programmed for desired behavior.
-	 * @returns Element extended with control programming.
+	 * @param obj Object to be programmed for desired behavior.
+	 * @returns object extended with control programming.
 	 */
-	protected abstract program(element: T): TT;
+	protected abstract program(obj: T): TT;
 
 	/**
-	 * Load a controlled element given its unique identifying symbol.
+	 * Load a controlled object given its unique identifying symbol.
 	 *
-	 * @param key Unique symbol that identifies the controlled element to load.
+	 * @param key Unique symbol that identifies the controlled object to load.
 	 * @returns Load operation success indicator.
 	 */
 	public load(key: symbol): boolean {
 		let status = false;
 
-		if (this.elements.has(key)) {
-			this._current = this.elements.get(key);
+		if (this.objs.has(key)) {
+			this._current = this.objs.get(key);
 			status = true;
 		}
 

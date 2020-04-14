@@ -234,7 +234,7 @@
 		height: 100vh;
 
 		// surface
-		background-image: url('//passionfruit.test:8080/wp-content/themes/my-theme/dist/images/hero--medium.webp');
+		background-image: var(--hero-url);
 		background-size: cover;
 		background-position: center;
 

@@ -33,8 +33,11 @@ class App {
 			carouselData,
 		}: typeof pageData,
 	): void {
-		FormFieldController.initialize(formFieldCtrConfig);
-		ContactFormController.initialize(contactFormCtrConfig);
+		FormFieldController.constructInstance(formFieldCtrConfig);
+		ContactFormController.constructInstance(contactFormCtrConfig);
+
+		FormFieldController.instance.initialize();
+		ContactFormController.instance.initialize();
 		const heroCtr = new HeroController(document.querySelector('.hero'));
 		heroCtr.initialize();
 

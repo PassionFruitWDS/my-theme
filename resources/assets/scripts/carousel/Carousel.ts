@@ -149,7 +149,7 @@ export class Carousel extends Controllable {
 		this.nextTitle.addEventListener('click', this.renderNext);
 
 		// Render initial data
-		this.content.innerText = this.currData.content;
+		this.setContentOf(this.content);
 		this.title.innerText = this.currData.title;
 		this.prevTitle.innerText = this.prevData.title;
 		this.nextTitle.innerText = this.nextData.title;
@@ -214,9 +214,8 @@ export class Carousel extends Controllable {
 			transform: 'translateX(0)',
 		};
 
-		const { content } = this.currData;
 		const onOutComplete = (element: HTMLElement): void => {
-			element.innerText = content;
+			this.setContentOf(element);
 		};
 
 		const transition = new Transition(
@@ -240,6 +239,23 @@ export class Carousel extends Controllable {
 		);
 
 		transition.do();
+	}
+
+	protected setContentOf(element: HTMLElement): void {
+		const { content } = this.currData;
+
+		function appendNewParagraph(text: string): void {
+			const p = document.createElement('p');
+			p.innerText = text;
+			element.append(p);
+		}
+
+		element.querySelectorAll(':scope > *').forEach((child) => child.remove());
+		if (Array.isArray(content)) {
+			content.forEach(appendNewParagraph);
+		} else {
+			appendNewParagraph(content);
+		}
 	}
 
 	protected transitionImages(): void {
@@ -345,7 +361,7 @@ export class Carousel extends Controllable {
 
 export interface CarouselData {
 	title: string;
-	content: string;
+	content: string | string[];
 	imgSources: CarouselImageSet;
 }
 

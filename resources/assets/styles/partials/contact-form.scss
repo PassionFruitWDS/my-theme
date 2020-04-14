@@ -187,7 +187,7 @@
 		border-width: 2px;
 		border-style: outset;
 
-		&:hover, &:focus {
+		&--in-focus {
 			transform: translateY(-2px);
 			box-shadow: 0 0 20px 0 white;
 		}
@@ -234,7 +234,7 @@
 			border-style: outset;
 			cursor: pointer;
 
-			&:hover {
+			&:hover, &:focus {
 				// surface
 				box-shadow: 0 0 20px 0 white;
 				transform: translateY(-2px);
