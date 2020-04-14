@@ -16,10 +16,8 @@
 			<meta name="og:image:secure_url" content="{{ get_template_directory_uri() }}/dist/images/pfwds-logo--small.png">
 		@endif
 		<meta name="og:image:type" content="image/png">
-		{{-- @FIXME --}}
-		<meta property="og:image:width" content="###">
-		{{-- @FIXME --}}
-		<meta property="og:image:height" content="###">
+		<meta property="og:image:width" content="557">
+		<meta property="og:image:height" content="100">
 		<meta property="og:image:alt" content="A passion fruit cut in half sitting next to the words PassionFruit Web Development Studio">
 		<meta property="twitter:card" content="summary">
 		<meta property="twitter:image:alt" content="A passion fruit cut in half sitting next to the words PassionFruit Web Development Studio">
