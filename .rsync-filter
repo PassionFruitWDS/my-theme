@@ -2,11 +2,10 @@
 + index.php
 + functions.php
 + composer.json
-+ storage/***
-+ resources/views/***
++ storage/
++ resources/
 + dist/***
 + vendor/***
 + config/***
 + app/***
 - *
-- **

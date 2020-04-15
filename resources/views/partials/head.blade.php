@@ -8,10 +8,9 @@
 		<meta name="og:type" content="website">
 		<meta name="og:locale" content="en_US">
 		<meta name="og:descritpion" content="PassionFruit provides world-class web development, design, and marketing solutions to businesses and organizations. Modern, beautiful, robust sites for any scale or market.">
-		<meta name="og:image" content="{{ get_template_directory_uri() }}/dist/images/pfwds-logo--small.png">
-		{{-- @FIXME --}}
-		<meta name="og:url" content="https://passionfruitwd.wpengine.com">
+		<meta name="og:url" content="{{ get_site_url() }}">
 		<meta name="og:site_name" content="PassionFruit Web Development Studio">
+		<meta name="og:image" content="{{ get_template_directory_uri() }}/dist/images/pfwds-logo--small.png">
 		@if (is_ssl())
 			<meta name="og:image:secure_url" content="{{ get_template_directory_uri() }}/dist/images/pfwds-logo--small.png">
 		@endif

@@ -89,7 +89,7 @@
 				[
 					"slug" => "wordpress",
 					"title" => "Wordpress Artistry",
-					"content" => "In the right hands, Wordpress is an immensly powerful tool for building and managing beautiful, performant sites. PassionFruit brings talent and experience to bear, crafting artisan Wordpress sites, plugins, and themes. We leverage modern tools to ensure peek performance and tailor site features and plugins to your needs. Whether it be Elementor layouts, Block Editor widgets, or WooCommerce integration, PassionFruit has you covered.",
+					"content" => "In the right hands, Wordpress is an immensly powerful tool for building and managing beautiful, performant sites. PassionFruit brings talent and experience to bear, crafting artisan Wordpress sites, plugins, and themes. We leverage modern tools to ensure peak performance and tailor site features and plugins to your needs. Whether it be Elementor layouts, Block Editor widgets, or WooCommerce integration, PassionFruit has you covered.",
 					"img" => [
 						"alt" => "Wordpress logo",
 						"src" => get_template_directory_uri() . "/dist/images/wp_logo.svg",
@@ -125,7 +125,7 @@
 				[
 					"slug" => "design",
 					"title" => "On-Trend Designs",
-					"content" => "A site that looks outdated looks unmaintained and, worse, reflects badly on the business it's for. PassionFruit stays on top of the latest trends and designs so you don't have to. We pick the best features of trending designs to ensure your site looks current, and we leave gimicks that hurt user experience on the cutting room floor.",
+					"content" => "A site that looks outdated looks unmaintained and, worse, reflects badly on the business it's for. PassionFruit stays on top of the latest trends and designs so you don't have to. We pick the best features of trending designs to ensure your site looks current, and we leave gimmicks that hurt user experience on the cutting room floor.",
 					"img" => [
 						"alt" => "Artist's palette and wetted brush with sparkle accents",
 						"src" => get_template_directory_uri() . "/dist/images/paint_tools.svg",

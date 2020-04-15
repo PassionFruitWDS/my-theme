@@ -1,6 +1,5 @@
 const mix = require('laravel-mix');
 				require('@tinypixelco/laravel-mix-wp-blocks');
-				require('laravel-mix-purgecss');
 				require('laravel-mix-copy-watched');
 
 /*
@@ -23,20 +22,14 @@ mix.setPublicPath('./dist')
 	});
 
 mix.sass('resources/assets/styles/app.scss', 'styles')
-	.sass('resources/assets/styles/editor.scss', 'styles')
-	.purgeCss();
+	.sass('resources/assets/styles/editor.scss', 'styles');
 
 mix.ts('resources/assets/scripts/app.ts', 'scripts')
 	.js('resources/assets/scripts/customizer.js', 'scripts')
-	.blocks('resources/assets/scripts/editor.js', 'scripts')
-	.extract();
+	.blocks('resources/assets/scripts/editor.js', 'scripts');
 
 mix.copyWatched('resources/assets/images/**', 'dist/images')
 	.copyWatched('resources/assets/fonts/**', 'dist/fonts');
-
-mix.autoload({
-  jquery: ['$', 'window.jQuery'],
-});
 
 mix.options({
   processCssUrls: false,
