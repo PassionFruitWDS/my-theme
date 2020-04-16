@@ -158,14 +158,14 @@
 
 	.hero__brand-container {
 		// position
+		display: flex;
 		grid-area: brand;
-		justify-self: center;
+		justify-content: center;
 
 		.hero__brand {
 			// position
 			box-sizing: border-box;
 			max-width: map-get($breakpoints, medium);
-			margin: 0 20px;
 			width: 92%;
 			padding: 10px 20px;
 
