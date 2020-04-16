@@ -1,105 +1,55 @@
-import 'jquery';
 import Controllable from '../util/controllers/Controllable';
 import FormField from '../form-field/FormField';
 
-/** Contact form interface/data container. */
+/** ContactForm component model. */
 export default class ContactForm extends Controllable {
 
-	/**
-	 * PROPERTIES
-	 */
-
-	/** Cache of the form's raw main form field. */
-	private _rawMainField: JQuery<HTMLElement> | undefined;
-
-	/** Main form field of the form as a raw JQuery object. */
-	public get rawMainField(): JQuery<HTMLElement> {
-		if (!this._rawMainField) {
-			this._rawMainField = this.rawContactForm.find(
-				'.contact-form__main-wrapper .form-field',
-			);
-		}
-
-		return this._rawMainField;
-	}
-
-	/** Store of the object attached to the form's main form field */
+	/** Store of the form's main FormField component. */
 	private _mainField: FormField | undefined;
 
-	/** FormField object attached to the form's main form field */
+	/** Main FormField component of the form. */
 	public get mainField(): FormField {
 		if (!this._mainField) {
-			this._mainField = new FormField(this.rawMainField);
+			const rawField: HTMLElement = this.element.querySelector(
+				'.contact-form__main-wrapper .form-field',
+			);
+
+			this._mainField = new FormField(rawField);
 		}
 
 		return this._mainField;
 	}
 
-	/** Form fields of the form as raw JQuery objects. */
-	public get rawFields(): JQuery<HTMLElement> {
-		return this.rawContactForm.find('.form-field');
-	}
+	/** Root elements of the form's FormField components, excluding the root of the form's main FormField. */
+	public get nonMainFieldRoots(): HTMLElement[] {
 
-	/** Form fields of the form, other than its main field, as raw JQuery objects. */
-	public get rawNotMainFields(): JQuery<HTMLElement> {
-		return this.rawFields.filter(':not(.contact-form__main-wrapper .form-field)');
-	}
+		const fields = Array.from(this.element.querySelectorAll<HTMLElement>('.form-field'));
 
-	/** Input elements of the form. */
-	public get inputs(): HTMLElement[] {
-		const inputs = this.rawContactForm.find('input:not(.button)').toArray();
-
-		return inputs;
+		return fields.filter((el: HTMLElement) => !el.isSameNode(
+			this.mainField.element
+		));
 	}
 
 	/** Submission button of the form. */
-	public get submitButton(): JQuery<HTMLElement> {
-		return this.rawContactForm.find('.button--submit');
+	public get submitButton(): HTMLElement {
+		return this.element.querySelector('.button--submit');
 	}
 
-	/** Template containing additional form fields. */
-	public get template(): JQuery<HTMLElement> {
-		return $(`#${this.templateHtmlId}`);
+	/** Template containing additional FormFields. */
+	public get template(): HTMLTemplateElement {
+		return document.querySelector(`#${this.templateId}`);
 	}
 
 	/** HTML id of the form's template. */
-	public get templateHtmlId(): string {
-		return `${this.htmlId}__remainder`;
-	}
-
-	/** HTML id of the form. */
-	public get htmlId(): string {
-		const id = this.rawContactForm.attr('id');
-
-		if (!id) {
-			throw Error('Contact form element lacks id.');
-		}
-
-		return id;
-	}
-
-	/** Top margin size of the form. */
-	public get marginTop(): string {
-		return this.rawContactForm.css('margin-top');
-	}
-
-	private readonly _defaultMarginTop: string;
-
-	public get defaultMarginTop(): string {
-		return this._defaultMarginTop;
+	public get templateId(): string {
+		return `${this.element.id}__remainder`;
 	}
 
 	/**
-	 * PUBLIC METHODS
+	 * @param element Root element of the ContactForm component.
 	 */
-
-	/**
-	 * @param rawContactForm Raw form element associated with the ContactForm.
-	 */
-	constructor(public readonly rawContactForm: JQuery<HTMLElement>) {
-		super(rawContactForm.attr('id'));
-
-		this._defaultMarginTop = this.marginTop;
+	constructor(public readonly element: HTMLFormElement) {
+		super(element.id);
 	}
 
 }

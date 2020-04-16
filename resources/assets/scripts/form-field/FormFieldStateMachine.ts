@@ -4,6 +4,7 @@ import ActiveFormFieldProcessor from './ActiveFormFieldProcessor';
 import IdleFormFieldProcessor from './IdleFormFieldProcessor';
 import FormField from './FormField';
 
+/** Logic that controls state transitions of FormField elements. */
 export default class FormFieldStateMachine extends StateMachineBase<
 	typeof FormFieldStates,
 	FormFieldHookCallback,
@@ -11,16 +12,28 @@ export default class FormFieldStateMachine extends StateMachineBase<
 	StatefulFormField
 > {
 
-	// eslint-disable-next-line class-methods-use-this
-	protected makeSharedStateDataFor(_obj: FormField): null {
-		return null;
-	}
+	/** Initial state for StatefulFormFields. */
+	protected readonly initialState = 'idle';
 
-	protected stateProcessors = {
-		active: new ActiveFormFieldProcessor(),
-		idle: new IdleFormFieldProcessor(),
+	/** EMPTY. Member included to satisfy requirements of abstract `super`. */
+	protected makeSharedStateDataFor = (_obj: FormField): null => null;
+
+	/** Processors that resolve state transitions. */
+	protected stateProcessors: {
+		active: ActiveFormFieldProcessor;
+		idle: IdleFormFieldProcessor;
 	};
 
-	protected readonly initialState = 'idle';
+	/**
+	 * @param activeStateClass CSS class associated with the active state.
+	 */
+	constructor(activeStateClass: string) {
+		super();
+
+		this.stateProcessors = {
+			active: new ActiveFormFieldProcessor(activeStateClass),
+			idle: new IdleFormFieldProcessor(),
+		};
+	}
 
 }

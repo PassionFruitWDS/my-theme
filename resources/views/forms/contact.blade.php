@@ -15,7 +15,7 @@
 
 <form class="contact-form"
 	method="POST"
-	id="contact-form-1"
+	id="{{$form_id}}"
 	autocomplete="on">
 	<div class="contact-form__main-wrapper">
 		@include('components.form-field', [
@@ -26,7 +26,7 @@
 			'label_text' => 'Email Address',
 			'required' => true
 		])
-		<input id="contact-form-1__submit"
+		<input id="{{$form_id}}__submit"
 			class="contact-form__button button button--submit"
 			type="submit"
 			name="submit"
@@ -35,7 +35,7 @@
 	</div>
 </form>
 
-<template id="contact-form-1__remainder">
+<template id="{{$form_id}}__remainder">
 	@include('components.form-field', [
 		'class' => array_merge($class, [ 'contact-form__field--animated' ]),
 		'slug' => 'first_name',
@@ -64,10 +64,10 @@
 	])
 	<div class="contact-form__field contact-form__field--wide contact-form__field--animated form-field--required form-field">
 		<label class="form-field__label"
-			for="contact-form-1__message">
+			for="{{$form_id}}__message">
 			Message
 		</label>
-		<textarea id="contact-form-1__message"
+		<textarea id="{{$form_id}}__message"
 			class="form-field__input form-field__input--message"
 			name="message"
 			spellcheck="true"

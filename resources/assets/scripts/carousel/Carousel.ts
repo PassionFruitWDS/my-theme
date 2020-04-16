@@ -1,59 +1,191 @@
 import Controllable from '../util/controllers/Controllable';
+import Transition from '../util/misc/Transition';
 
 export class Carousel extends Controllable {
 
-	protected images: Map<string, JQuery<HTMLElement>> =
-	new Map<string, JQuery<HTMLElement>>();
+	private _backButton: HTMLElement;
 
-	private _title: JQuery<HTMLElement>;
+	protected get backButton(): HTMLElement {
+		if (!this._backButton) {
+			this._backButton = this.element.querySelector(`#${this.element.id}--back`);
+		}
 
-	private _nextTitle: JQuery<HTMLElement>;
-
-	private _prevTitle: JQuery<HTMLElement>;
-
-	private _content: JQuery<HTMLElement>;
-
-	protected setNextListener(): void {
-		this.nextTitle.on('click', this.renderNext);
+		return this._backButton;
 	}
 
-	protected setPrevListener(): void {
-		this.prevTitle.on('click', this.renderPrev);
+	private _content: HTMLElement;
+
+	protected get content(): HTMLElement {
+		if (!this._content) {
+			this._content = this.element.querySelector('.copy');
+		}
+
+		return this._content;
 	}
 
-	protected setFrwdListener(): void {
-		this.element.find(`#${this.htmlId}__frwd`).on('click', this.renderNext);
+	protected get currData(): CarouselData {
+		return this.getDataAt(this.index);
+	}
+
+	private _frwdButton: HTMLElement;
+
+	protected get frwdButton(): HTMLElement {
+		if (!this._frwdButton) {
+			this._frwdButton = this.element.querySelector(`#${this.element.id}--frwd`);
+		}
+
+		return this._frwdButton;
+	}
+
+	private _images: Map<string, HTMLElement> = new Map<string, HTMLElement>();
+
+	protected images = {
+		get: (idSlug: string): HTMLElement => {
+			if (!this._images.has(idSlug)) {
+				this._images.set(
+					idSlug,
+					this.towers.querySelector(`#${this.towers.id}--${idSlug}`)
+				);
+			}
+			return this._images.get(idSlug);
+		},
+	};
+
+	private index = 0;
+
+	protected get nextData(): CarouselData {
+		return this.getDataAt(this.index + 1);
+	}
+
+	private _nextTitle: HTMLElement;
+
+	protected get nextTitle(): HTMLElement {
+		if (!this._nextTitle) {
+			this._nextTitle = this.element.querySelector(`#${this.element.id}--next`);
+		}
+
+		return this._nextTitle;
+	}
+
+	protected get prevData(): CarouselData {
+		return this.getDataAt(this.index - 1);
+	}
+
+	private _prevTitle: HTMLElement;
+
+	protected get prevTitle(): HTMLElement {
+		if (!this._prevTitle) {
+			this._prevTitle = this.element.querySelector(`#${this.element.id}--prev`);
+		}
+
+		return this._prevTitle;
+	}
+
+	private _title: HTMLElement;
+
+	protected get title(): HTMLElement {
+		if (!this._title) {
+			this._title = this.element.querySelector(`#${this.element.id}--current`);
+		}
+
+		return this._title;
+	}
+
+	protected get titlesData(): { element: HTMLElement; text: string }[] {
+		return [
+			{
+				element: this.title,
+				text: this.currData.title,
+			},
+			{
+				element: this.prevTitle,
+				text: this.prevData.title,
+			},
+			{
+				element: this.nextTitle,
+				text: this.nextData.title,
+			},
+		];
+	}
+
+	private _towers: HTMLElement;
+
+	protected get towers(): HTMLElement {
+		if (!this._towers) {
+			this._towers = this.element.querySelector('.towers');
+		}
+
+		return this._towers;
+	}
+
+	private _towersHtmlId: string;
+
+	protected get towersHtmlId(): string {
+		if (!this._towersHtmlId) {
+			this._towersHtmlId = this.towers.id;
+		}
+
+		return this._towersHtmlId;
+	}
+
+	protected transition = '0.3s ease-in';
+
+	constructor(
+		public readonly element: HTMLElement,
+		protected readonly data: CarouselData[]
+	) {
+		super();
+
+		// Bind callbacks
+		this.renderNext = this.renderNext.bind(this);
+		this.renderPrev = this.renderPrev.bind(this);
+	}
+
+	public initialize(): void {
+		// Set listeners
+		this.backButton.addEventListener('click', this.renderPrev);
+		this.frwdButton.addEventListener('click', this.renderNext);
+		this.prevTitle.addEventListener('click', this.renderPrev);
+		this.nextTitle.addEventListener('click', this.renderNext);
+
+		// Render initial data
+		this.setContentOf(this.content);
+		this.title.innerText = this.currData.title;
+		this.prevTitle.innerText = this.prevData.title;
+		this.nextTitle.innerText = this.nextData.title;
+		const idSlugs = Object.keys(this.currData.imgSources);
+		idSlugs.forEach((idSlug): void => {
+			const image = this.images.get(idSlug);
+			const { alt, src } = this.currData.imgSources[idSlug];
+			image.setAttribute('src', src);
+			image.setAttribute('alt', alt);
+		});
+	}
+
+	protected display(index: number): void {
+		let direction: AnimationDirection;
+		if (index > this.index) {
+			direction = 'forward';
+		} else if (index < this.index) {
+			direction = 'back';
+		}
+
+		this.index = index % this.data.length;
+
+		if (direction) {
+			this.animatedTransition(direction);
+		}
 	}
 
 	protected renderNext(): void {
-		this.index += 1;
-	}
-
-	protected setBackListener(): void {
-		this.element.find(`#${this.htmlId}__back`).on('click', this.renderPrev);
+		this.display(this.index + 1);
 	}
 
 	protected renderPrev(): void {
-		this.index -= 1;
+		this.display(this.index - 1);
 	}
 
-	private _htmlId: string;
-
-	private _index: number;
-
-	public get htmlId(): string {
-		if (!this._htmlId) {
-			this._htmlId = this.element.attr('id');
-
-			if (!this._htmlId) {
-				throw Error('Tri-content element lacks an html id.');
-			}
-		}
-
-		return this._htmlId;
-	}
-
-	protected getDataByIndex(index: number): CarouselData {
+	protected getDataAt(index: number): CarouselData {
 		const modIndex = index % this.data.length;
 		if (modIndex < 0) {
 			return this.data[modIndex + this.data.length];
@@ -62,116 +194,184 @@ export class Carousel extends Controllable {
 		return this.data[index % this.data.length];
 	}
 
-	protected get prevData(): CarouselData {
-		return this.getDataByIndex(this.index - 1);
+	protected animatedTransition(direction: AnimationDirection): void {
+		this.transitionTitles(direction);
+		this.transitionImages();
+		this.transitionContent(direction);
 	}
 
-	protected get nextData(): CarouselData {
-		return this.getDataByIndex(this.index + 1);
+	protected transitionContent(_direction: AnimationDirection): void {
+		const outFinalStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '0',
+		};
+
+		const inInitialStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '0',
+		};
+
+		const inFinalStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '1',
+			transform: 'translateX(0)',
+		};
+
+		const onOutComplete = (element: HTMLElement): void => {
+			this.setContentOf(element);
+		};
+
+		const transition = new Transition(
+			this.content,
+			{
+				finalStyle: outFinalStyle,
+				transition: {
+					duration: 300,
+					timingFunc: 'ease-in',
+				},
+				callback: onOutComplete,
+				optionsOfNext: {
+					initialStyle: inInitialStyle,
+					finalStyle: inFinalStyle,
+					transition: {
+						duration: 300,
+						timingFunc: 'ease-out',
+					},
+				},
+			}
+		);
+
+		transition.do();
 	}
 
-	protected get currData(): CarouselData {
-		return this.getDataByIndex(this.index);
-	}
+	protected setContentOf(element: HTMLElement): void {
+		const { content } = this.currData;
 
-	protected render(): void {
-		this.prevTitle.html(this.prevData.title);
-		this.nextTitle.html(this.nextData.title);
-		this.title.html(this.currData.title);
-		this.renderImages(this.currData.imgSources);
-		this.content.html(this.currData.content);
-	}
-
-	private get content(): JQuery<HTMLElement> {
-		if (!this._content) {
-			this._content = this.element.find(`#${this.htmlId}__content`);
+		function appendNewParagraph(text: string): void {
+			const p = document.createElement('p');
+			p.innerText = text;
+			element.append(p);
 		}
 
-		return this._content;
+		element.querySelectorAll(':scope > *').forEach((child) => child.remove());
+		if (Array.isArray(content)) {
+			content.forEach(appendNewParagraph);
+		} else {
+			appendNewParagraph(content);
+		}
 	}
 
-	protected renderImages(imgSources: CarouselImageSources): void {
-		const keys = Object.keys(imgSources);
+	protected transitionImages(): void {
 
-		keys.forEach((key) => { this.renderImage(imgSources[key], key); });
-	}
+		const outInitialStyle: Partial<CSSStyleDeclaration> = {
+			animation: 'float paused',
+		};
 
-	protected renderImage(source: string, idSlug: string): void {
-		if (!this.images.has(idSlug)) {
-			this.images.set(
-				idSlug,
-				this.element.find(`#${this.htmlId}__icon--${idSlug}`)
+		const outFinalStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '0',
+			transform: 'translateY(-20px)',
+		};
+
+		const inFinalStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '1',
+			transform: 'translateY(0)',
+		};
+
+		const onInComplete = (element: HTMLElement): void => {
+			element.style.setProperty('animation', '');
+		};
+
+		const imgIdSlugs = Object.keys(this.currData.imgSources);
+		imgIdSlugs.forEach((idSlug) => {
+			const image = this.images.get(idSlug);
+			const { src, alt } = this.currData.imgSources[idSlug];
+
+			const onOutComplete = (element: HTMLElement): void => {
+				element.setAttribute('src', src);
+				element.setAttribute('alt', alt);
+			};
+
+			const transition = new Transition(
+				image,
+				{
+					initialStyle: outInitialStyle,
+					finalStyle: outFinalStyle,
+					transition: {
+						duration: 500,
+						timingFunc: 'ease-in',
+					},
+					callback: onOutComplete,
+					optionsOfNext: {
+						finalStyle: inFinalStyle,
+						transition: {
+							duration: 500,
+							timingFunc: 'ease-out',
+						},
+						callback: onInComplete,
+					},
+				}
 			);
-		}
 
-		this.images.get(idSlug).attr('src', source);
+			transition.do();
+		});
 	}
 
-	private get title(): JQuery<HTMLElement> {
-		if (!this._title) {
-			this._title = this.element.find(`#${this.htmlId}__current`);
-		}
+	protected transitionTitles(direction: AnimationDirection): void {
+		const outFinalStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '0',
+			transform: (direction === 'back') ? 'translateX(-10px)' : 'translateX(10px)',
+		};
 
-		return this._title;
+		const inInitialStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '0',
+			transform: (direction === 'back') ? 'translateX(10px)' : 'translateX(-10px)',
+		};
+
+		const inFinalStyle: Partial<CSSStyleDeclaration> = {
+			opacity: '1',
+			transform: 'translateX(0)',
+		};
+
+		this.titlesData.forEach((data) => {
+			const onOutComplete = (element: HTMLElement): void => {
+				element.textContent = data.text;
+			};
+
+			const transition = new Transition(
+				data.element,
+				{
+					finalStyle: outFinalStyle,
+					transition: {
+						duration: 300,
+						timingFunc: 'ease-in',
+					},
+					callback: onOutComplete,
+					optionsOfNext: {
+						initialStyle: inInitialStyle,
+						finalStyle: inFinalStyle,
+						transition: {
+							duration: 300,
+							timingFunc: 'ease-out',
+						},
+					},
+				}
+			);
+			transition.do();
+		});
 	}
-
-	protected get nextTitle(): JQuery<HTMLElement> {
-		if (!this._nextTitle) {
-			this._nextTitle = this.element.find(`#${this.htmlId}__next`);
-		}
-
-		return this._nextTitle;
-	}
-
-	protected get prevTitle(): JQuery<HTMLElement> {
-		if (!this._prevTitle) {
-			this._prevTitle = this.element.find(`#${this.htmlId}__prev`);
-		}
-
-		return this._prevTitle;
-	}
-
-	protected set index(index: number) {
-		this._index = index % this.data.length;
-
-		this.render();
-	}
-
-	protected get index(): number {
-		return this._index;
-	}
-
-	constructor(
-		public readonly element: JQuery<HTMLElement>,
-		protected readonly data: CarouselData[]
-	) {
-		super();
-
-		// Bind callbacks
-		this.renderNext = this.renderNext.bind(this);
-		this.renderPrev = this.renderPrev.bind(this);
-
-		// Set listeners and callbacks
-		this.setBackListener();
-		this.setFrwdListener();
-		this.setPrevListener();
-		this.setNextListener();
-
-		// Render initial data
-		this.index = 0;
-	}
-
 
 }
 
 export interface CarouselData {
 	title: string;
-	content: string;
-	imgSources: CarouselImageSources;
+	content: string | string[];
+	imgSources: CarouselImageSet;
 }
 
-interface CarouselImageSources {
-	one: string;
-	two: string;
-	three: string;
+interface CarouselImageSet {
+	[key: string]: CarouselImageData;
 }
+
+interface CarouselImageData {
+	src: string;
+	alt: string;
+}
+
+type AnimationDirection = 'back' | 'forward';

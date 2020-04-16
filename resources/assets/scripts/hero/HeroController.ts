@@ -1,82 +1,57 @@
-import 'jquery';
 import ContactFormController from '../contact-form/ContactFormController';
 import ContactForm from '../contact-form/ContactForm';
+import Shim from '../util/misc/Shim';
 
-/** implements hero section behavior */
+/** Oversees behavior implementation for a page's HeroComponent. */
 export default class HeroController {
 
-	private form: ContactForm;
+	/** Store of the Hero's Shim. */
+	private _shim: Shim;
 
-	constructor(
-		/** a hero section */
-		private hero: JQuery<HTMLElement>,
-	) {}
+	/** Hero's Shim object. The shim prevents the Hero's grid from responsively resizing while inserted. */
+	private get shim(): Shim {
+		if (!this._shim) {
+			this._shim = new Shim(this.element, { gridArea: 'shim' });
+		}
 
-	/**
-	 * apply intended behavior
-	 *
-	 * @param contactFormCtr controller of the contact form contained within
-	 * the hero section
-	 */
-	public initialize(): void {
-		this.form = new ContactForm(this.hero.find('.contact-form'));
-		ContactFormController.instance.register(this.form);
-		const idleContactFormData = ContactFormController
-			.instance
-			.current
-			.statesData
-			.idle;
-		idleContactFormData.exitHook.set(this.lockGrid.bind(this));
-		idleContactFormData.enterHook.set(this.unlockGrid.bind(this));
+		return this._shim;
 	}
 
-	private reactToIdleFormExit(): void {
-		this.lockFormMargins();
-		this.lockGrid();
-	}
-
-	private reactToIdleFormEnter(): void {
-		this.unlockGrid();
-		this.unlockFormMargins();
-	}
-
-	private lockFormMargins(): void {
-		const { form } = this;
-
-		form.rawContactForm.css('margin', `${form.marginTop} 0`);
-	}
-
-	private unlockFormMargins(): void {
-		this.form.rawContactForm.css('margin', '12vh 0');
-	}
-
-	/** allows the hero to responsively resize by removing the pseudo-element shim */
-	private unlockGrid(): void {
-		this.hero.children('#hero__shim').remove();
-	}
-
-	/** prevents the hero from responsively resizing by introducing a pseudo-element shim */
-	private lockGrid(): void {
-		this.hero.append(this.shimHtml);
-	}
-
-	/** html style node of an appropriately sized shim pseudo-element */
-	private get shimHtml(): string {
-		return `<style type="text/css" id="hero__shim">
-			.hero::before {
-				grid-area: shim;
-				content: "";
-				min-height: ${this.shimRowHeight};
-			}
-		</style>`;
-	}
-
-	/** height of the hero grid's shim row */
+	/** Hero grid's shim row height. */
 	private get shimRowHeight(): string {
-		const rowHeights = this.hero.css('grid-template-rows').split(' ');
+		const rowHeights = window.getComputedStyle(this.element).gridTemplateRows.split(' ');
 		const shimRowIndex = 2;
 		const shimHeight = rowHeights[shimRowIndex];
 		return shimHeight;
+	}
+
+	/**
+	 * Create a controller for a page's Hero component.
+	 *
+	 * @param element Hero component's root element.
+	 */
+	constructor(private element: HTMLElement) {
+		this.lockGridSize = this.lockGridSize.bind(this);
+		this.unlockGridSize = this.unlockGridSize.bind(this);
+	}
+
+	/** Implement behavior of the Hero component and its sub-components. */
+	public initialize(): void {
+		const form = new ContactForm(this.element.querySelector('.contact-form'));
+		const statefulForm = ContactFormController.instance.register(form);
+		statefulForm.statesData.idle.exitHook.set(this.lockGridSize);
+		statefulForm.statesData.idle.enterHook.set(this.unlockGridSize);
+	}
+
+	/** Enable responsive resizing of the Hero's grid. */
+	private unlockGridSize(): void {
+		this.shim.remove();
+	}
+
+	/** Disable responsive resizing of the Hero's grid */
+	private lockGridSize(): void {
+		this.shim.height = this.shimRowHeight;
+		this.shim.insert();
 	}
 
 }

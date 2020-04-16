@@ -17,32 +17,18 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	StatefulContactForm
 > {
 
-	public process(): void {
-		this._result = { resolvedTransition: this.resolvedTransition };
-	}
-
-	constructor() {
+	/**
+	 * @param cssClass Class associated with the 'active' state.
+	 */
+	constructor(protected readonly cssClass: string) {
 		super('active');
 	}
 
-	/** State, if any, that the loaded 'active' contact form should transition to. */
-	protected get resolvedTransition(): null | State {
-
-		if (this.shouldTransitionToIdle) return 'idle';
-
-		return null;
-	}
-
-	/** Indicator of whether the current processing target should transition to state 'idle' */
-	protected get shouldTransitionToIdle(): boolean {
-
-		const { currentStateData } = this;
-		const { currentSharedData } = this;
-
-		return (!currentStateData.subfieldIsActive.some((value) => value))
-			&& (!currentSharedData.mainFieldIsActive());
-	}
-
+	/**
+	 * Create 'active' state data for a ContactForm component.
+	 *
+	 * @param obj ContactForm component for which 'active' state data will be created.
+	 */
 	protected makeNewDataFor(obj: ContactForm): StatefulContactForm['statesData']['active'] {
 
 		type ReturnT = ReturnType<ActiveContactFormProcessor['makeNewDataFor']>;
@@ -61,6 +47,29 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 		return (data as ReturnT);
 	}
 
+	/** Resolve the transition, if any, that the loaded ContactForm should make. */
+	public process(): void {
+		this._result = { resolvedTransition: this.resolvedTransition };
+	}
+
+	/** State, if any, that the loaded ContactForm should transition to. */
+	protected get resolvedTransition(): null | State {
+
+		if (this.shouldTransitionToIdle) return 'idle';
+
+		return null;
+	}
+
+	/** Indicator of whether the loaded ContactForm should transition to state 'idle' */
+	protected get shouldTransitionToIdle(): boolean {
+
+		const { currentStateData } = this;
+		const { currentSharedData } = this;
+
+		return (!currentStateData.subfieldIsActive.some((value) => value))
+			&& (!currentSharedData.mainFieldIsActive());
+	}
+
 	/** List of states accessible from 'active'. */
 	public readonly canSendTo: ['idle'] = ['idle'];
 
@@ -77,7 +86,7 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	}
 
 	/**
-	 * Execute 'active' state onEnter behavior for a target contact form.
+	 * Execute 'active' state onEnter behavior for a ContactForm.
 	 *
 	 * @param target Stateful contact form to be manipulated.
 	 */
@@ -89,36 +98,33 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 		this.enableSubmitButton();
 	}
 
-	/** Register non-main form fields with their controller. */
+	/** Register non-main FormFields with their controller. */
 	protected registerNewFormFields(): void {
 		const { current } = this;
 
-		current.rawNotMainFields.toArray().forEach(
+		current.nonMainFieldRoots.forEach(
 			this.registerNewFormField.bind(this)
 		);
 	}
 
 	/**
-	 * Register a form field with its controller.
+	 * Register a FormField component with its controller.
 	 *
-	 * @param field Raw form field to be registered with its controller.
+	 * @param field FormField component root to be registered with its controller.
 	 */
 	protected registerNewFormField(field: HTMLElement): void {
 
-		const { notifyIsActive, notifyIsNotActive } = this
-			.makeFormFieldDataAndBinders();
+		const formField = FormFieldController.instance.register(
+			new FormField(field)
+		);
 
-		const formField = new FormField($(field));
-		FormFieldController.instance.register(formField);
-		const statefulFormField = FormFieldController.instance.current;
-		const formFieldActiveStateData = statefulFormField.statesData.active;
-
-		formFieldActiveStateData.enterHook.set(notifyIsActive);
-		formFieldActiveStateData.exitHook.set(notifyIsNotActive);
+		const callbacks = this.makeFormFieldTransitionCallbacks();
+		formField.statesData.active.enterHook.set(callbacks.notifyIsActive);
+		formField.statesData.active.exitHook.set(callbacks.notifyIsNotActive);
 	}
 
 	/** Create data and data binding callbacks for subfield state indication flags */
-	protected makeFormFieldDataAndBinders():
+	protected makeFormFieldTransitionCallbacks():
 	{
 		notifyIsActive: () => void;
 		notifyIsNotActive: () => void;
@@ -143,33 +149,34 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	protected expandForm(): void {
 		const { current } = this;
 
-		current.rawContactForm.append(current.template.html());
+		const clone = current.template.content.cloneNode(true);
+		current.element.append(clone);
 	}
 
 	/** Shrink the form by removing it's 'expanded'/'active' state fields. */
 	protected shrinkForm(): void {
 		const { current } = this;
 
-		current.rawNotMainFields.remove();
+		current.nonMainFieldRoots.forEach((node) => node.remove());
 		current.statesData.active.subfieldIsActive = [];
 	}
 
 	/** Enable the form's submission button. */
 	protected enableSubmitButton(): void {
-		this.current.submitButton.removeAttr('disabled');
+		this.current.submitButton.removeAttribute('disabled');
 	}
 
 	/** Disable the form's submit button. */
 	protected disableSubmitButton(): void {
-		this.current.submitButton.attr('disabled', '');
+		this.current.submitButton.setAttribute('disabled', '');
 	}
 
 	/**
 	 * Apply the form field's 'active' state style by adding the appropriate css class.
 	 */
 	protected applyStyle(): void {
-		this.current.rawContactForm.addClass(
-			ActiveContactFormProcessor.cssClass
+		this.current.element.classList.add(
+			this.cssClass
 		);
 	}
 
@@ -177,12 +184,9 @@ export default class ActiveContactFormProcessor extends StateProcessorBase<
 	 * Remove the form field's 'active' state style by removing the appropriate css class.
 	 */
 	protected removeStyle(): void {
-		this.current.rawContactForm.removeClass(
-			ActiveContactFormProcessor.cssClass
+		this.current.element.classList.remove(
+			this.cssClass
 		);
 	}
-
-	/** Css class that contains form fields' 'active' state style rules. */
-	protected static readonly cssClass = 'contact-form--is-active';
 
 }

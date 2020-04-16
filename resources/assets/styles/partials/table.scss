@@ -1,0 +1,30 @@
+.table {
+	.table__heading {
+		max-width: 100%;
+		width: max-content;
+		margin: 60px auto 0;
+
+		// font-size: 48px;
+		text-align: center;
+		text-shadow: 0 0 3px #444444;
+	}
+
+	.table__container {
+		width: 100%;
+		padding: 60px 60px;
+		box-sizing: border-box;
+
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+
+		&> * {
+			margin: 20px 40px;
+		}
+
+		@include media("<medium") {
+			padding: 30px 0;
+		}
+	}
+}

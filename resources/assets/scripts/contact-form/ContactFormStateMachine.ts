@@ -12,24 +12,31 @@ export default class ContactFormStateMachine extends StateMachineBase<
 	StatefulContactForm
 > {
 
-	// eslint-disable-next-line class-methods-use-this
-	protected makeSharedStateDataFor(obj: ContactForm): StatefulContactForm['statesData']['shared'] {
+	protected readonly initialState = 'idle';
+
+	protected stateProcessors: {
+		idle: IdleContactFormProcessor;
+		active: ActiveContactFormProcessor;
+	};
+
+	constructor(activeStateClass: string) {
+		super();
+		this.stateProcessors = {
+			idle: new IdleContactFormProcessor(),
+			active: new ActiveContactFormProcessor(activeStateClass),
+		};
+	}
+
+	protected readonly makeSharedStateDataFor = (obj: ContactForm): StatefulContactForm['statesData']['shared'] => {
 		const { mainField } = obj;
-		FormFieldController.instance.register(mainField);
-		const statefulMainField = FormFieldController.instance.current;
+		const statefulMainField = FormFieldController.instance.register(
+			mainField
+		);
 		const shared = {
 			mainFieldIsActive: (): boolean => statefulMainField.state === 'active',
 		};
 
 		return shared;
-	}
-
-	protected stateProcessors = {
-		idle: new IdleContactFormProcessor(),
-		active: new ActiveContactFormProcessor(),
 	};
-
-	protected readonly initialState = 'idle';
-
 
 }

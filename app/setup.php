@@ -17,12 +17,80 @@ use function Roots\asset;
  * @return void
  */
 add_action('wp_enqueue_scripts', function () {
-	wp_enqueue_script('sage/vendor.js', asset('scripts/vendor.js')->uri(), ['jquery'], null, true);
-	wp_enqueue_script('sage/app.js', asset('scripts/app.js')->uri(), ['sage/vendor.js', 'jquery'], null, true);
-	$translation_array = array( 'themeUrl' => get_template_directory_uri() );
-	wp_localize_script('sage/app.js', 'injectedData', $translation_array);
-
-	wp_add_inline_script('sage/vendor.js', asset('scripts/manifest.js')->contents(), 'before');
+	wp_enqueue_script('sage/app.js', asset('scripts/app.js')->uri(), [], null, true);
+	$translation_array = array(
+		'themeUrl' => get_template_directory_uri(),
+		'formFieldCtrConfig' => array(
+			'activeStateClass' => 'form-field--active-state',
+		),
+		'contactFormCtrConfig' => array(
+			'activeStateClass' => 'contact-form--is-active',
+			'inFocusFieldClass' => 'contact-form__field--in-focus',
+		),
+		'carouselData' => array(
+			array(
+				'title' => 'Development',
+				'content' => array(
+					'Setting up a new site from scratch? Want to give your users new ways to interact? Need critical fixes?',
+					'PassionFruit offers solutions to all your full-stack web development needs. We specialize in the time-tested tech of Wordpress and leverage modern tools and frameworks to achieve world-class performance. Never let your users see broken or half-finished features again, as PassionFruit strictly utilizes local development and pre-deployment testing.',
+				),
+				'imgSources' => array(
+					'icon-one' => array(
+						'src' => get_template_directory_uri() . '/dist/images/curly-brackets.svg',
+						'alt' => 'Curly brackets',
+					),
+					'icon-two' => array(
+						'src' => get_template_directory_uri() . '/dist/images/gear.svg',
+						'alt' => 'Gear cog',
+					),
+					'icon-three' => array(
+						'src' => get_template_directory_uri() . '/dist/images/bug-fix.svg',
+						'alt' => 'Bug with wrench partially obscuring it',
+					),
+				),
+			),
+			array(
+				'title' => 'Marketing',
+				'content' => 'A site can be blazing fast and beautiful to look at, but it\'s nothing without content and visibility. With PassionFruit, there\'s no need to hire a new contractor to write your site\'s content. Our professional marketing services cover everything from copy writing to search engine optimization to web advertising.',
+				'imgSources' => array(
+					'icon-one' => array(
+						'src' => get_template_directory_uri() . '/dist/images/at.svg',
+						'alt' => 'At symbol',
+					),
+					'icon-two' => array(
+						'src' => get_template_directory_uri() . '/dist/images/magnifying-glass.svg',
+						'alt' => 'Magnifying glass',
+					),
+					'icon-three' => array(
+						'src' => get_template_directory_uri() . '/dist/images/share.svg',
+						'alt' => 'Web sharing symbol',
+					),
+				),
+			),
+			array(
+				'title' => 'Design',
+				'content' => array(
+					'On the web, presentation is key. Look and feel set users\' impressions of a site and the business behind it, so design is a first-class concern. PassionFruit delivers with beautiful, modern, user-friendly pages and layouts.',
+					'We believe you deserve to have your site reflect the passion that goes into your business. As such, we work closely with you to understand your vision for your brand and we craft a design to match.',
+				),
+				'imgSources' => array(
+					'icon-one' => array(
+						'src' => get_template_directory_uri() . '/dist/images/pencil.svg',
+						'alt' => 'Pencil',
+					),
+					'icon-two' => array(
+						'src' => get_template_directory_uri() . '/dist/images/responsive-smartphone.svg',
+						'alt' => 'Smartphone displaying a responsive web layout',
+					),
+					'icon-three' => array(
+						'src' => get_template_directory_uri() . '/dist/images/palette.svg',
+						'alt' => 'Artist\'s palette',
+					),
+				),
+			),
+		),
+	);
+	wp_localize_script('sage/app.js', 'pageData', $translation_array);
 
 	if (is_single() && comments_open() && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
@@ -30,6 +98,15 @@ add_action('wp_enqueue_scripts', function () {
 
 	wp_enqueue_style('sage/app.css', asset('styles/app.css')->uri(), false, null);
 }, 100);
+
+/**
+ * Prevent Block Library CSS from being loaded on frontend.
+ *
+ * @return void
+ */
+add_action('wp_enqueue_scripts', function () {
+	wp_dequeue_style('wp-block-library');
+});
 
 /**
  * Register the theme assets with the block editor.
@@ -145,7 +222,7 @@ add_action('widgets_init', function () {
 });
 
 /**
- * Inject the color palette into the head
+ * Inject color palette custom properties into head.
  *
  * @return void
  */
@@ -156,6 +233,20 @@ add_action('wp_head', function () {
 		echo('--' . $color_swatch['slug'] . '-color: ' . $color_swatch['color'] . ';');
 		echo('--' . $color_swatch['slug'] . '-rgb: ' . hex2rgb($color_swatch['color']) . ';');
 	}
+	echo '}';
+	echo '</style>';
+});
+
+/**
+ * Inject theme uri custom property into head.
+ *
+ * @return void
+ */
+add_action('wp_head', function() {
+	echo '<style type="text/css">';
+	echo ':root {';
+	echo('--hero-url: url(' . get_template_directory_uri() . '/dist/images/hero--medium.webp);');
+	echo('--tower-top-url: url(' . get_template_directory_uri() . '/dist/images/tower_top.webp);');
 	echo '}';
 	echo '</style>';
 });

@@ -1,24 +1,49 @@
 .footer {
 	display: grid;
 	grid: min-content / 50% 50%;
-	background-color: slategray;
+	background-color: var(--dark-primary-color);
 	box-shadow: 0 0 10px black;
 	padding: 20px 0;
+	color: white;
 
 	.footer__brand {
-		margin-left: 30px;
-		width: 60%;
+		align-self: center;
+		box-sizing: border-box;
+		padding-left: 30px;
+		max-width: 100%;
+		width: 340px;
+		max-height: 100%;
 	}
 
 	.footer__legal {
+		flex-direction: column;
 		box-sizing: border-box;
 		align-self: center;
 		text-align: right;
 		width: 100%;
+		height: min-content;
 		padding-right: 30px;
 
 		.footer__cw {
 			margin-bottom: 5px;
 		}
+
+		.footer__terms-link {
+			float: right;
+			width: min-content;
+			cursor: pointer;
+			&:hover,&:focus {
+				text-decoration: underline;
+			}
+
+			&:focus {
+				outline: solid;
+			}
+		}
+	}
+
+	@include media("<small") {
+		font-size: 12px;
+		margin-bottom: 3.6 * 16px
 	}
 }

@@ -146,7 +146,7 @@
 				   "brand" min-content
 				   "shim" minmax(20px, 1fr)
 				   "feature" min-content
-				   "form" minmax(10vh, min-content)
+				   "form" minmax(26vh, min-content)
 				   / 100%;
 
 	//-- override global decorator in this context
@@ -156,56 +156,38 @@
 		box-shadow: 0 0 20px 0px black;
 	}
 
-	.hero__brand-grid {
+	.hero__brand-container {
 		// position
 		grid-area: brand;
-		width: 100%;
+		justify-self: center;
 
-		// display
-		display: grid;
-		grid: ". brand ." min-content
-			  / minmax(20px, 1fr) minmax(auto, 700px) minmax(20px, 1fr);
+		.hero__brand {
+			// position
+			box-sizing: border-box;
+			max-width: map-get($breakpoints, medium);
+			margin: 0 20px;
+			width: 92%;
+			padding: 10px 20px;
 
-		.hero__brand-surface {
-			grid-area: brand;
 			background-color: rgba(white, 0.55);
 			box-shadow: 0 0 10px white;
 			border-radius: 20px;
-			@include fade-in(place);
-		}
-
-		.hero__brand-image {
-			// position
-			grid-area: brand;
-			align-content: center;
-			justify-self: center;
-			width: 92%;
-			padding: 3% 4%;
 
 			// animation
 			@include fade-in(place);
 		}
 	}
 
-	.hero__feature-grid {
+	.hero__feature-container {
 		// position
 		grid-area: feature;
-		width: 100%;
+		justify-self: center;
 
-		// display
-		display: grid;
-		grid: ". feature ." min-content
-			  / minmax(0, 1fr) minmax(min-content, 90%) minmax(0, 1fr);
-
-		// content
-		color: white;
-
-		.hero__feature-surface {
+		.hero__feature {
 			// position
-			grid-area: feature;
-			justify-self: center;
+			padding: 0 20px;
 			max-width: 800px;
-			width: 100%;
+			justify-self: center;
 			box-sizing: border-box;
 
 			border-color: var(--light-primary-color);
@@ -215,24 +197,13 @@
 			// surface
 			@extend %surface;
 
-			@include fade-in(place);
-		}
-
-		.hero__feature {
-			// position
-			grid-area: feature;
-			padding: 0 20px;
-			max-width: 800px;
-			width: 100%;
-			justify-self: center;
-			box-sizing: border-box;
+			color: white;
 
 			// animation
 			@include fade-in(place);
 
 			h1 {
 				// position
-				margin: 0.5em 0;
 				text-align: center;
 
 				// content
@@ -240,9 +211,6 @@
 			}
 
 			p {
-				// position
-				margin: 1em 0;
-
 				// content
 				text-align: justify;
 
@@ -255,7 +223,9 @@
 		}
 	}
 
-	.hero__background {
+	&::after {
+		content: "";
+
 		// position
 		position: fixed;
 		top: 0;
@@ -264,6 +234,7 @@
 		height: 100vh;
 
 		// surface
+		background-image: var(--hero-url);
 		background-size: cover;
 		background-position: center;
 
@@ -289,22 +260,13 @@
 		}
 	}
 
-	@include media("<=small") {
-		.hero__feature-grid {
-			grid: ". feature ." min-content
-				  / minmax(0, 1fr) minmax(min-content, 100%) minmax(0, 1fr);
-
-			.hero__feature-surface {
+	@include media("<medium") {
+		.hero__feature-container {
+			.hero__feature {
 				border-radius: 0;
 				border-left-style: none;
 				border-right-style: none;
 			}
-		}
-
-		&::after {
-			grid-area: form;
-			content: "";
-			height: 26vh;
 		}
 	}
 }

@@ -1,67 +1,36 @@
-$backgroundClr: var(--primary-color);
-
 .card {
-	&:nth-of-type(2n-1) {
-		border-color: var(--secondary-accent-color);
-		background-image: linear-gradient(45deg, var(--secondary-accent-color), var(--secondary-accent-alternate-color));
-	}
-
-	&:nth-of-type(2n) {
-		border-color: var(--primary-color);
-		background-image: linear-gradient(45deg, var(--primary-accent-color), var(--primary-accent-alternate-color));
-	}
-
+	max-width: 400px;
+	border: 5px outset;
 	border-radius: 20px;
-	border-style: outset;
-	border-width: 5px;
+
 	display: flex;
 	flex-direction: column;
-	max-width: 400px;
-	box-shadow: 0 0 10px black;
-	color: white;
 
-	.card__thumbnail-outer {
+	color: white;
+	box-shadow: 0 0 10px black;
+
+	.card__image-container {
 		position: relative;
-		display: flex;
-		justify-content: center;
 		width: 100%;
 
-		&::before {
-			content: "";
-			position: absolute;
-			background-color: #dfdfdf;
-			box-shadow: inset 0 0 6px black;
-			width: 100%;
-			height: 42.5%;
-			top: 0;
-			border-radius: 20px 20px 0 0;
-		}
+		display: flex;
+		justify-content: center;
 
-		&::after {
-			content: "";
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
-			background-image: url(//passionfruit.test:3000/wp-content/themes/my-theme/dist/images/tower_top.png);
-			background-repeat: no-repeat;
-			background-position: bottom;
-			background-size: auto 80%;
-		}
-
-		.card__thumbnail-inner {
-			width: 80px;
+		.card__image {
+			width: 100px;
 			margin: 0 auto;
 		}
 	}
 
 	.card__title {
-		margin: 0.2em auto 1em;
+		margin: 0.2em 30px 1em;
+
+		text-align: center;
 	}
 
 	.card__content {
 		padding: 0 30px 30px;
-		text-align: justify;
+
+		text-align: left;
 	}
 }

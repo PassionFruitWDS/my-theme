@@ -1,53 +1,53 @@
 /**
  * External Dependencies
  */
-import 'jquery';
-import FormFieldController from './form-field/FormFieldController';
-import ContactFormController from './contact-form/ContactFormController';
+import FormFieldController, { FormFieldControllerConfig } from './form-field/FormFieldController';
+import ContactFormController, { ContactFormControllerConfig } from './contact-form/ContactFormController';
 import HeroController from './hero/HeroController';
 import { CarouselData, Carousel } from './carousel/Carousel';
+import TermsController from './footer/TermsController';
 
-declare const injectedData: { themeUrl: string };
-const { themeUrl } = injectedData;
+declare const pageData: {
+	formFieldCtrConfig: FormFieldControllerConfig;
+	contactFormCtrConfig: ContactFormControllerConfig;
+	carouselData: CarouselData[];
+};
 
-$(document).ready(() => {
-	// Hero
-	FormFieldController.instance.initialize();
-	ContactFormController.instance.initialize();
-	const heroCtr = new HeroController($('.hero'));
-	heroCtr.initialize();
+class App {
 
-	// Tri-content
-	const carouselData: CarouselData[] = [
+	private static cachedInstance: App;
+
+	public static get instance(): App {
+		if (!this.cachedInstance) {
+			throw Error('Singleton must be initialized before accessing');
+		}
+		return App.cachedInstance;
+	}
+
+	private constructor() {}
+
+	public static initialize(
 		{
-			title: 'Development',
-			content: 'Lorem',
-			imgSources: {
-				one: `${themeUrl}/dist/images/at.svg`,
-				two: `${themeUrl}/dist/images/search.svg`,
-				three: `${themeUrl}/dist/images/share.svg`,
-			},
-		},
-		{
-			title: 'Marketing',
-			content: 'Ipsum',
-			imgSources: {
-				one: `${themeUrl}/dist/images/at.svg`,
-				two: `${themeUrl}/dist/images/search.svg`,
-				three: `${themeUrl}/dist/images/share.svg`,
-			},
+			formFieldCtrConfig,
+			contactFormCtrConfig,
+			carouselData,
+		}: typeof pageData,
+	): void {
+		FormFieldController.constructInstance(formFieldCtrConfig);
+		ContactFormController.constructInstance(contactFormCtrConfig);
 
-		},
-		{
-			title: 'Design',
-			content: 'Dolor',
-			imgSources: {
-				one: `${themeUrl}/dist/images/at.svg`,
-				two: `${themeUrl}/dist/images/search.svg`,
-				three: `${themeUrl}/dist/images/share.svg`,
-			},
-		},
-	];
-	// eslint-disable-next-line no-new
-	new Carousel($('.carousel'), carouselData);
-});
+		FormFieldController.instance.initialize();
+		ContactFormController.instance.initialize();
+		const heroCtr = new HeroController(document.querySelector('.hero'));
+		heroCtr.initialize();
+
+		const carousel = new Carousel(document.querySelector('#featured__carousel'), carouselData);
+		carousel.initialize();
+
+		const termsController = new TermsController();
+		termsController.initialize();
+	}
+
+}
+
+document.addEventListener('DOMContentLoaded', () => { App.initialize(pageData); });

@@ -11,26 +11,54 @@ export default class ActiveFormFieldProcessor extends StateProcessorBase<
 	States,
 	F,
 	'active',
-	FormField,
+	FormField & { statesData: { shared: StatefulFormField['statesData']['shared'] } },
 	StatefulFormField
 > {
 
-	public process(): void {
-		this._result = { resolvedTransition: this.resolvedTransition };
-	}
+	/** List of states accessible from `active`. */
+	public readonly canSendTo: ['idle'] = ['idle'];
 
-	constructor() {
-		super('active');
-	}
-
-	/** State, if any, that the loaded 'active' form field should transition to. */
-	public get resolvedTransition(): null | State {
+	/** State, if any, that the loaded `active` FormField should transition to. */
+	protected get resolvedTransition(): null | State {
 
 		if (!this.current.hasInput) return this.canSendTo[0];
 
 		return null;
 	}
 
+	/**
+	 * @param cssClass Class used to demark `active` FormField elements.
+	 */
+	constructor(private readonly cssClass) {
+		super('active');
+	}
+
+	/**
+	 * Execute canonical `active` state entrance behavior.
+	 *
+	 * @param target StatefulFormField to be manipulated.
+	 */
+	protected doOnEnter(target: StatefulFormField): void {
+		this.load(target);
+		this.markActive();
+	}
+
+	/**
+	 * Execute canonical `active` state exit behavior.
+	 *
+	 * @param target StatefulFormField to be manipulated.
+	 */
+	protected doOnExit(target: StatefulFormField): void {
+		this.load(target);
+		this.unmarkActive();
+	}
+
+	/**
+	 * Create and initialize the StateData for a FormField's `active` state.
+	 *
+	 * @param obj FormField for which a StateData object will be created.
+	 * @returns Initialized StateData of the input FormField's `active` state.
+	 */
 	protected makeNewDataFor(obj: FormField): StatefulFormField['statesData']['active'] {
 		const data = new StateData<States, F>(this.canSendTo);
 
@@ -44,38 +72,19 @@ export default class ActiveFormFieldProcessor extends StateProcessorBase<
 		return data;
 	}
 
-	/** List of states accessible from 'active'. */
-	public readonly canSendTo: ['idle'] = ['idle'];
-
-	protected doOnExit(target: StatefulFormField): void {
-		this.load(target);
-		this.removeStyle();
+	/** Mark the current FormField as `active` by applying the appropriate class. */
+	private markActive(): void {
+		this.current.element.classList.add(this.cssClass);
 	}
 
-	protected doOnEnter(target: StatefulFormField): void {
-		this.load(target);
-		this.applyStyle();
+	/** Resolve the state, if any, to which the loaded FormField should transition. */
+	public process(): void {
+		this._result = { resolvedTransition: this.resolvedTransition };
 	}
 
-	/**
-	 * Apply the form field's 'active' state style by adding the appropriate css class.
-	 *
-	 * @param obj Form field to which the style will be applied.
-	 */
-	private applyStyle(): void {
-		this.current.formField.addClass(ActiveFormFieldProcessor.cssClass);
+	/** Unmark the current FormField from being `active` by removing the appropriate class. */
+	private unmarkActive(): void {
+		this.current.element.classList.remove(this.cssClass);
 	}
-
-	/**
-	 * Remove the form field's 'active' state style by removing the appropriate css class.
-	 *
-	 * @param obj Form field from which the style will be removed.
-	 */
-	private removeStyle(): void {
-		this.current.formField.removeClass(ActiveFormFieldProcessor.cssClass);
-	}
-
-	/** Css class that contains form fields' 'active' state style rules. */
-	private static readonly cssClass = 'form-field--active-state';
 
 }

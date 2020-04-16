@@ -84,7 +84,7 @@ export default abstract class StateMachineBase<
 		return (stateful as TT);
 	}
 
-	protected abstract makeSharedStateDataFor(obj: T): TT['statesData']['shared'];
+	protected abstract readonly makeSharedStateDataFor: (obj: T) => TT['statesData']['shared'];
 
 	/**
 	 * Handle an event on the Stateful object.
