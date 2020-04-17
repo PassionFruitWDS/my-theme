@@ -18,6 +18,7 @@ use function Roots\asset;
  */
 add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_script('sage/app.js', asset('scripts/app.js')->uri(), [], null, true);
+	wp_enqueue_script('sage/modernizer.js', asset('scripts/modernizer.js')->uri(), [], null, true);
 	$translation_array = array(
 		'themeUrl' => get_template_directory_uri(),
 		'formFieldCtrConfig' => array(
@@ -245,8 +246,10 @@ add_action('wp_head', function () {
 add_action('wp_head', function() {
 	echo '<style type="text/css">';
 	echo ':root {';
-	echo('--hero-url: url(' . get_template_directory_uri() . '/dist/images/hero--medium.webp);');
-	echo('--tower-top-url: url(' . get_template_directory_uri() . '/dist/images/tower_top.webp);');
+	echo('--hero-webp-url: url(' . get_template_directory_uri() . '/dist/images/hero--medium.webp);');
+	echo('--hero-png-url: url(' . get_template_directory_uri() . '/dist/images/hero--medium.png);');
+	echo('--tower-top-webp-url: url(' . get_template_directory_uri() . '/dist/images/tower_top.webp);');
+	echo('--tower-top-jp2-url: url(' . get_template_directory_uri() . '/dist/images/tower_top.jp2);');
 	echo '}';
 	echo '</style>';
 });

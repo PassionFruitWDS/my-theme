@@ -1,13 +1,22 @@
 <footer class="footer">
-	<img class="footer__brand"
-		loading="lazy"
-		srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 279w,
-			{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 557w"
-		sizes="(max-width: 576px): 279px,
-			557px"
-		src="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }}"
-		width="557px"
-		alt="PassionFruit Web Development Studio"/>
+	<picture>
+		<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 557w,
+			{{ get_template_directory_uri() . '/dist/images/pfwds-logo--x-small.webp' }} 279w"
+			type="image/webp" >
+		<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.jp2' }} 557w,
+			{{ get_template_directory_uri() . '/dist/images/pfwds-logo--x-small.jp2' }} 279w"
+			type="image/jp2" >
+		<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.png' }} 557w,
+			{{ get_template_directory_uri() . '/dist/images/pfwds-logo--x-small.png' }} 279w"
+			type="image/png" >
+		<img class="footer__brand"
+			loading="lazy"
+			sizes="(max-width: 576px): 279px,
+				557px"
+			src="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.png' }}"
+			width="557px"
+			alt="A fresh passion fruit, cut in half, next to the words 'PassionFruit Web Development Studio'"/>
+	</picture>
 	<div class="footer__legal">
 		<div class="footer__cw">
 			PassionFruit Web Development Studio LLC - &#x00a9 2020

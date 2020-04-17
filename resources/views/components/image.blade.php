@@ -23,6 +23,12 @@
 			<img id="{{$image_id}}"
 				class="{{implode(" ", $class)}}"
 				src="{{$src}}"
+				@isset($srcset)
+					srcset="{{$srcset}}"
+				@endisset
+				@isset($width)
+					width="{{$width}}"
+				@endisset
 				alt="{{$alt}}"/>
 		<?
 	}

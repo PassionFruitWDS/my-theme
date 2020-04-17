@@ -234,7 +234,6 @@
 		height: 100vh;
 
 		// surface
-		background-image: var(--hero-url);
 		background-size: cover;
 		background-position: center;
 
@@ -269,4 +268,12 @@
 			}
 		}
 	}
+}
+
+.webp .hero::after {
+	background-image: var(--hero-webp-url);
+}
+
+.no-webp .hero::after {
+	background-image: var(--hero-png-url);
 }

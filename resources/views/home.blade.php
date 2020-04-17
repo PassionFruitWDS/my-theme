@@ -32,14 +32,24 @@
 							],
 							"data_set" => [
 								[
-									"template" => "components.generic",
-									"tag" => "img",
+									"template" => "components.picture",
 									"id_modifier" => "background",
 									"class" => ["towers__image--background"],
-									"attr" => [
-										"src" => get_template_directory_uri() . "/dist/images/passionfruit-towers.webp",
+									"sources" => [
+										[
+											"src" => get_template_directory_uri() . "/dist/images/passionfruit-towers.webp",
+											"type" => "image/webp",
+										],
+										[
+											"src" => get_template_directory_uri() . "/dist/images/passionfruit-towers.jp2",
+											"type" => "image/jp2",
+										],
+									],
+									"img" => [
+										"src" => get_template_directory_uri() . "/dist/images/passionfruit-towers.png",
+										"width" => "659px",
 										"alt" => "Three isometric towers in a park like setting with icons floating above each tower",
-									]
+									],
 								],
 								[
 									"template" => "components.generic",

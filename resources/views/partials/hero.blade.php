@@ -1,12 +1,23 @@
 <section id="home__hero" class="hero">
 	<div id="home__hero--brand-container" class="hero__brand-container">
-		<img id="home__hero--brand-image" class="hero__brand"
-			srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.webp' }} 1045w,
+		<picture>
+			<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.webp' }} 1045w,
 				{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 557w"
-			sizes="(max-width: 576px) 557px,
-				1045px"
-			src="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.webp' }}"
-			alt="PassionFruit Web Development Studio"/>
+				type="image/webp" >
+			<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.jp2' }} 1045w,
+				{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.jp2' }} 557w"
+				type="image/jp2" >
+			<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.png' }} 1045w,
+				{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.png' }} 557w"
+				type="image/png" >
+			<img id="home__hero--brand-image"
+				class="hero__brand"
+				sizes="(max-width: 576px) 557px,
+					1045px"
+				src="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.png' }}"
+				width="1045px"
+				alt="A fresh passion fruit, cut in half, next to the words 'PassionFruit Web Development Studio'"/>
+		</picture>
 	</div>
 	<div id="home__hero--feature-container" class="hero__feature-container">
 		<div id="home__hero--feature" class="hero__feature">
