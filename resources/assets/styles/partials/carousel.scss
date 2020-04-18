@@ -91,7 +91,6 @@
 			display: inline-flex;
 
 			font-size: 1.5em;
-			text-shadow: 0 0 3px #444444;
 		}
 
 		&:not(.carousel__heading--big), &__button {
@@ -99,8 +98,6 @@
 				cursor: pointer;
 
 				transform: translateY(-3px);
-
-				text-shadow: 0 1px 2px #444444;
 			}
 		}
 	}

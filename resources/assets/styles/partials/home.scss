@@ -140,16 +140,7 @@
 				background-clip: text;
 				-webkit-background-clip: text;
 				color: transparent;
-				text-shadow: none;
 				background-image: linear-gradient(to right, var(--dark-primary-color), var(--light-primary-color));
-
-				&::after{
-					position: absolute;
-					left: 0;
-					content: attr(data-value);
-					text-shadow: 0 0 3px #444444;
-					z-index: -1;
-				}
 			}
 		}
 

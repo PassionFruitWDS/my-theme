@@ -89,7 +89,7 @@
 		])
 		@include('partials.table', [
 			"slug" => "services",
-			"title" => "How can <em data-value=\"PassionFruit\">PassionFruit</em> help?",
+			"title" => "How can <em>PassionFruit</em> help?",
 			"class" => [],
 			"shared_data" => [
 				"template" => "components.card",
