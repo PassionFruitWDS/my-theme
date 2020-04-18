@@ -244,7 +244,8 @@
 		&:disabled {
 			// position
 			position: absolute;
-			right: 0;
+			padding: 0.8em 0;
+			right: 1em;
 
 			// surface
 			background-color: rgba(var(--dark-primary-rgb), 0);
