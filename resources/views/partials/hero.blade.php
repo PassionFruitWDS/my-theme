@@ -1,6 +1,7 @@
 <section id="home__hero" class="hero">
 	<div id="home__hero--brand-container" class="hero__brand-container">
-		<picture>
+		<picture id="home__hero--brand-image"
+			class="hero__brand">
 			<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.webp' }} 1045w,
 				{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.webp' }} 557w"
 				type="image/webp" >
@@ -10,9 +11,7 @@
 			<source srcset="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.png' }} 1045w,
 				{{ get_template_directory_uri() . '/dist/images/pfwds-logo--small.png' }} 557w"
 				type="image/png" >
-			<img id="home__hero--brand-image"
-				class="hero__brand"
-				sizes="(max-width: 576px) 557px,
+			<img sizes="(max-width: 576px) 557px,
 					1045px"
 				src="{{ get_template_directory_uri() . '/dist/images/pfwds-logo--medium.png' }}"
 				width="1045px"
