@@ -25,7 +25,7 @@ module.exports = {
 			generators: false,
 			objectLiteralDuplicateProperties: false
 		},
-		ecmaVersion: 2017,
+		ecmaVersion: 2019,
 		sourceType: 'module',
 		project: './tsconfig.json'
 	},
@@ -48,7 +48,6 @@ module.exports = {
 				functions: 'ignore'
 			}
 		],
-		'max-classes-per-file': 'off',
 		'max-len': [
 			'error',
 			{
