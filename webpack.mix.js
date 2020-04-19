@@ -26,8 +26,7 @@ mix.sass('resources/assets/styles/app.scss', 'styles')
 
 mix.ts('resources/assets/scripts/app.ts', 'scripts')
 	.js('resources/assets/scripts/customizer.js', 'scripts')
-	.js('resources/assets/scripts/modernizer.js', 'scripts')
-	.blocks('resources/assets/scripts/editor.js', 'scripts');
+	.js('resources/assets/scripts/modernizer.js', 'scripts');
 
 mix.copyWatched('resources/assets/images/**', 'dist/images')
 	.copyWatched('resources/assets/fonts/**', 'dist/fonts');
