@@ -14,7 +14,9 @@
 		background-position: 0 100%;
 		box-shadow: none;
 		border-width: 0;
-	} to {
+	}
+
+	to {
 		// visibility
 		visibility: visible;
 
@@ -27,7 +29,9 @@
 	from {
 		// visibility
 		opacity: 0;
-	} to {
+	}
+
+	to {
 		// visibility
 		opacity: 1;
 	}
@@ -61,22 +65,25 @@
 
 		// surface
 		$rgba: rgba($rgb, $alpha);
-		background: linear-gradient($rgba 0%,
+
+		background: linear-gradient(
+			$rgba 0%,
 			$rgba 25%,
-			rgba($rgb, 0) 75%);
+			rgba($rgb, 0) 75%
+		);
 		background-size: 100% 400%;
 
 		// animation
 		animation-name: fade--down;
-
-	} @else if in == $direction {
+	}
+	@else if in == $direction {
 		// visibility
 		opacity: 0;
 
 		// animation
 		animation-name: fade--in;
-
-	} @else { // default
+	}
+	@else { // default
 		@error "Unknown direction #{$direction}";
 	}
 
@@ -108,7 +115,7 @@
 		// position
 		max-height: 1000px; // hack that smooths expansion of the form on desktop/tablet
 
-		.contact-form__main-wrapper{
+		.contact-form__main-wrapper {
 			.contact-form__field {
 				// position
 				margin-right: 40px;
@@ -141,7 +148,7 @@
 			background-image: linear-gradient(0.125turn, var(--primary-accent-color), white, var(--secondary-accent-color));
 			align-content: center;
 
-			.contact-form__main-wrapper{
+			.contact-form__main-wrapper {
 				.contact-form__field {
 					// position
 					margin-right: 3%;
@@ -151,7 +158,7 @@
 
 		&:not(.contact-form--is-active) {
 			width: 100%;
-			bottom:0;
+			bottom: 0;
 
 			.contact-form__main-wrapper {
 				.contact-form__field {
@@ -182,7 +189,6 @@
 		width: 100%;
 		justify-self: center;
 		box-sizing: border-box;
-
 		border-color: var(--light-primary-color);
 		border-width: 2px;
 		border-style: outset;
@@ -222,7 +228,7 @@
 
 		// content
 		font-size: 130%;
-		font-family: "Bronova Bold";
+		font-family: "Bronova Bold", sans-serif;
 		font-weight: bold;
 		color: var(--light-secondary-color);
 
@@ -234,7 +240,8 @@
 			border-style: outset;
 			cursor: pointer;
 
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				// surface
 				box-shadow: 0 0 20px 0 white;
 				transform: translateY(-2px);

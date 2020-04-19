@@ -1,8 +1,6 @@
 .carousel {
 	margin-top: 40px;
-
 	background-color: white;
-
 	box-shadow: 0 0 20px black;
 
 	&__controls {
@@ -20,13 +18,12 @@
 		// Content
 		font-size: 32px;
 
-		&::after,&::before {
+		&::after,
+		&::before {
 			content: "";
-
 			width: 4px;
 			height: 50px;
 			margin: 0 10px;
-
 			border-radius: 3px;
 			background-color: black;
 		}
@@ -62,14 +59,12 @@
 
 	&__button {
 		flex-shrink: 5;
-
 		margin: 0 10px;
-
 		border-style: none;
+		background-color: transparent;
 
-		background-color: #00000000;
-
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			font-weight: bold;
 		}
 
@@ -80,23 +75,21 @@
 
 	&__heading {
 		width: 100%;
-
 		text-align: center;
 		flex-basis: 350px;
 
 		&--big {
 			justify-content: center;
 			margin: 0;
-
 			display: inline-flex;
-
 			font-size: 1.5em;
 		}
 
-		&:not(.carousel__heading--big), &__button {
-			&:hover, &:focus {
+		&:not(.carousel__heading--big),
+		&__button {
+			&:hover,
+			&:focus {
 				cursor: pointer;
-
 				transform: translateY(-3px);
 			}
 		}
@@ -111,7 +104,8 @@
 		&__controls {
 			font-size: 20px;
 
-			&::before, &::after {
+			&::before,
+			&::after {
 				height: 34px;
 			}
 		}
@@ -121,17 +115,16 @@
 		&__controls {
 			font-size: 18px;
 
-			&::before, &::after {
+			&::before,
+			&::after {
 				width: 3px;
 				height: 22px;
-
 				border-radius: 2px;
 			}
 		}
 
 		&__heading--big {
 			top: 0;
-
 			font-size: 20px;
 		}
 	}
@@ -140,7 +133,8 @@
 		&__controls {
 			font-size: 16px;
 
-			&::before, &::after {
+			&::before,
+			&::after {
 				height: 17px;
 				margin: 0 4px;
 			}
