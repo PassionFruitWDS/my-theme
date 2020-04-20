@@ -1,0 +1,32 @@
+/**
+ * Decorators
+ */
+
+%surface {
+	background-color: var(--primary-color);
+	border-radius: 20px;
+
+	&--left {
+		@extend %surface;
+
+		border-radius: 0 20px 20px 0;
+	}
+
+	&--right {
+		@extend %surface;
+
+		border-radius: 20px 0 0 20px;
+	}
+
+	&--top {
+		@extend %surface;
+
+		border-radius: 0 0 20px 20px;
+	}
+
+	&--round {
+		@extend %surface;
+
+		border-radius: 50%;
+	}
+}

@@ -4,6 +4,9 @@
 
 @import 'config/variables';
 
+@import '~hamburgers/_sass/hamburgers/hamburgers';
+@import '~include-media/dist/_include-media';
+
 .editor-styles-wrapper > * {
 	@import 'common/global';
 	@import 'components';

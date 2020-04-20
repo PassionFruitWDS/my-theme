@@ -1,9 +1,16 @@
 module.exports = {
 	root: true,
-	extends: 'eslint:recommended',
-	parser: 'babel-eslint',
+	extends: [
+		'airbnb-typescript/base',
+		'plugin:@typescript-eslint/recommended',
+	],
+	parser: '@typescript-eslint/parser',
+	plugins: [
+		'@typescript-eslint',
+	],
 	globals: {
-		wp: true
+		wp: true,
+		browser: true
 	},
 	env: {
 		node: true,
@@ -19,7 +26,8 @@ module.exports = {
 			objectLiteralDuplicateProperties: false
 		},
 		ecmaVersion: 2017,
-		sourceType: 'module'
+		sourceType: 'module',
+		project: './tsconfig.json'
 	},
 	plugins: ['import'],
 	settings: {
@@ -27,7 +35,9 @@ module.exports = {
 		'import/ignore': ['node_modules', '\\.(coffee|scss|css|less|hbs|svg|json)$']
 	},
 	rules: {
-		'no-console': 0,
+		'@typescript-eslint/indent': ['error', 'tab', { 'ignoredNodes': ['TSTypeParameterInstantiation', 'TSTypeAliasDeclaration *'] }],
+		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-unused-vars': ['error', {argsIgnorePattern: '^_.*'}],
 		'comma-dangle': [
 			'error',
 			{
@@ -37,6 +47,24 @@ module.exports = {
 				exports: 'always-multiline',
 				functions: 'ignore'
 			}
-		]
+		],
+		'max-classes-per-file': 'off',
+		'max-len': [
+			'error',
+			{
+				'code': 80,
+				'ignoreComments': true,
+				'ignoreUrls': true,
+				'ignoreStrings': true,
+				'ignoreTemplateLiterals': true,
+				'ignoreRegExpLiterals': true
+			}
+		],
+		'no-plusplus': ['error', {'allowForLoopAfterthoughts': true}],
+		'no-tabs': ['error', {'allowIndentationTabs': true}],
+		'no-spaced-func': 'off',
+		'no-underscore-dangle': ['error', {'allowAfterThis': true}],
+		'padded-blocks': ['error', {'classes': 'always'}],
+		'symbol-description': 'off'
 	}
 };

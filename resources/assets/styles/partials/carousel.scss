@@ -1,0 +1,157 @@
+.carousel {
+	margin-top: 40px;
+
+	background-color: white;
+
+	box-shadow: 0 0 20px black;
+
+	&__controls {
+		// Position
+		margin: 0 auto;
+		padding: 30px 0;
+
+		// Display
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		justify-items: center;
+
+		// Content
+		font-size: 32px;
+
+		&::after,&::before {
+			content: "";
+
+			width: 4px;
+			height: 50px;
+			margin: 0 10px;
+
+			border-radius: 3px;
+			background-color: black;
+		}
+
+		.carousel__button:first-of-type {
+			order: 0;
+		}
+
+		.carousel__heading:not(.carousel__heading--big):first-of-type {
+			order: 1;
+		}
+
+		&::before {
+			order: 2;
+		}
+
+		.carousel__heading--big {
+			order: 3;
+		}
+
+		&::after {
+			order: 4;
+		}
+
+		.carousel__heading:not(.carousel__heading--big):last-of-type {
+			order: 5;
+		}
+
+		.carousel__button:last-of-type {
+			order: 6;
+		}
+	}
+
+	&__button {
+		flex-shrink: 5;
+
+		margin: 0 10px;
+
+		border-style: none;
+
+		background-color: #00000000;
+
+		&:hover, &:focus {
+			font-weight: bold;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	&__heading {
+		width: 100%;
+
+		text-align: center;
+		flex-basis: 350px;
+
+		&--big {
+			justify-content: center;
+			margin: 0;
+
+			display: inline-flex;
+
+			font-size: 1.5em;
+		}
+
+		&:not(.carousel__heading--big), &__button {
+			&:hover, &:focus {
+				cursor: pointer;
+
+				transform: translateY(-3px);
+			}
+		}
+	}
+
+	&__container {
+		// Position
+		width: 100%;
+	}
+
+	@include media("<medium") {
+		&__controls {
+			font-size: 20px;
+
+			&::before, &::after {
+				height: 34px;
+			}
+		}
+	}
+
+	@include media("<small") {
+		&__controls {
+			font-size: 18px;
+
+			&::before, &::after {
+				width: 3px;
+				height: 22px;
+
+				border-radius: 2px;
+			}
+		}
+
+		&__heading--big {
+			top: 0;
+
+			font-size: 20px;
+		}
+	}
+
+	@include media("<=x-small") {
+		&__controls {
+			font-size: 16px;
+
+			&::before, &::after {
+				height: 17px;
+				margin: 0 4px;
+			}
+		}
+
+		&__heading--big {
+			font-size: 16px;
+		}
+
+		&__button {
+			margin: 0 4px;
+		}
+	}
+}
