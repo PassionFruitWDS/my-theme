@@ -4,6 +4,7 @@
 		"allowUnusedLabels": false,
 		"forceConsistentCasingInFileNames": true,
 		"lib": ["ES2019", "DOM"],
+		"moduleResolution": "node",
 		"noEmitOnError": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
