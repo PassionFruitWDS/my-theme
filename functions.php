@@ -64,4 +64,24 @@ array_map(function ($file) use ($sage_error) {
  * @link https://roots.io/acorn/
  */
 add_theme_support('sage');
+$env_path = Roots\base_path() . '/.env';
+if (file_exists($env_path)) {
+	$env = fopen($env_path, 'r');
+	try {
+		while ($expression = fgets($env)) {
+			$expression = str_replace("\n", "", $expression);
+			$terms = explode("=", $expression, 2);
+			$_ENV[$terms[0]] = $terms[1];
+		}
+		$dir = dirname($_ENV['APP_PACKAGES_CACHE']);
+		mkdir($dir);
+		$files = array_diff(scandir($dir), array('.','..'));
+		foreach ($files as $file) {
+		  unlink("$dir/$file");
+		}
+	} catch (Exception $e) {
+		error_log('Issue parsing theme\'s .env file.');
+	}
+	fclose($env);
+}
 Roots\bootloader();

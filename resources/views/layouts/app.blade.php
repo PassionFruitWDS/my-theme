@@ -3,22 +3,13 @@
 	@include('partials.head')
 
 	<body @php(body_class())>
-		<div id="app">
+		<div id="app" class="@yield('view-class')">
 			@php(wp_body_open())
 			@php(do_action('get_header'))
-			@include('partials.header')
 
-			<div class="container">
-				<main class="main">
-					@yield('content')
-				</main>
-
-				@hasSection('sidebar')
-					<aside class="sidebar">
-						@yield('sidebar')
-					</aside>
-				@endif
-			</div>
+			<main>
+				@yield('main')
+			</main>
 
 			@php(do_action('get_footer'))
 			@include('partials.footer')

@@ -1,0 +1,279 @@
+/**
+ * Hero
+ */
+
+/**
+ * Animations
+ */
+ @keyframes slide-in-right {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slide-in-left {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slide-in-down {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in-right {
+	from {
+		transform: translateX(-150%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in-left {
+	from {
+		transform: translateX(150%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in-down {
+	from {
+		transform: translateY(-150%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in-place {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/**
+ * @mixin slide-in
+ *
+ * @params:
+ *   $direction: [ right | left | down ]
+ *     The direction of the animation's line of action
+ *
+ * @description:
+ *   Translates the element by its size in the direction specified
+ */
+@mixin slide-in($direction) {
+	// handle direction
+	@if right == $direction {
+		animation-name: slide-in-right;
+	} @else if left == $direction {
+		animation-name: slide-in-left;
+	} @else if down == $direction {
+		animation-name: slide-in-down;
+	} @else { // default
+		@error "Unknown direction #{$direction}";
+	}
+
+	// animation
+	animation-delay: 0.1s;
+	animation-duration: 1.5s;
+	animation-fill-mode: forwards;
+}
+
+/**
+ * @mixin fade-in
+ *
+ * @params:
+ *   $direction: [ right | left | down | place ]
+ *     The direction of the animation's line of action
+ *
+ * @description:
+ *   Translates the element by its size in the direction specified, while
+ *   also transitioning the element from 0 to 1 opacity.
+ */
+@mixin fade-in($direction, $delay: 0.7s, $duration: 2s) {
+
+	opacity: 0;
+	// handle direction
+	@if right == $direction {
+		animation-name: fade-in-right;
+	} @else if left == $direction {
+		animation-name: fade-in-left;
+	} @else if down == $direction {
+		animation-name: fade-in-down;
+	} @else if place == $direction {
+		animation-name: fade-in-place;
+	} @else { // default
+		@error "Unknown direction #{$direction}";
+	}
+
+	// animation
+	animation-delay: $delay;
+	animation-duration: $duration;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease-out;
+}
+
+/**
+ * Style
+ */
+.hero {
+	// display
+	display: grid;
+	grid-template: "." minmax(20px, 0.7fr)
+				   "brand" min-content
+				   "shim" minmax(20px, 1fr)
+				   "feature" min-content
+				   "form" minmax(26vh, min-content)
+				   / 100%;
+
+	//-- override global decorator in this context
+	%surface {
+		// surface
+		background-color: rgba(var(--dark-primary-rgb), 0.95);
+		box-shadow: 0 0 20px 0px black;
+	}
+
+	.hero__brand-container {
+		// position
+		display: flex;
+		grid-area: brand;
+		justify-content: center;
+
+		.hero__brand {
+			// position
+			box-sizing: border-box;
+			max-width: map-get($breakpoints, medium);
+			width: 92%;
+			padding: 10px 20px;
+
+			background-color: rgba(white, 0.55);
+			box-shadow: 0 0 10px white;
+			border-radius: 20px;
+
+			// animation
+			@include fade-in(place);
+		}
+	}
+
+	.hero__feature-container {
+		// position
+		grid-area: feature;
+		justify-self: center;
+
+		.hero__feature {
+			// position
+			padding: 0 20px;
+			max-width: 800px;
+			justify-self: center;
+			box-sizing: border-box;
+
+			border-color: var(--light-primary-color);
+			border-width: 2px;
+			border-style: outset;
+
+			// surface
+			@extend %surface;
+
+			color: white;
+
+			// animation
+			@include fade-in(place);
+
+			h1 {
+				// position
+				text-align: center;
+
+				// content
+				text-shadow: 1px 1px 4px black;
+			}
+
+			p {
+				// content
+				text-align: justify;
+
+				em {
+					font-style: normal;
+					font-weight: bold;
+					color: var(--light-secondary-color);
+				}
+			}
+		}
+	}
+
+	&::after {
+		content: "";
+
+		// position
+		position: fixed;
+		top: 0;
+		z-index: -10;
+		width: 100%;
+		height: 100vh;
+
+		// surface
+		background-size: cover;
+		background-position: center;
+
+		@include fade-in(place, 0s, 1.5s);
+	}
+
+	.contact-form {
+		// position
+		z-index: 1;
+		grid-area: form;
+		justify-self: center;
+		align-content: start;
+
+		@include fade-in(place);
+	}
+
+	@include media(">small") {
+		.contact-form {
+			width: 60%;
+			max-width: 600px;
+			max-height: 100px;
+			margin: 12vh 0;
+		}
+	}
+
+	@include media("<medium") {
+		.hero__feature-container {
+			.hero__feature {
+				border-radius: 0;
+				border-left-style: none;
+				border-right-style: none;
+			}
+		}
+	}
+}
+
+.webp .hero::after {
+	background-image: var(--hero-webp-url);
+}
+
+.no-webp .hero::after {
+	background-image: var(--hero-png-url);
+}

@@ -3,6 +3,11 @@
  */
 
 /**
+ * Nav/Header Height
+ */
+$nav-height: 50px;
+
+/**
  * Color palette
  */
 
@@ -16,8 +21,46 @@ $theme-colors: (
 	primary-accent: var(--primary-accent-color),
 	primary-accent-alternate: var(--primary-accent-alternate-color),
 	secondary-accent: var(--secondary-accent-color),
-	secondary-accent-alternate: var(--secondary-accent-color)
+	secondary-accent-alternate: var(--secondary-accent-alternate-color)
 );
+
+/**
+ * Style colors
+ */
+
+ $label_rgb: (210 210 210);
+ $label_color: rgb($label_rgb);
+
+/**
+ * Breakpoints
+ */
+
+$breakpoints: (
+	'x-small': 400px,
+	'small': 576px,
+	'medium': 768px,
+	'large': 992px,
+	'x-large': 1200px
+);
+
+/**
+ * Hamburger settings
+ */
+
+$hamburger-padding-x: 0;
+$hamburger-padding-y: 0;
+
+@font-face {
+	font-family: "Bronova";
+	src: url("../fonts/Bronova Regular.woff");
+	font-display: fallback;
+}
+
+@font-face {
+	font-family: "Bronova Bold";
+	src: url("../fonts/Bronova Bold.woff");
+	font-display: fallback;
+}
 
 /**
  * Native font stack (borrowed from bootstrap)

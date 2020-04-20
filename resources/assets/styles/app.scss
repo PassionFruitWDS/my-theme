@@ -5,9 +5,16 @@
 /** Common */
 @import 'common/global';
 @import 'common/normalize.scss';
+@import 'common/decorators.scss';
 
 /** Components */
 @import 'components';
 
 /** Partials */
-@import 'partials/header';
+@import 'partials/home';
+@import 'partials/hero';
+@import 'partials/contact-form';
+@import 'partials/carousel';
+@import 'partials/table';
+@import 'partials/footer';
+@import 'partials/terms';
