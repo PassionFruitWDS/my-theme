@@ -253,3 +253,12 @@ add_action('wp_head', function() {
 	echo '}';
 	echo '</style>';
 });
+
+/**
+ * Inject Pinterest token into head.
+ *
+ * @return void
+ */
+add_action('wp_head', function() {
+	echo '<meta name="p:domain_verify" content="06696745ee69d24f9aae7364a9040a22"/>';
+});
