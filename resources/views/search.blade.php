@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('content')
+@section('view-class', 'search')
+
+@section('main')
 	@include('partials.page-header')
 
 	@if (! have_posts())
