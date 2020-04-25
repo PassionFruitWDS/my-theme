@@ -3,7 +3,9 @@
  */
 
 * {
-	font-family: "Bronova", $font-family-sans-serif;
+	$bronova-leading-font-family: "Bronova", $font-family-sans-serif;
+
+	font-family: $bronova-leading-font-family;
 	transition: all 0.2s ease;
 }
 
@@ -15,8 +17,15 @@ picture img {
 	width: 100%;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-family: "Bronova Bold", $font-family-sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	$bronova-bold-leading-font-family: "Bronova Bold", $font-family-sans-serif;
+
+	font-family: $bronova-bold-leading-font-family;
 }
 
 h1 {
@@ -69,7 +78,8 @@ a {
 	text-decoration: none;
 }
 
-a:focus, a:hover {
+a:focus,
+a:hover {
 	text-decoration: underline;
 }
 

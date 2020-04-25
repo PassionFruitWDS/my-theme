@@ -62,21 +62,16 @@
 
 			&::after {
 				content: "";
-
 				grid-row: 1;
 				grid-column: 4 / span 3;
-
 				border-radius: 10px 0 0 10px;
-
 				background-image: linear-gradient(to left, var(--secondary-accent-color), var(--primary-color));
-
 				box-shadow: 0 0 10px 0 black;
 			}
 
-			&> * {
+			& > * {
 				max-width: 550px;
 				align-self: center;
-
 				text-align: left;
 			}
 
@@ -134,7 +129,7 @@
 			em {
 				position: relative;
 				z-index: 0;
-				font-family: "Bronova Bold";
+				font-family: "Bronova Bold", sans-serif;
 				font-style: normal;
 				font-weight: bold;
 				background-clip: text;
@@ -160,13 +155,10 @@
 
 				&::before {
 					content: "";
-
 					position: absolute;
-
 					width: 100%;
 					height: 64%;
 					top: 0;
-
 					background-color: #dfdfdf;
 					border-radius: 20px 20px 0 0;
 					box-shadow: inset 0 0 6px black;
@@ -174,14 +166,11 @@
 
 				&::after {
 					content: "";
-
 					position: absolute;
 					width: 100%;
 					height: 100%;
-
 					top: 0;
 					left: 0;
-
 					background-size: auto 50%;
 					background-position: bottom;
 					background-repeat: no-repeat;
@@ -200,9 +189,9 @@
 		.carousel__container {
 			box-sizing: border-box;
 			grid: "up" min-content
-				  "." 30px
-				  "down" min-content
-				  / 100%;
+				"." 30px
+				"down" min-content
+				/ 100%;
 			padding-bottom: 0;
 
 			&::after {

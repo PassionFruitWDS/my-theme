@@ -1,6 +1,7 @@
 {
 	"extends": "stylelint-config-standard",
 	"rules": {
+		"indentation": "tab",
 		"declaration-colon-newline-after": null,
 		"value-list-comma-newline-after": null,
 		"no-empty-source": null,

@@ -4,6 +4,7 @@
 		"allowUnusedLabels": false,
 		"forceConsistentCasingInFileNames": true,
 		"lib": ["ES2019", "DOM"],
+		"moduleResolution": "node",
 		"noEmitOnError": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
@@ -16,9 +17,5 @@
 	],
 	"include": [
 		"./resources/assets/scripts/**/*"
-	],
-	"exclude": [
-		"./resources/assets/scripts/customizer.js",
-		"./resources/assets/scripts/editor.js"
 	]
 }
