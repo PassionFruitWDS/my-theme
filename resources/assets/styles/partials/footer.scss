@@ -32,7 +32,9 @@
 			float: right;
 			width: min-content;
 			cursor: pointer;
-			&:hover,&:focus {
+
+			&:hover,
+			&:focus {
 				text-decoration: underline;
 			}
 
@@ -43,7 +45,6 @@
 	}
 
 	@include media("<small") {
-		font-size: 12px;
-		margin-bottom: 3.6 * 16px
+		margin-bottom: 3.6 * 16px;
 	}
 }

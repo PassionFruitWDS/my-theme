@@ -5,10 +5,11 @@
 /**
  * Animations
  */
- @keyframes slide-in-right {
+@keyframes slide-in-right {
 	from {
 		transform: translateX(-100%);
 	}
+
 	to {
 		transform: translateX(0);
 	}
@@ -18,6 +19,7 @@
 	from {
 		transform: translateX(100%);
 	}
+
 	to {
 		transform: translateX(0);
 	}
@@ -27,6 +29,7 @@
 	from {
 		transform: translateY(-100%);
 	}
+
 	to {
 		transform: translateY(0);
 	}
@@ -37,6 +40,7 @@
 		transform: translateX(-150%);
 		opacity: 0;
 	}
+
 	to {
 		transform: translateX(0);
 		opacity: 1;
@@ -48,6 +52,7 @@
 		transform: translateX(150%);
 		opacity: 0;
 	}
+
 	to {
 		transform: translateX(0);
 		opacity: 1;
@@ -59,6 +64,7 @@
 		transform: translateY(-150%);
 		opacity: 0;
 	}
+
 	to {
 		transform: translateY(0);
 		opacity: 1;
@@ -69,6 +75,7 @@
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}
@@ -88,11 +95,14 @@
 	// handle direction
 	@if right == $direction {
 		animation-name: slide-in-right;
-	} @else if left == $direction {
+	}
+	@else if left == $direction {
 		animation-name: slide-in-left;
-	} @else if down == $direction {
+	}
+	@else if down == $direction {
 		animation-name: slide-in-down;
-	} @else { // default
+	}
+	@else { // default
 		@error "Unknown direction #{$direction}";
 	}
 
@@ -114,18 +124,21 @@
  *   also transitioning the element from 0 to 1 opacity.
  */
 @mixin fade-in($direction, $delay: 0.7s, $duration: 2s) {
-
 	opacity: 0;
 	// handle direction
 	@if right == $direction {
 		animation-name: fade-in-right;
-	} @else if left == $direction {
+	}
+	@else if left == $direction {
 		animation-name: fade-in-left;
-	} @else if down == $direction {
+	}
+	@else if down == $direction {
 		animation-name: fade-in-down;
-	} @else if place == $direction {
+	}
+	@else if place == $direction {
 		animation-name: fade-in-place;
-	} @else { // default
+	}
+	@else { // default
 		@error "Unknown direction #{$direction}";
 	}
 
@@ -143,17 +156,17 @@
 	// display
 	display: grid;
 	grid-template: "." minmax(20px, 0.7fr)
-				   "brand" min-content
-				   "shim" minmax(20px, 1fr)
-				   "feature" min-content
-				   "form" minmax(26vh, min-content)
-				   / 100%;
+		"brand" min-content
+		"shim" minmax(20px, 1fr)
+		"feature" min-content
+		"form" minmax(26vh, min-content)
+		/ 100%;
 
 	//-- override global decorator in this context
 	%surface {
 		// surface
 		background-color: rgba(var(--dark-primary-rgb), 0.95);
-		box-shadow: 0 0 20px 0px black;
+		box-shadow: 0 0 20px 0 black;
 	}
 
 	.hero__brand-container {
@@ -168,7 +181,6 @@
 			max-width: map-get($breakpoints, medium);
 			width: 92%;
 			padding: 10px 20px;
-
 			background-color: rgba(white, 0.55);
 			box-shadow: 0 0 10px white;
 			border-radius: 20px;
@@ -189,7 +201,6 @@
 			max-width: 800px;
 			justify-self: center;
 			box-sizing: border-box;
-
 			border-color: var(--light-primary-color);
 			border-width: 2px;
 			border-style: outset;
